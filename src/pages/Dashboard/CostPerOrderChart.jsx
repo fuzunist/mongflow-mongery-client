@@ -145,10 +145,10 @@ const CostPerOrderChart = () => {
     },
     yaxis: {
       title: {
-        text: undefined,
+        text: "",
       },
     },
-    colors: ["#0C356A", "#279EFF","#33BBC5", "#40F8FF", "#ADC4CE", "#D5FFD0"],
+    colors: [ "#279EFF","#33BBC5", "#40F8FF", "#ADC4CE", "#D5FFD0"],
     tooltip: {
       y: {
         formatter: (val) => {
@@ -178,24 +178,24 @@ const CostPerOrderChart = () => {
   // chart data
   const apexBarChartStackedData = [
     {
-      name: Object.keys(recipeCostsObj)[0],
-      data: Object.values(recipeCostsObj)[0],
+      name: Object.keys(recipeCostsObj)[0] ?? "",
+      data: Object.values(recipeCostsObj)[0]  ?? 0,
     },
     {
-      name: Object.keys(energyCostsObj)[0],
-      data: Object.values(energyCostsObj)[0],
+      name: Object.keys(energyCostsObj)[0] ?? "",
+      data: Object.values(energyCostsObj)[0] ?? 0,
     },
     {
-      name: Object.keys(usakCostsObj)[0],
-      data: Object.values(usakCostsObj)[0],
+      name: Object.keys(usakCostsObj)[0] ?? "",
+      data: Object.values(usakCostsObj)[0] ?? 0,
     },
     {
-      name: Object.keys(consumablesCostsObj)[0],
-      data: Object.values(consumablesCostsObj)[0],
+      name: Object.keys(consumablesCostsObj)[0] ?? "",
+      data: Object.values(consumablesCostsObj)[0] ?? 0,
     },
     {
-      name: Object.keys(vehicleCostsObj)[0],
-      data: Object.values(vehicleCostsObj)[0],
+      name: Object.keys(vehicleCostsObj)[0] ?? "",
+      data: Object.values(vehicleCostsObj)[0] ?? 0,
     },
   ];
 

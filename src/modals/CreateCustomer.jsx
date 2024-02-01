@@ -1,4 +1,4 @@
-import EditCustomerForm from "@/components/AntForm.jsx/EditCustomerForm";
+import EditCustomerForm from "@/components/AntForm/EditCustomerForm";
 import FormikForm from "@/components/FormikForm";
 import {
   addCustomerToDB,

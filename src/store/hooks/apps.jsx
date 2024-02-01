@@ -7,9 +7,11 @@ export const useUsers = () => useSelector((state) => state.apps.users);
 export const useProducts = () => useSelector((state) => state.apps.products);
 
 export const useRecipes = () => useSelector((state) => state.apps.recipes);
-export const useProductionRecipes = () => useSelector((state) => state.apps.productionRecipes);
+export const useProductionRecipes = () =>
+  useSelector((state) => state.apps.productionRecipes);
 
-export const useSpecialRecipes = () => useSelector((state) => state.apps.specialRecipes);
+export const useSpecialRecipes = () =>
+  useSelector((state) => state.apps.specialRecipes);
 
 export const useRecipeMaterials = () =>
   useSelector((state) => state.apps.recipeMaterials);
@@ -25,6 +27,8 @@ export const useRawMaterials = () =>
 
 export const useSets = () => useSelector((state) => state.apps.sets);
 export const useCustomers = () => useSelector((state) => state.apps.customers);
+export const useContacts = () => useSelector((state) => state.apps.contacts);
+
 export const useOrders = () => useSelector((state) => state.apps.orders);
 export const useStocks = () => useSelector((state) => state.apps.stocks);
 export const useProductions = () =>
@@ -53,5 +57,4 @@ export const useExpensesItems = () =>
   useSelector((state) => state.apps.expensesItems);
 export const useExpensesClasses = () =>
   useSelector((state) => state.apps.expensesClasses);
-export const useExpenses = () =>
-  useSelector((state) => state.apps.expenses);
+export const useExpenses = () => useSelector((state) => state.apps.expenses);

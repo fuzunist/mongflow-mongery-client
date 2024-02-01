@@ -1,6 +1,8 @@
 import store from "@/store";
 import {
   _addCustomer,
+  _addRangeContacts,
+  _addContact,
   _addProduct,
   _addRecipe,
   _addProductionRecipe,
@@ -17,7 +19,9 @@ import {
   _setOrderStatus,
   _promiseAll,
   _delCustomer,
+  _delContact,
   _editCustomer,
+  _editContact,
   _setSearch,
   _editProduct,
   _editRecipe,
@@ -120,6 +124,14 @@ export const editCustomer = (customer) =>
   store.dispatch(_editCustomer(customer));
 export const delCustomer = (customerid) =>
   store.dispatch(_delCustomer(customerid));
+
+export const addContact = (contact) => store.dispatch(_addContact(contact));
+export const addRangeContacts = (contacts) =>
+  store.dispatch(_addRangeContacts(contacts));
+
+export const editContact = (contact) => store.dispatch(_editCustomer(contact));
+export const delContact = (id) => store.dispatch(_delContact(id));
+
 
 export const addOrder = (order) => store.dispatch(_addOrder(order));
 export const editOrder = (order) => store.dispatch(_editOrder(order));

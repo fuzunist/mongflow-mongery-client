@@ -1,6 +1,6 @@
 import FormikForm from "@/components/FormikForm";
 // import EditCustomerForm from "@/components/FormikForm/EditCustomerForm";
-import EditCustomerForm from "@/components/AntForm.jsx/EditCustomerForm";
+import EditCustomerForm from "@/components/AntForm/EditCustomerForm";
 import {
   addCustomerToDB,
   delCustomerFromDB,
@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { Form, Input, Typography } from "antd";
 const { Paragraph } = Typography;
 
-const EditCustomer = ({ closeModal, selectedCustomer }) => {
+const EditCustomer = ({ closeModal, selectedCustomer,companyNames }) => {
   const user = useUser();
   const [error, setError] = useState("");
   const { t } = useTranslation();
@@ -284,6 +284,7 @@ const EditCustomer = ({ closeModal, selectedCustomer }) => {
         editing={true}
         fields={fields}
         onFinish={onFinish}
+        companyNames={companyNames}
         onChange={(newFields) => {
           setFields(newFields);
         }}

@@ -1,7 +1,7 @@
 import Row from "@/components/Row";
 import Header from "./Header";
 import Customer from "./Customer";
-import { useCustomer, useCustomers, useSearch } from "@/store/hooks/apps";
+import { useContacts, useCustomer, useCustomers, useSearch } from "@/store/hooks/apps";
 import Modal from "@/components/Modal";
 import CreateCustomer from "@/modals/CreateCustomer";
 import { delCustomer, setCustomer } from "@/store/actions/apps";
@@ -11,11 +11,16 @@ import { Space, Table, Tag } from 'antd';
 import EditCustomer from "@/modals/EditCustomer";
 import { ClipboardEditIcon, Trash2Icon } from "lucide-react";
 import { delCustomerFromDB } from "@/services/customer";
+import CreateContact from "@/modals/CreateContact";
 const { Column, ColumnGroup } = Table;
 
 
 const DailyContacts = () => {
   const customers = useCustomers();
+  const contacts = useContacts();
+
+  const companyNames= customers.map((customer)=>({name: customer.companyname, id:customer.customerid}))
+   console.log("companyNames",companyNames)
   const selectedCustomer = useCustomer();
   const searchValue = useSearch();
   const user = useUser();
@@ -137,9 +142,10 @@ const DailyContacts = () => {
                         }
                       >
                         {({ close }) => (
-                          <EditCustomer
+                          <CreateContact
                             closeModal={close}
                             selectedCustomer={selectedCustomer}
+                            companyNames={companyNames}
                           />
                         )}
                       </Modal>
@@ -158,13 +164,7 @@ const DailyContacts = () => {
     },
   ];
 
-  const contactsDataSource= selectedContacts?.map((contact, index)=>({
-    key: index,
-    name: contact?.name,
-    email: contact?.email,
-    phone:contact?.phone,
-    role:contact?.role
-  }))
+
   return (
     <>
       <Header authenticate={authenticate} />

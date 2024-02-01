@@ -41,7 +41,7 @@ export const _promiseAll = createAsyncThunk(
       rawMaterials,
       sets,
       customers,
-      // contacts,
+      contacts,
       orders,
       stocks,
       productions,
@@ -60,7 +60,7 @@ export const _promiseAll = createAsyncThunk(
       getRawMaterialLogsFromDB(access_token),
       getRawMaterialsFromDB(access_token),
       getSetsFromDB(access_token),
-      // getCustomersFromDB(access_token),
+      getCustomersFromDB(access_token),
       getContactsFromDB(access_token),
       getOrdersFromDB(access_token),
       getStocksFromDB(access_token),
@@ -150,6 +150,11 @@ export const _promiseAll = createAsyncThunk(
         type: "productionRecipesFromDB",
         error: productionRecipes.error,
       });
+      if (contacts?.error)
+      return rejectWithValue({
+        type: "getContactsFromDB",
+        error: contacts.error,
+      });
     return {
       products,
       recipes,
@@ -161,6 +166,7 @@ export const _promiseAll = createAsyncThunk(
       rawMaterials,
       sets,
       customers,
+      contacts,
       orders,
       stocks,
       productions,
@@ -182,6 +188,7 @@ export const _promiseAll = createAsyncThunk(
 const initialState = {
   loading: true,
   customers: [],
+  contacts:[],
   products: [],
   recipes: [],
   productionRecipes: [],
@@ -263,6 +270,26 @@ const apps = createSlice({
     _delCustomer: (state, action) => {
       state.customers = state.customers.filter(
         (customer) => customer.customerid !== action.payload
+      );
+    },
+    
+   _addRangeContacts: (state, action) => {
+      state.contacts = [...action.payload];
+    },
+
+    _addContact: (state, action) => {
+      state.contacts = [...state.contacts, action.payload];
+    },
+    _editContact: (state, action) => {
+      state.contacts = state.contacts.map((contact) => {
+        if (contact.id === action.payload.id)
+        contact = action.payload;
+        return contact;
+      });
+    },
+    _delContact: (state, action) => {
+      state.contacts = state.contacts.filter(
+        (contact) => contact.id !== action.payload
       );
     },
     _addProduct: (state, action) => {
@@ -607,6 +634,7 @@ const apps = createSlice({
       state.sets = [];
       state.orders = [];
       state.customers = [];
+      state.contacts=[];
       state.stocks = [];
       state.productions = [];
       state.users = [];
@@ -640,6 +668,7 @@ const apps = createSlice({
       state.sets = action.payload.sets;
       state.orders = action.payload.orders;
       state.customers = action.payload.customers;
+      state.contacts = action.payload.contacts;
       state.stocks = action.payload.stocks;
       state.productions = action.payload.productions;
       state.users = action.payload.users;
@@ -666,6 +695,10 @@ export const {
   _addCustomer,
   _editCustomer,
   _delCustomer,
+  _addRangeContacts,
+  _addContact,
+  _editContact,
+  _delContact,
   _addOrder,
   _editOrder,
   _delOrder,
