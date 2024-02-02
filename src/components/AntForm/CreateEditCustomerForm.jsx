@@ -32,7 +32,7 @@ const CreateEditCustomerForm = ({ onChange, fields, onFinish, editing, error, se
     },
   };
   const formItemLayoutWithOutLabel = {
-    labelCol: { span: 4 }, wrapperCol: { span: 16 }
+    labelCol: { span: 12 }, wrapperCol: { span: 18 }
   };
 
   const options = [

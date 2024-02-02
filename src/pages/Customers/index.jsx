@@ -129,7 +129,7 @@ const Customers = () => {
         <Space size="middle">
           <div className="flex" onClick={() => setCustomer(record.id)}>
             <Modal
-              width="40"
+              width="xl"
               className="rounded-full "
               text={
                 <div className="bg-purple hover:bg-purple-hover rounded p-1.5 text-white">
