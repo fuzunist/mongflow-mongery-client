@@ -169,22 +169,17 @@ const Customers = () => {
   }));
   return (
     <>
-      <Header authenticate={authenticate} />
-      <Row align={"center"} className="mt-8 ">
-          <Card variant="overflow">
-            <Card.Body>
-              <Space
-                split={true}
-                size={"small"}
-                direction="vertical"
-                className="w-full"
-              >
+       <Header authenticate={authenticate} />
+       <div className="flex w-full p-8 flex-wrap overflow-auto ">
+      <Row align={"center"} >
                 <Table
+                className="flex "
                   columns={columns}
                   expandable={{
                     expandedRowRender: (record) => (
-                      <div className="flex flex-col justify-center ">
+                      <div className="flex flex-col w-full justify-center ">
                         <Table
+                       
                           showHeader={false}
                           pagination={false}
                           dataSource={record.contacts}
@@ -217,10 +212,9 @@ const Customers = () => {
                   }}
                   dataSource={dataSource}
                 />
-              </Space>
-            </Card.Body>
-          </Card>
-      </Row>
+            </Row>
+            </div>
+      {/* </Row> */}
     </>
   );
 };
