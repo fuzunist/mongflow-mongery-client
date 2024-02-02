@@ -11,7 +11,7 @@ import {
   LucideDelete,
   Trash2Icon,
 } from "lucide-react";
-import EditCustomer from "@/modals/EditCustomer";
+import CreateEditCustomer from "@/modals/CreateEditCustomer";
 import Modal from "@/components/Modal";
 import { useUser } from "@/store/hooks/user";
 import {
@@ -22,8 +22,9 @@ import {
 import { addCustomer, delCustomer, editCustomer } from "@/store/actions/apps";
 import { useState } from "react";
 import { Space, Table, Tag } from 'antd';
+import CreateEditContact from "@/modals/CreateEditContact";
 
-const Customer = ({ customer, authenticate }) => {
+const Contact = ({ customer, authenticate }) => {
 const { Column, ColumnGroup } = Table;
 
   const user = useUser();
@@ -120,7 +121,8 @@ const { Column, ColumnGroup } = Table;
                         }
                       >
                         {({ close }) => (
-                          <EditCustomer
+                          <CreateEditContact
+                          editing={true}
                             closeModal={close}
                             selectedCustomer={customer}
                           />
@@ -172,4 +174,4 @@ const { Column, ColumnGroup } = Table;
   );
 };
 
-export default Customer;
+export default Contact;

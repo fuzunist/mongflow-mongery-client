@@ -1,6 +1,7 @@
 import Modal from '@/components/Modal'
 import Search from '@/components/Search'
-import CreateCustomer from '@/modals/CreateCustomer'
+import CreateEditContact from '@/modals/CreateEditContact'
+import CreateEditCustomer from '@/modals/CreateEditCustomer'
 import { PlusIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
@@ -19,11 +20,11 @@ const Header = ({ authenticate }) => {
                                     size={14}
                                     strokeWidth={2}
                                 />{' '}
-                                {t('addCustomer')}
+                               İletişim Ekle
                             </>
                         }
                     >
-                        {({ close }) => <CreateCustomer closeModal={close} />}
+                        {({ close }) => <CreateEditContact editing={false} closeModal={close} />}
                     </Modal>
                 ) : (
                     <div className='block' />

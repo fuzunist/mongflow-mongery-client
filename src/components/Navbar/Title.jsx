@@ -26,7 +26,7 @@ const Title = () => {
     return (
         <>
             <Helmet>
-                <title>Adminto - {t(title)}</title>
+                <title>Mongery ERP Yazılımı {t(title)}</title>
             </Helmet>
             <h4 className='px-7 h-full flex justify-center items-center w-fit text-lg font-semibold text-pagetitle-light dark:text-pagetitle-dark'>
                 {t(title)}

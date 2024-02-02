@@ -81,11 +81,11 @@ export default [
     icon: Contact2,
     url: "/apps/customers",
   },
-  // {
-  //   key:  "apps/contacts/daily",
-  //   icon: Headphones,
-  //   url: "/apps/contacts/daily",
-  // },
+  {
+    key:  "apps-contacts-daily",
+    icon: Headphones,
+    url: "/apps/contacts/daily",
+  },
  
   {
     key: "apps-products",

@@ -8,7 +8,7 @@ import { setCustomer } from '@/store/actions/apps'
 import Card from '@/components/Card'
 import Col from '@/components/Col'
 import Modal from '@/components/Modal'
-import CreateCustomer from '@/modals/CreateCustomer'
+import CreateEditCustomer from '@/modals/CreateEditCustomer'
 import { useUser } from '@/store/hooks/user'
 
 const Customers = () => {
@@ -37,7 +37,7 @@ const Customers = () => {
                                         </>
                                     }
                                 >
-                                    {({ close }) => <CreateCustomer closeModal={close} />}
+                                    {({ close }) => <CreateEditCustomer editing={false} closeModal={close} />}
                                 </Modal>
                             )}
                         </div>

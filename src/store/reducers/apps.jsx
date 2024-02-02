@@ -26,6 +26,11 @@ import {
   getExpensesFromDB,
 } from "@/services/expenses";
 import { v4 as uuidv4 } from "uuid";
+import dayjs from "dayjs";
+
+  const todayDate=dayjs().format('YYYY-MM-DD');
+
+
 
 export const _promiseAll = createAsyncThunk(
   "apps/promiseAll",
@@ -61,7 +66,7 @@ export const _promiseAll = createAsyncThunk(
       getRawMaterialsFromDB(access_token),
       getSetsFromDB(access_token),
       getCustomersFromDB(access_token),
-      getContactsFromDB(access_token),
+      getContactsFromDB(access_token,{startDate: todayDate, endDate:todayDate}),
       getOrdersFromDB(access_token),
       getStocksFromDB(access_token),
       getProductionsFromDB(access_token),
@@ -476,6 +481,16 @@ const apps = createSlice({
       );
       state.selected.customer = customer || null;
     },
+    _setContact: (state, action) => {
+      if (action.payload === null) {
+        state.selected.contact = null;
+        return;
+      }
+      const contact = state.contacts.find(
+        (contact) => contact.id === action.payload
+      );
+      state.selected.contact = contact || null;
+    },
     _setProduct: (state, action) => {
       if (action.payload === null) {
         state.selected.product = null;
@@ -725,6 +740,7 @@ export const {
   _editSet,
   _delSet,
   _setCustomer,
+  _setContact,
   _setProduct,
   _setSet,
   _setSelectProducts,

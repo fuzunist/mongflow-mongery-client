@@ -11,7 +11,7 @@ import {
   LucideDelete,
   Trash2Icon,
 } from "lucide-react";
-import EditCustomer from "@/modals/EditCustomer";
+import CreateEditCustomer from "@/modals/CreateEditCustomer";
 import Modal from "@/components/Modal";
 import { useUser } from "@/store/hooks/user";
 import {
@@ -120,7 +120,8 @@ const { Column, ColumnGroup } = Table;
                         }
                       >
                         {({ close }) => (
-                          <EditCustomer
+                          <CreateEditCustomer
+                          editing={true}
                             closeModal={close}
                             selectedCustomer={customer}
                           />

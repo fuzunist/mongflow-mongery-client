@@ -10,7 +10,7 @@ import {
 import FormError from "../FormikForm/FormError";
 const { Option } = Select;
 
-const EditCustomerForm = ({ onChange, fields, onFinish, editing, error, setError }) => {
+const CreateEditCustomerForm = ({ onChange, fields, onFinish, editing, error, setError }) => {
   const { t } = useTranslation();
 
   const formItemLayout = {
@@ -32,16 +32,7 @@ const EditCustomerForm = ({ onChange, fields, onFinish, editing, error, setError
     },
   };
   const formItemLayoutWithOutLabel = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0,
-      },
-      sm: {
-        span: 20,
-        offset: 4,
-      },
-    },
+    labelCol: { span: 4 }, wrapperCol: { span: 16 }
   };
 
   const options = [
@@ -193,65 +184,7 @@ const EditCustomerForm = ({ onChange, fields, onFinish, editing, error, setError
           )}
         </Form.List>
 
-        {/* <Form.List name="contacts">
-        {(fields, { add, remove }) => (
-          <>
-            {fields.map(({ key, name, ...restField }) => (
-                 <div style={{ display: "flex", rowGap: 16, flexDirection: "column" }}>
-              <Space
-                key={key}
-                style={{
-                  display: "flex",
-                  marginBottom: 8,
-                }}
-                align="baseline"
-              >
-            
-                <Form.Item
-                  {...restField}
-                  label="Kişi Adı"
-                  name={[name, "name"]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  {...restField}
-                  label="Kişi Email"
-                  name={[name, "email"]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  {...restField}
-                  label="Kişi Telefon"
-                  name={[name, "phone"]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  {...restField}
-                  label="Kişi Rolü"
-                  name={[name, "role"]}
-                >
-                  <Input />
-                </Form.Item>
-
-                <MinusCircleOutlined onClick={() => remove(name)} />
-              </Space></div>
-            ))}
-            <Form.Item>
-              <Button
-                type="dashed"
-                onClick={() => add()}
-                block
-                icon={<PlusOutlined />}
-              >
-                Add field
-              </Button>
-            </Form.Item>
-          </>
-        )}
-      </Form.List> */}
+      
 
         <Form.Item
           wrapperCol={{
@@ -265,10 +198,10 @@ const EditCustomerForm = ({ onChange, fields, onFinish, editing, error, setError
           <Button type="primary" htmlType="submit" className="mx-[18%]">
             {editing ? "Müşteri Düzenle" : "Firma Ekle"}
           </Button>
-          {/* <Button htmlType="reset">reset</Button> */}
+
         </Form.Item>
       </Form>
     </div>
   );
 };
-export default EditCustomerForm;
+export default CreateEditCustomerForm;

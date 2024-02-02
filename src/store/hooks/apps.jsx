@@ -36,6 +36,8 @@ export const useProductions = () =>
 
 export const useCustomer = () =>
   useSelector((state) => state.apps.selected.customer);
+  export const useContact = () =>
+  useSelector((state) => state.apps.selected.contact);
 export const useProduct = () =>
   useSelector((state) => state.apps.selected.product);
 export const useSet = () => useSelector((state) => state.apps.selected.set);

@@ -1662,7 +1662,7 @@ d3@^7.6.1:
     d3-transition "3"
     d3-zoom "3"
 
-dayjs@^1.11.1, dayjs@^1.8.34, "dayjs@>= 1.x":
+dayjs@^1.11.1, dayjs@^1.11.10, dayjs@^1.8.34, "dayjs@>= 1.x":
   version "1.11.10"
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.10.tgz"
   integrity sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==

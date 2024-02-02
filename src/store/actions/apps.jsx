@@ -15,6 +15,7 @@ import {
   _editRawMaterialLog,
   _addOrder,
   _setCustomer,
+  _setContact,
   _setProduct,
   _setOrderStatus,
   _promiseAll,
@@ -157,6 +158,8 @@ export const setOrderStatusSet = (
 
 export const setCustomer = (customerID) =>
   store.dispatch(_setCustomer(customerID));
+  export const setContact = (id) =>
+  store.dispatch(_setContact(id));
 export const setProduct = (productID) => store.dispatch(_setProduct(productID));
 export const setSet = (setID) => store.dispatch(_setSet(setID));
 

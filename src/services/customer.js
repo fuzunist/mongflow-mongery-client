@@ -17,7 +17,7 @@ export const getCustomersFromDB = async (access_token) => {
 };
 
 export const addCustomerToDB = async (access_token, params) => {
-     console.log( "params:", params)
+  console.log("params:", params);
   try {
     const { data } = await axios.post(
       `${import.meta.env.VITE_API_ENDPOINT}/customer`,
@@ -30,16 +30,12 @@ export const addCustomerToDB = async (access_token, params) => {
     );
     return data;
   } catch (e) {
-     console.log(e)
+    console.log(e);
     return e.response.data;
   }
 };
 
-export const editCustomerToDB = async (
-  access_token,
-  customerid,
-  params
-) => {
+export const editCustomerToDB = async (access_token, customerid, params) => {
   try {
     const { data } = await axios.put(
       `${import.meta.env.VITE_API_ENDPOINT}/customer/${customerid}`,
@@ -72,19 +68,21 @@ export const delCustomerFromDB = async (access_token, customerid) => {
   }
 };
 
-
 export const getContactsFromDB = async (access_token, params) => {
   try {
     //params is a startDate and endDate
+   console.log("params of getContactsFromDB", params)
     const { data } = await axios.get(
-      `${import.meta.env.VITE_API_ENDPOINT}/customer/contact`,
-      params,
+      `${import.meta.env.VITE_API_ENDPOINT}/customer/contact?startDate=${params.startDate}&endDate=${params.endDate}`,
+
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
       }
     );
+    console.log("getContactsFromDB", data);
+
     return data;
   } catch (e) {
     return e.response.data;
@@ -92,7 +90,7 @@ export const getContactsFromDB = async (access_token, params) => {
 };
 
 export const addContactToDB = async (access_token, params) => {
-     console.log( "params:", params)
+  console.log("* params:", params, "* access_token:", access_token);
   try {
     const { data } = await axios.post(
       `${import.meta.env.VITE_API_ENDPOINT}/customer/contact`,
@@ -105,16 +103,12 @@ export const addContactToDB = async (access_token, params) => {
     );
     return data;
   } catch (e) {
-     console.log(e)
+    console.log(e);
     return e.response.data;
   }
 };
 
-export const editContactToDB = async (
-  access_token,
-  id,
-  params
-) => {
+export const editContactToDB = async (access_token, id, params) => {
   try {
     const { data } = await axios.put(
       `${import.meta.env.VITE_API_ENDPOINT}/customer/contact/${id}`,

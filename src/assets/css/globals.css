@@ -58,6 +58,8 @@ body.dark .scroller {
 
  .ant-input-search-button{
     background:#5b69bc !important;
+    color: "white"
+
  }
 
  .ant-btn{
@@ -67,6 +69,9 @@ body.dark .scroller {
 
  .ant-btn-primary{
     background:#5b69bc !important;
+    color: "white"!important;
+    
+
 
  }
 

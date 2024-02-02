@@ -1,6 +1,5 @@
+import CreateEditCustomerForm from "@/components/AntForm/CreateEditCustomerForm";
 import FormikForm from "@/components/FormikForm";
-// import EditCustomerForm from "@/components/FormikForm/EditCustomerForm";
-import EditCustomerForm from "@/components/AntForm/EditCustomerForm";
 import {
   addCustomerToDB,
   delCustomerFromDB,
@@ -8,13 +7,10 @@ import {
 } from "@/services/customer";
 import { addCustomer, delCustomer, editCustomer } from "@/store/actions/apps";
 import { useUser } from "@/store/hooks/user";
-import { useMemo, useState } from "react";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, Input, Typography } from "antd";
-import ContactForm from "@/components/AntForm/ContactForm";
-const { Paragraph } = Typography;
 
-const CreateContact = ({ closeModal, selectedCustomer,companyNames }) => {
+const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
   const user = useUser();
   const [error, setError] = useState("");
   const { t } = useTranslation();
@@ -24,45 +20,61 @@ const CreateContact = ({ closeModal, selectedCustomer,companyNames }) => {
       JSON.parse(jsonString)
     );
   }, [selectedCustomer]);
- 
-  
 
   const [fields, setFields] = useState([
     {
       name: ["companyname"],
-      value: selectedCustomer?.companyname,
+      value: editing ? selectedCustomer?.companyname : "",
     },
     {
       name: ["email"],
-      value: selectedCustomer?.email,
+      value: editing ? selectedCustomer?.email : "",
     },
     {
       name: ["phone"],
-      value: selectedCustomer?.phone,
+      value: editing ? selectedCustomer?.phone : "",
     },
     {
       name: ["address"],
-      value: selectedCustomer?.address,
+      value: editing ? selectedCustomer?.address : "",
     },
     {
       name: ["website"],
-      value: selectedCustomer?.website,
+      value: editing ? selectedCustomer?.website : "",
     },
     {
       name: ["products"],
-      value: selectedCustomer.products,
+      value: editing ? selectedCustomer.products : [],
     },
     {
       name: ["contacts"],
-      value: selectedContacts,
+      value: editing ? selectedContacts : [],
     },
   ]);
 
-
-  const onFinish = async (values) => {
-    console.log("finish values", values);
+  const onSubmit = async (values) => {
+    console.log("finish values on submit", values);
     setError("");
 
+    const data = {
+      companyname: values.companyname,
+      email: values.email,
+      phone: values.phone,
+      address: values.address,
+      website: values.website,
+      products: values.products,
+      contacts: values.contacts,
+    };
+    const response = await addCustomerToDB(user.tokens.access_token, data);
+    console.log("response", response);
+    if (response?.error) return setError(response.error);
+    addCustomer(response);
+    closeModal();
+  };
+
+  const onEdit = async (values) => {
+    setError("");
+    console.log("values in edit", values);
     const data = {
       companyname: values.companyname,
       email: values.email,
@@ -80,17 +92,18 @@ const CreateContact = ({ closeModal, selectedCustomer,companyNames }) => {
     console.log("response", response);
     if (response?.error) return setError(response.error);
     editCustomer(response);
+    setSubmitting(false);
     closeModal();
   };
+
   return (
     <>
-      <ContactForm
+      <CreateEditCustomerForm
         error={error}
         setError={setError}
-        editing={true}
+        editing={editing}
         fields={fields}
-        onFinish={onFinish}
-        companyNames={companyNames}
+        onFinish={editing ? onEdit : onSubmit}
         onChange={(newFields) => {
           setFields(newFields);
         }}
@@ -99,4 +112,4 @@ const CreateContact = ({ closeModal, selectedCustomer,companyNames }) => {
   );
 };
 
-export default CreateContact;
+export default CreateEditCustomer;
