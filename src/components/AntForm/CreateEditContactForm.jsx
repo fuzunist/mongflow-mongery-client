@@ -19,6 +19,7 @@ import {
 } from "@ant-design/icons";
 import FormError from "../FormikForm/FormError";
 import { useCustomers } from "@/store/hooks/apps";
+import { setCustomer } from "@/store/actions/apps";
 const { Option } = Select;
 
 const CreateEditContactForm = ({
@@ -29,9 +30,9 @@ const CreateEditContactForm = ({
   error,
   setError,
   companyNames,
-  setCustomerId,
-  customerId,
+  // setCustomerId,
   companyContacts,
+  record,
 }) => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
@@ -43,7 +44,7 @@ const CreateEditContactForm = ({
       value: item.name,
       label: item.name,
     }));
-  }, [customerId]);
+  }, [companyContacts]);
 
   const formItemLayout = {
     labelCol: { span: 8 },
@@ -92,9 +93,12 @@ const CreateEditContactForm = ({
           ]}
         >
           <Select
+          disabled={(record || editing) ? true : false}
+
             onChange={(value) => {
+              setCustomer(value)
+              // setCustomerId(value);
               form.resetFields(["person"]);
-              setCustomerId(value);
             }}
             showSearch
             className="w-full"

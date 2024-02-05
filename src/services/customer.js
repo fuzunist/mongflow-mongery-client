@@ -109,6 +109,7 @@ export const addContactToDB = async (access_token, params) => {
 };
 
 export const editContactToDB = async (access_token, id, params) => {
+   console.log("params editContactToDB", params)
   try {
     const { data } = await axios.put(
       `${import.meta.env.VITE_API_ENDPOINT}/customer/contact/${id}`,

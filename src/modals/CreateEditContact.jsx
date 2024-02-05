@@ -12,30 +12,35 @@ import { addContact, addCustomer, delCustomer, editContact, editCustomer } from 
 import { useUser } from "@/store/hooks/user";
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useContacts, useCustomers } from "@/store/hooks/apps";
+import { useContact, useContacts, useCustomer, useCustomers } from "@/store/hooks/apps";
 import dayjs from "dayjs";
 import "dayjs/locale/tr"
 
-const CreateEditContact = ({ closeModal, selectedContact, editing }) => {
-   console.log("selected contact:::", selectedContact)
+const CreateEditContact = ({ closeModal, editing, record }) => {
   const user = useUser();
+  const selectedContact= useContact()
   const customers = useCustomers();
+  const customer = useCustomer();
   const contacts = useContacts();
 
   const [error, setError] = useState("");
   const { t } = useTranslation();
-  const [customerId, setCustomerId] = useState(null);
 
+   console.log( "record off", record)
   const userSelectedCustomer = useMemo(() => {
-    return customers.find((customer) => customer.customerid === customerId);
-  }, [customerId, customers]);
+    return customers?.find((cus) => cus?.customerid === customer?.customerid);
+  }, [customer, customers,record]);
+
 
   const companyContacts = useMemo(() => {
     return userSelectedCustomer?.contacts?.map((jsonString) =>
       JSON.parse(jsonString)
     );
-  }, [customers, customerId]);
-
+  }, [customers, customer, record]);
+   console.log("zox customer",customer)
+  //  console.log("zox customerId", customerId)
+   console.log("zox userSelectedCustomer", userSelectedCustomer)
+ console.log(" zox companyContacts",companyContacts)
 
   const companyNames = customers?.map((customer) => ({
     id: customer.customerid,
@@ -45,7 +50,7 @@ const CreateEditContact = ({ closeModal, selectedContact, editing }) => {
   const [fields, setFields] = useState([
     {
       name: ["companyname"],
-      value: editing ? selectedContact?.companyname : "",
+      value: editing ? selectedContact?.companyname  : record ? record.companyname :  "",
     },
     {
       name: ["person"],
@@ -53,11 +58,11 @@ const CreateEditContact = ({ closeModal, selectedContact, editing }) => {
     },
     {
       name: ["contacttype"],
-      value: editing ? selectedContact?.contacttype : "",
+      value: editing ? selectedContact?.contacttype   : "",
     },
     {
       name: ["date"],
-      value: editing ? dayjs(selectedContact?.date): "",
+      value: editing ? dayjs(selectedContact?.date)  : "",
     },
     {
       name: ["time"],
@@ -65,14 +70,16 @@ const CreateEditContact = ({ closeModal, selectedContact, editing }) => {
     },
     {
       name: ["result"],
-      value: editing ? selectedContact.result : "",
+      value: editing ? selectedContact?.result  : "",
     },
   ]);
 
   const onSubmit = async (values) => {
     console.log("finish values create contact", values);
     setError("");
-    const companyname=companyNames.find((item)=> item.id===values.companyname).name
+    const company=companyNames?.find((item)=> item.id===values?.companyname)
+ 
+   
 
     const jsDate = new Date(values.time.$d);
     
@@ -84,8 +91,8 @@ const CreateEditContact = ({ closeModal, selectedContact, editing }) => {
 
     const data = {
       userid: user.userid,
-      customerid: values.companyname,
-      companyname:companyname,
+      customerid: record ? customer.customerid : company?.id,
+      companyname: record ? customer.companyname : company?.name,
       person: values.person,
       contacttype: values.contacttype,
       date: values.date?.toISOString(),
@@ -101,6 +108,7 @@ const CreateEditContact = ({ closeModal, selectedContact, editing }) => {
   };
 
   const onEdit = async (values) => {
+     console.log("values in edit: ", values)
     setError("");
 
   const customerid=companyNames.find((item)=> item.name==values.companyname)?.id
@@ -113,7 +121,6 @@ const CreateEditContact = ({ closeModal, selectedContact, editing }) => {
     const seconds = jsDate.getSeconds();
     
     const time = `${hours}:${minutes}:${seconds}`;
-    console.log("values in edit", values);
 
     const data = {
       userid: user.userid,
@@ -121,10 +128,12 @@ const CreateEditContact = ({ closeModal, selectedContact, editing }) => {
       companyname:values.companyname,
       person: values.person,
       contacttype: values.contacttype,
-      date: values.date?.toISOString(),
+      date: dayjs(values.date, {locale: "tr-TR", format: "DD-MM-YYYY"}).toISOString(),
       time: time,
       result: values.result,
     };
+    console.log("data in edit", data);
+
     const response = await editContactToDB(
       user.tokens.access_token,
       selectedContact.id,
@@ -149,8 +158,8 @@ const CreateEditContact = ({ closeModal, selectedContact, editing }) => {
         }}
         companyNames={companyNames}
         companyContacts={companyContacts}
-        setCustomerId={setCustomerId}
-        customerId={customerId}
+        // setCustomerId={setCustomerId}
+        record={record}
       />
     </>
   );

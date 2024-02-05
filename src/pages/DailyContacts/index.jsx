@@ -37,9 +37,8 @@ const DailyContacts = () => {
   const [error, setError] = useState("");
 
   console.log("selected customer here,", selectedCustomer);
-  const selectedContacts = selectedCustomer?.contacts?.map((jsonString) =>
-    JSON.parse(jsonString)
-  );
+  console.log("selected Contact here,", selectedContact);
+  
 
   const authenticate = useMemo(
     () => ["admin", "stock_manager", "boss"].includes(user.usertype),
@@ -64,14 +63,13 @@ const DailyContacts = () => {
 
     return contacts.filter(
       (contact) =>
-        contact?.companyname
-          .toLowerCase()
+        contact?.companyname?.toLowerCase()
           .startsWith(searchValue.toLowerCase()) ||
-        contact?.person.toLowerCase().startsWith(searchValue.toLowerCase())
+        contact?.person?.toLowerCase().startsWith(searchValue.toLowerCase())
     );
   }, [searchValue, contacts]);
 
-  const dataSource = filteredContacts.map((contact, index) => ({
+  const dataSource = filteredContacts?.map((contact, index) => ({
     key: index,
     id: contact.id,
     customerid: contact.customerid,
@@ -116,7 +114,7 @@ const DailyContacts = () => {
       key: "result",
       render: (_, record) => (
         <Space size="middle">
-          <div className="flex bg-slate-100 p-3 rounded-xl">{record.result}</div>
+          <div className="flex bg-slate-100 p-3 rounded-xl max-w-[250px] text-wrap break-words">{record.result}</div>
         </Space>
       ),
     },
@@ -126,7 +124,10 @@ const DailyContacts = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <div className="flex" onClick={() => setContact(record.id)}>
+          <div className="flex" onClick={() => {
+             console.log("record in dailycontacts index,", record)
+            setCustomer(record.customerid)
+            setContact(record.id)}}>
             <Modal
               width="40"
               className="rounded-full "
@@ -140,7 +141,6 @@ const DailyContacts = () => {
                 <CreateEditContact
                   editing={true}
                   closeModal={close}
-                  selectedContact={selectedContact}
                 />
               )}
             </Modal>

@@ -8,10 +8,11 @@ import { delCustomer, setCustomer } from "@/store/actions/apps";
 import { useMemo, useState } from "react";
 import { useUser } from "@/store/hooks/user";
 import { Space, Table, Tag } from "antd";
-import { ClipboardEditIcon, Trash2Icon } from "lucide-react";
+import { ClipboardEditIcon, Trash2Icon, ContactIcon, Headphones } from "lucide-react";
 import { delCustomerFromDB } from "@/services/customer";
 import Col from "@/components/Col";
 import Card from "@/components/Card";
+import CreateEditContact from "@/modals/CreateEditContact";
 
 const { Column, ColumnGroup } = Table;
 
@@ -82,26 +83,36 @@ const Customers = () => {
       title: "Şirket İsmi",
       dataIndex: "companyname",
       key: "companyname",
+      className: "text-sm"
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      className: "text-sm"
+
+      
     },
     {
       title: "Telefon",
       dataIndex: "phone",
       key: "phone",
+      className: "text-sm"
+
     },
     {
       title: "Website",
       dataIndex: "website",
       key: "website",
+      className: "text-sm break-words "
+      
     },
     {
       title: "Adres",
       dataIndex: "address",
       key: "address",
+      className: "text-xs"
+
     },
     {
       title: "Ürün Grupları",
@@ -127,6 +138,19 @@ const Customers = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
+          <div className=" flex" onClick={() => setCustomer(record.id)}>
+          <Modal
+            text={
+              <div className="bg-green-700 hover:bg-green-600 text-white rounded p-1.5">
+                <Headphones size={18} strokeWidth={2.5} />
+              </div>
+            }
+          >
+            {({ close }) => (
+              <CreateEditContact editing={false} closeModal={close} record={record} />
+            )}
+          </Modal>
+          </div>
           <div className="flex" onClick={() => setCustomer(record.id)}>
             <Modal
               width="xl"
@@ -160,17 +184,11 @@ const Customers = () => {
     },
   ];
 
-  const contactsDataSource = selectedContacts?.map((contact, index) => ({
-    key: index,
-    name: contact?.name,
-    email: contact?.email,
-    phone: contact?.phone,
-    role: contact?.role,
-  }));
+
   return (
     <>
-       <Header authenticate={authenticate} />
-       <Row align={"center"} className="mt-8 ">
+      <Header authenticate={authenticate} />
+      <Row align={"center"} className="mt-8 ">
         <Card variant="overflow">
           <Card.Body>
             <Space
@@ -179,51 +197,53 @@ const Customers = () => {
               direction="vertical"
               className="w-full"
             >
-                <Table
-               
-                  columns={columns}
-                  expandable={{
-                    expandedRowRender: (record) => (
-                      // <div className="flex flex-col w-full justify-center ">
-                        <Table
-                       
-                          showHeader={false}
-                          pagination={false}
-                          dataSource={record.contacts}
-                        >
-                          <Column title="İsim" dataIndex="name" key="name" />
+              <Table
+                dataSource={dataSource}
+                columns={columns}
+                expandable={{
+                  expandedRowRender: (record) => (
+                    <div className="flex flex-col w-full justify-center ">
+                    <Table
+                      showHeader={false}
+                      pagination={false}
+                      dataSource={record.contacts}
+                    >
+                      <Column title="İsim" dataIndex="name" key="name" />
 
-                          <Column title="Email" dataIndex="email" key="email" />
-                          <Column
-                            title="Telefon"
-                            dataIndex="phone"
-                            key="phone"
-                          />
-                          <Column
-                            title="Rol"
-                            dataIndex="role"
-                            key="role"
-                            render={(tag) => (
-                              <>
-                                <Tag color="green" key={"role"}>
-                                  {tag}
-                                </Tag>
-                              </>
-                            )}
-                          />
-                        </Table>
-                      // </div>
-                    ),
-                    rowExpandable: (record) => record.name !== "Not Expandable",
-                    expandRowByClick: true,
-                  }}
-                  dataSource={dataSource}
-                />
+                      <Column  title="Email" dataIndex="email" key="email" />
+                      <Column title="Telefon" dataIndex="phone" key="phone" />
+                      <Column
+                        title="Rol"
+                        dataIndex="role"
+                        key="role"
+                        render={(tag) => (
+                          <>
+                            <Tag color="green" key={"role"}>
+                              {tag}
+                            </Tag>
+                          </>
+                        )}
+                      />
+                    </Table>
+                     </div>
+                  ),
+                  rowExpandable: (record) => record.name !== "Not Expandable",
+                  expandRowByClick: true,
+                }}
+              >
+                {/* <Column title="İsim" dataIndex="companyname" key="name" />
+                <Column title="İsim" dataIndex="email" key="email" />
+                <Column title="İsim" dataIndex="phone" key="phone" />
+                <Column title="İsim" dataIndex="website" key="website" />
+                <Column title="İsim" dataIndex="address" key="address" />
+                <Column title="İsim" dataIndex="products" key="products" />
+                <Column title="İsim" dataIndex="action" key="action" /> */}
+
+              </Table>
             </Space>
           </Card.Body>
         </Card>
       </Row>
-           
     </>
   );
 };

@@ -130,7 +130,7 @@ export const addContact = (contact) => store.dispatch(_addContact(contact));
 export const addRangeContacts = (contacts) =>
   store.dispatch(_addRangeContacts(contacts));
 
-export const editContact = (contact) => store.dispatch(_editCustomer(contact));
+export const editContact = (contact) => store.dispatch(_editContact(contact));
 export const delContact = (id) => store.dispatch(_delContact(id));
 
 
