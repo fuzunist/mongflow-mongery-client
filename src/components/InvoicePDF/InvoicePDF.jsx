@@ -478,7 +478,7 @@ const InvoicePDF = ({data}) => {
       </Text>
       <View
         style={tw(
-          "flex flex-col text-wrap space-y-2 bg-blue-100 border-t border-l border-r border-custom"
+          "flex flex-col text-wrap space-y-2 border-t border-l border-r border-custom"
         )}
       >
         {terms.otherTerms.map((term, index) => (
