@@ -426,8 +426,8 @@ const InvoicePDF = ({data}) => {
           <Text style={tw("flex px-1")}>52,00 Ton</Text>
           <Text style={tw("flex text-xs")}>Bakiye USD = 0.00</Text>
         </View>
-        <View style={tw("w-full flex  px-1")}>
-          <Text style={tw("flex border-b border-custom")}>
+        <View style={tw("w-full flex ")}>
+          <Text style={tw("flex border-b border-custom px-1")}>
             EXW. Ex Works Fabrika Teslim INCOTERM 2010
           </Text>
         </View>
@@ -472,26 +472,20 @@ const InvoicePDF = ({data}) => {
   );
 
   const OtherTerms = () => (
-    <View style={tw("flex flex-col w-full")}>
+    <View style={tw("flex flex-col flex-wrap w-full")}>
       <Text style={tw("text-sm font-bold italic mb-1 text-custom")}>
         DİĞER ŞARTLAR
       </Text>
       <View
         style={tw(
-          "flex flex-col  w-full border-b border-l border-r border-custom"
+          "flex flex-col text-wrap space-y-2 bg-blue-100 border-t border-l border-r border-custom"
         )}
       >
         {terms.otherTerms.map((term, index) => (
-          <View
-            key={index}
-            style={tw(
-              "w-full flex-row flex-wrap border-t border-custom overflow-hidden"
-            )}
-          >
-            <Text style={tw("truncate text-[7px]")}>
+       
+            <Text style={tw("flex flex-wrap grow text-wrap text-[7px] border-b border-custom")}>
               {term}
             </Text>
-          </View>
         ))}
       </View>
     </View>
