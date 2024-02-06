@@ -5,6 +5,7 @@ export default {
     theme: {
         extend: {
             colors: {
+                'border-pdf': '#27a89b',
                 'body-bg-light': '#ebeff2',
                 'body-bg-dark': '#282e38',
                 'card-bg-light': '#fff',

@@ -24,7 +24,7 @@ import {
   useOrders,
   useSelectedProducts,
   useSelectedSets,
-  useExpenses
+  useExpenses,
 } from "@/store/hooks/apps";
 import { useUser } from "@/store/hooks/user";
 import { calculateAverageType } from "@/utils/apps";
@@ -34,6 +34,10 @@ import { useMemo, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { formatFloat, formatDigits } from "@/utils/helpers";
+import { HiOutlinePrinter } from "react-icons/hi";
+import { BlobProvider } from "@react-pdf/renderer";
+import InvoicePDF from "@/components/InvoicePDF/InvoicePDF";
+
 
 const Invoice = ({ selectedCustomer, editingOrder }) => {
   const user = useUser();
@@ -61,7 +65,6 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
   );
 
   const hourlyExpenseCost = expenses[0]?.hourly_cost / TLtoUSD;
-
 
   const [initialValues, setInitialValues] = useState({
     beginningOrderStatus: editingOrder?.order_status ?? "İş Alındı",
@@ -177,6 +180,16 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
     }
   };
 
+  const pdfData={
+    initialValues:initialValues,
+    selectedProducts:selectedProducts,
+    user:user,
+    selectedCustomer:selectedCustomer,
+    totalPrice:totalPrice,
+    taxRate:1 + initialValues.taxRate,
+    orderNumber:orderNumber
+  }
+   console.log("pdf Data,", pdfData)
   const onClick = () => {
     if (i18n.language.includes("tr"))
       return invoiceToPDF(
@@ -378,8 +391,8 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
                 </span>
                 {editingOrder && !excludedCosts.includes(user.usertype) && (
                   <span className="basis-[calc(15%_-_0.5rem)] mx-1">
-                      {/* //ton cinsinden maliyet -- bunker to ton */}
-                      {formatDigits(product.totalCost*0.4444)}{" "} 
+                    {/* //ton cinsinden maliyet -- bunker to ton */}
+                    {formatDigits(product.totalCost * 0.4444)}{" "}
                   </span>
                 )}
 
@@ -482,27 +495,28 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
           <hr className="w-full border-border-light dark:border-border-dark" />
           <div className="flex flex-wrap justify-end text-end">
             <div className="basis-[calc(34%_-_0.5rem)] mx-1 ">
-              
               {editingOrder && !excludedCosts.includes(user.usertype) && (
                 <div className="flex flex-col justify-end">
-                 <span className=" ">
-                 {t("totalRecipeCost")}:{" "}
-                 {formatDigits(parseFloat(editingOrder.total_cost))}{" "}
-                 {editingOrder.currency_code}
-               </span>
-               <span className=" ">
-                 {t("totalCost")}:
-                 {/* 0.6 sabit 1 ton ürün için harcanan süre, order.totalCost top reçete maliyeti */}
-                 {(
-                   (Number(editingOrder.total_cost) !== 0
-                     ? hourlyExpenseCost * 0.6 * (totalProductQuantity/1000) // totalProductQuantity kg -> ton cinsine çevirdim
-                     : 0) + Number(editingOrder.total_cost)
-                 ).toFixed(2)}{" "}
-                 {editingOrder.currency_code}
-               </span>
-               </div>
-                )}
-              
+                  <span className=" ">
+                    {t("totalRecipeCost")}:{" "}
+                    {formatDigits(parseFloat(editingOrder.total_cost))}{" "}
+                    {editingOrder.currency_code}
+                  </span>
+                  <span className=" ">
+                    {t("totalCost")}:
+                    {/* 0.6 sabit 1 ton ürün için harcanan süre, order.totalCost top reçete maliyeti */}
+                    {(
+                      (Number(editingOrder.total_cost) !== 0
+                        ? hourlyExpenseCost *
+                          0.6 *
+                          (totalProductQuantity / 1000) // totalProductQuantity kg -> ton cinsine çevirdim
+                        : 0) + Number(editingOrder.total_cost)
+                    ).toFixed(2)}{" "}
+                    {editingOrder.currency_code}
+                  </span>
+                </div>
+              )}
+
               <span className="flex font-semibold text-lg gap-2 justify-end mt-4">
                 <Modal
                   text={
@@ -581,12 +595,33 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
           <hr className="w-full border-border-light dark:border-border-dark" />
         </div>
         <div className="flex flex-wrap justify-end text-center gap-2 px-4">
-          <button
+          {/* <button
             onClick={onClick}
             className="py-2 px-4 rounded bg-purple hover:bg-purple-hover text-white font-semibold"
           >
             {t("saveAsExcel")}
-          </button>
+          </button> */}
+
+          <BlobProvider document={<InvoicePDF data={pdfData} />}>
+            {({ url, blob }) => (
+              <a
+                href={url}
+                target="_blank"
+                style={{
+                  padding: '0.5rem 1rem', // py-2 px-4
+                  borderRadius: '0.375rem', // rounded
+                  backgroundColor: '#5b69bc', // bg-purple
+                  color: '#fff', // text-white
+                  fontWeight: '600', // font-semibold
+                  cursor: 'pointer',
+                  
+                }}
+              >
+                {/* <HiOutlinePrinter size={14} /> */}
+                <span>PDF Kaydet </span>
+              </a>
+            )}
+          </BlobProvider>
           <button
             onClick={editingOrder ? onEdit : onSubmit}
             className="py-2 px-4 rounded bg-purple hover:bg-purple-hover text-white font-semibold"

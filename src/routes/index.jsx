@@ -33,6 +33,7 @@ import Expenses from "@/pages/Expenses";
 import RecipeMaterialStocks from "@/pages/RecipeMaterialStocks";
 import RawMaterialStocks from "@/pages/RawMaterialStocks";
 import MaterialStocks from "@/pages/MaterialStocks";
+import InvoiceView from "@/components/InvoicePDF/InvoiceView.jsx";
 
 
 const routes = createBrowserRouter([
@@ -122,7 +123,7 @@ const routes = createBrowserRouter([
       },
       {
         path: "apps/productions/daily",
-        element: <DailyProductions />,
+        element:  <DailyProductions />,
         errorElement: <NotFound />,
       },
       {
