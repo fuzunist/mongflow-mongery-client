@@ -84,6 +84,7 @@ const CreateProduct = ({ closeModal, selectedProduct, type }) => {
 
   const onEdit = async (values, { setSubmitting }) => {
     setError("");
+     console.log("values of edit product", values)
     const response = await editProductToDB(
       user.tokens.access_token,
       selectedProduct.product_id,
@@ -125,6 +126,7 @@ const CreateProduct = ({ closeModal, selectedProduct, type }) => {
             ? "addOtherProduct"
             : "addProduct"
         )}
+        productAttribute={true}
       />
       {selectedProduct && (
         <button

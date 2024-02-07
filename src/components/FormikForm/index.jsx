@@ -20,6 +20,7 @@ const FormikForm = ({
   recipe,
   material,
   product,
+  productAttribute
 }) => {
   const { t } = useTranslation();
   const [message, setMessage] = useState("");
