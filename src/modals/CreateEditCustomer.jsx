@@ -27,6 +27,14 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
       value: editing ? selectedCustomer?.companyname : "",
     },
     {
+      name: ["taxid"],
+      value: editing ? selectedCustomer?.taxid : "",
+    },
+    {
+      name: ["taxoffice"],
+      value: editing ? selectedCustomer?.taxoffice : "",
+    },
+    {
       name: ["email"],
       value: editing ? selectedCustomer?.email : "",
     },
@@ -58,6 +66,8 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
 
     const data = {
       companyname: values.companyname,
+      taxid: values.taxid,
+      taxoffice: values.taxoffice,
       email: values.email,
       phone: values.phone,
       address: values.address,
@@ -77,6 +87,8 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
     console.log("values in edit", values);
     const data = {
       companyname: values.companyname,
+      taxid: values.taxid,
+      taxoffice: values.taxoffice,
       email: values.email,
       phone: values.phone,
       address: values.address,
@@ -92,7 +104,7 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
     console.log("response", response);
     if (response?.error) return setError(response.error);
     editCustomer(response);
-    setSubmitting(false);
+
     closeModal();
   };
 

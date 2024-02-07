@@ -67,13 +67,7 @@ const CreateEditCustomerForm = ({ onChange, fields, onFinish, editing, error, se
         }}
 
         fields={fields}     
-        //  initialValues={fields}
-        // onFieldsChange={(_, allFields) => {
-        //   onChange(allFields);
-        // }}
-        // onValuesChange={(_, allFields) => {
-        //   onChange(allFields);
-        // }}
+   
       >
         <Form.Item
           name="companyname"
@@ -85,22 +79,51 @@ const CreateEditCustomerForm = ({ onChange, fields, onFinish, editing, error, se
             },
           ]}
         >
-      <Input />
+      <Input placeholder="Şirket İsmi" />
+        </Form.Item>
+        <Form.Item
+          name="taxid"
+          label="Vergi Numarası"
+         
+          
+        >
+      <Input placeholder="Vergi Numarası" />
+        </Form.Item>
+        <Form.Item
+          name="taxoffice"
+          label="Vergi Dairesi"
+          
+        >
+      <Input placeholder="Vergi Dairesi" />
         </Form.Item>
 
-        <Form.Item name="phone" label={t("phone")} >
-          <Input />
+        <Form.Item
+         name="phone"
+          label={t("phone")}
+          
+           >
+          <Input placeholder={t("phone")} />
         </Form.Item>
 
-        <Form.Item name="email" label={t("email")}>
-          <Input />
+        <Form.Item 
+        name="email" 
+        label={t("email")}
+        
+        >
+          <Input placeholder={t("email")} />
         </Form.Item>
 
-        <Form.Item name="address" label={t("address")}>
-          <Input />
+        <Form.Item name="address" 
+        label={t("address")}
+        
+        >
+          <Input placeholder={t("address")} />
         </Form.Item>
 
-        <Form.Item name="website" label={t("website")}>
+        <Form.Item name="website" 
+        label={t("website")}
+        placeholder={t("website")}
+        >
           <Input />
         </Form.Item>
 
