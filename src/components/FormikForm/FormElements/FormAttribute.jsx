@@ -170,6 +170,7 @@ const FormAttribute = ({
                   }
                   className="py-2 px-3 transition-all outline-none bg-input-bg-light dark:bg-input-bg-dark border border-input-border-light dark:border-input-border-dark rounded w-full"
                   disabled={disabled}
+                  placeholder={"Ürün Değeri Girin"}
                 />
                 {/* Extra Price Input */}
                 {/* <input
