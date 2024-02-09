@@ -25,7 +25,8 @@ const Sets = () => {
     productType,
     closeModal,
     setQuantity,
-    setProductType
+    setProductType,
+  
   ) => {
     addSelectSet("create", attributes, quantity, productType);
     setProduct(null);

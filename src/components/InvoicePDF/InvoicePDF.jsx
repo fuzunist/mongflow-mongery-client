@@ -3,13 +3,9 @@ import React, { Fragment } from "react";
 import { Image, Text, View, Page, Document, Font } from "@react-pdf/renderer";
 import { styles } from "./styles";
 import { createTw } from "react-pdf-tailwind";
-import { getAllData, ibans, reciept_data, terms } from "./data";
-import { Flex } from "antd";
-// import RobotoRegular from "@/fonts/Roboto-Regular.ttf";
-// import RobotoBold from "@/fonts/Roboto-Bold.ttf";
+import { getAllData, ibans, terms } from "./data";
+import { formatDigits } from "@/utils/helpers";
 
-//  console.log("xox ", window.location.origin + "/fonts/Roboto-Regular.ttf")
-//   console.log("xox2 ", window.location.origin + "/logo-mongery.png")
 Font.register({
   family: "Roboto",
   fonts: [
@@ -30,9 +26,6 @@ Font.register({
 });
 const tw = createTw({
   theme: {
-    //     font:{
-
-    //     }
 
     extend: {
       colors: {
@@ -41,8 +34,13 @@ const tw = createTw({
     },
   },
 });
-const InvoicePDF = ({data}) => {
- const dynoData= getAllData(data);
+const InvoicePDF = ({ data }) => {
+  let coilInfo = null;
+  let coilInfo2 = null;
+
+  const dynoData = getAllData(data);
+
+  console.log("333 dynodata", JSON.stringify(dynoData));
   const InvoiceTitle = () => (
     <View style={tw("flex flex-row mt-6")}>
       <View
@@ -131,7 +129,8 @@ const InvoicePDF = ({data}) => {
             ]}
           >
             <Text style={tw("flex flex-wrap px-1 py-1")}>
-              {receipt.desc}{receipt.value}
+              {receipt.desc}
+              {receipt.value}
             </Text>
           </View>
         ))}
@@ -142,7 +141,8 @@ const InvoicePDF = ({data}) => {
             key={order.id}
             style={[
               tw(
-                "flex grow border-r border-b  border-custom overflow-hidden text-xs  "
+                "flex grow border-r border-b  border-custom overflow-hidden text-xs " +
+                  order.css
               ),
             ]}
           >
@@ -158,11 +158,11 @@ const InvoicePDF = ({data}) => {
   const TableFooter = () => (
     <View
       style={tw(
-        "flex w-full border-r border-r border-b border-l border-custom overflow-hidden"
+        "flex w-full flex-wrap border-r border-r border-b border-l border-custom overflow-hidden"
       )}
     >
-      <View style={tw("flex flex-wrap p-1 text-xs")}>
-        <Text>
+      <View style={tw("flex flex-wrap w-full p-1 text-xs")}>
+        <Text style={tw("flex text-wrap mb-1")}>
           İş bu sözleşmede yer alan teknik özellikleri ve genel şartları
           inceleyip, tüm sayfaların kaşeli imzalı onayınızı göndermeniz rica
           olunur. İmzasız sayfa olduğu takdirde, bu satış sözleşmesinin ilk
@@ -179,23 +179,49 @@ const InvoicePDF = ({data}) => {
         "flex flex-row w-full items-center text-custom font-bold text-sm border-b border-custom pb-1 mt-2 gap-x-1"
       )}
     >
-      <Text style={tw("w-[55%]")}>Mal Tanımı</Text>
-      <Text style={tw("w-[10%]")}>Teslimat</Text>
-      <Text style={tw("w-[6%]")}>Miktar</Text>
-      <Text style={tw("w-[12%]")}>Birim Fiyat</Text>
-      <Text style={tw("w-[12%]")}>Toplam Fiyat</Text>
+      <Text style={tw("w-[60%] ")}>Mal Tanımı</Text>
+      <Text
+        style={tw(
+          "flex justify-center items-center text-center w-[10%] "
+        )}
+      >
+        Teslimat
+      </Text>
+      <Text
+        style={tw(
+          "flex justify-center items-center text-center w-[8%]"
+        )}
+      >
+        Miktar
+      </Text>
+      <Text
+        style={tw(
+          "flex justify-center items-center text-center w-[10%]"
+        )}
+      >
+        Birim Fiyat
+      </Text>
+      <Text
+        style={tw(
+          "flex justify-center items-center text-center w-[12%]"
+        )}
+      >
+        Toplam Fiyat
+      </Text>
     </View>
   );
 
   const OrderList = () =>
-    reciept_data.orders.map((order, index) => (
+    dynoData.products.map((product, index) => (
       <View key={index} style={tw("flex flex-col w-full")} wrap={false}>
-        <Text style={tw("text-sm font-bold")}>{order.specs.name} </Text>
-        <Text style={tw("text-sm font-bold")}>Müşt. Ref/Ürün No</Text>
-        <View style={tw("flex flex-row w-full")}>
-          <View style={tw("flex flex-row w-[55%] justify-between  gap-x-4")}>
-            <View style={tw("flex flex-col w-[60%]")}>
-              <Text style={tw("flex text-sm font-bold items-center mt-1")}>
+        <Text style={tw("text-sm font-bold")}>{product.name} </Text>
+        <Text style={tw("text-sm font-bold text-xs my-1")}>Müşt. Ref/Ürün No</Text>
+        <View style={tw("flex flex-row w-full ")}>
+          <View
+            style={tw("flex flex-row w-[60%] justify-between")}
+          >
+            <View style={tw("flex flex-col w-[45%]")}>
+              <Text style={tw("flex text-xs font-bold items-center mt-1")}>
                 Technical Spec/Quality/Material
               </Text>
               <View
@@ -204,91 +230,173 @@ const InvoicePDF = ({data}) => {
                 )}
               >
                 <View style={"flex flex-col gap-y-2"}>
-                  <Text style={tw("py-1")}>Tel Çapı </Text>
-                  <Text style={tw("py-1")}>Çap Toleransları </Text>
-                  <Text style={tw("py-1 text-[8px]")}>
-                    Mukavemet {"(Min-Max)"}
-                  </Text>
-                  <Text style={tw("py-1")}>Zn Kaplama</Text>
-                  <Text style={tw("py-1")}>P. Ağırlık</Text>
+                  {Object.entries(product.techSpecs).map(([key, value]) => (
+                    <Text style={tw("py-1 text-[8px]")}>
+                      {key}
+                      {" : "}
+                    </Text>
+                  ))}
                 </View>
                 <View style={"flex flex-col gap-y-2"}>
-                  <Text style={tw("py-1")}>: {order.specs.diameter}</Text>
-                  <Text style={tw("py-1")}>
-                    : {order.specs.diameterTolerance}
-                  </Text>
-                  <Text style={tw("py-1")}>: {order.specs.resistance}</Text>
-                  <Text style={tw("py-1")}>: {order.specs.znCoating}</Text>
-                  <Text style={tw("py-1")}>: {order.specs.weight}</Text>
+                  {Object.entries(product.techSpecs).map(([key, value]) => {
+                    return (
+                      <Text style={tw("py-1 text-[8px]")}>{value?.value}</Text>
+                    );
+                  })}
                 </View>
               </View>
             </View>
             <View
               style={tw(
-                "flex flex-col w-[25%] items-start justify-left text-xs"
+                "flex flex-col w-[55%] items-center justify-center text-xs"
               )}
             >
               <Text
                 style={tw(
-                  "flex text-sm font-bold items-center justify-left mt-1 "
+                  "flex text-xs font-bold items-start justify-start mt-1 "
                 )}
               >
                 Packaging Style
               </Text>
-              <View style={"flex flex-col gap-y-2 text-xs mt-2"}>
-                <Text style={tw("py-1")}>{order.packings.coil}</Text>
-                <Text style={tw("py-1 text-[6px]")}>
-                  {order.packings.inoutDiameter}
-                </Text>
-                <Text style={tw("py-1")}>{order.packings.material}</Text>
-                <Text style={tw("py-1")}>{order.packings.hoop}</Text>
-                <Text style={tw("py-1")}>{order.packings.wrap}</Text>
+
+              {/* <View style={tw("flex flex-col justify-center")}> */}
+                {/* <View
+                  style={tw(
+                    "w-full flex text-xs mt-2"
+                  )}
+                > */}
+                  <View style={"w-full flex justify-center text-xs mt-2  gap-y-1 "}>
+                    {Object.entries(product.packagingSpecs).map(
+                      ([key, value]) => {
+                        coilInfo = key === "Açılım" ? value?.value : null;
+                        return (
+                          <View style={tw("flex flex-row")}>
+                            <Text style={tw("py-1 text-[8px]")}>
+                              {key}
+                              {" : "}
+                            </Text>
+                            <Text style={tw("py-1 text-[8px]")}>
+                              {value?.value}
+                            </Text>
+                            {/* {coilInfo && <Image
+                              style={tw("w-12 h-12")}
+                              src={
+                                window.location.origin +
+                                (coilInfo === "Saat Yönünün Tersi"
+                                  ? "/reverseclock.png"
+                                  : "/clock.png")
+                              }
+                            />} */}
+                           
+                          </View>
+                        );
+                      }
+                    )}
+                     {coilInfo && (
+                              <View style={tw("flex flex-row ")}>
+                              <Text style={tw("py-1 text-[8px]")}>
+                                Bobin{" : "}
+                              </Text>
+                              <Image
+                              style={tw("w-12 h-12")}
+                              src={
+                                window.location.origin +
+                                (coilInfo === "Saat Yönünün Tersi"
+                                  ? "/reverseclock.png"
+                                  : "/clock.png")
+                              }
+                            />
+                            </View>
+                            )}
+                  {/* </View> */}
+                  {/* <View style={"flex flex-col gap-y-2"}>
+                    {Object.entries(product.packagingSpecs).map(
+                      ([key, value]) => {
+                        console.log("packaging 333", key, value);
+                        coilInfo2 = key === "Açılım" ? value?.value : null;
+
+                        return (
+                          <>
+                            <Text style={tw("py-1 text-[8px]")}>
+                              {value?.value}
+                            </Text>
+
+                            {coilInfo2 && (
+                              <Image
+                                style={tw("w-12 h-12")}
+                                src={
+                                  window.location.origin +
+                                  (coilInfo === "Saat Yönünün Tersi"
+                                    ? "/reverseclock.png"
+                                    : "/clock.png")
+                                }
+                              />
+                            )}
+                          </>
+                        );
+                      }
+                    )}
+                  </View> */}
+                {/* </View> */}
               </View>
-            </View>
-            <View
-              style={tw(
-                "flex flex-col w-[15%] items-start justify-left text-xs"
-              )}
-            >
-              <Text>Sarım: {order.coils.coiling}</Text>
-              <Image
-                style={tw("w-12 h-12")}
-                src={window.location.origin + order.coils.img}
-              />
-              <Text>Açılım: {order.coils.expansion}</Text>
             </View>
           </View>
           <View
             style={tw(
-              "flex flex-wrap w-[10%] items-center justify-center text-xs "
+              "flex flex-wrap w-[10%] items-center justify-center text-xs"
             )}
           >
-            <Text>{order.delivery}</Text>
+            <Text
+              style={tw(
+                "flex flex-row w-full items-center justify-center text-center"
+              )}
+            >
+              {product.delivery_date}
+            </Text>
           </View>
           <View
             style={tw(
               "flex flex-wrap w-[6%] items-center justify-center text-xs"
             )}
           >
-            <Text>{order.quantity}</Text>
+            <Text
+              style={tw(
+                "flex flex-row w-full items-center justify-center text-center"
+              )}
+            >
+              {product.quantity} t
+            </Text>
           </View>
           <View
             style={tw(
               "flex flex-wrap w-[12%] items-center justify-center text-xs"
             )}
           >
-            <Text>{order.unitPrice}</Text>
+            <Text
+              style={tw(
+                "flex flex-row w-full items-center justify-center text-center"
+              )}
+            >
+              {formatDigits(product.unitPrice)}
+              {dynoData.otherDetails.currency_code}
+            </Text>
           </View>
           <View
             style={tw(
               "flex flex-wrap w-[12%] items-center justify-center text-xs"
             )}
           >
-            <Text>{order.totalPrice}</Text>
+            <Text
+              style={tw(
+                "flex flex-row w-full items-center justify-center text-center"
+              )}
+            >
+              {formatDigits(product.totalPrice)} {dynoData.otherDetails.currency_code}
+            </Text>
           </View>
         </View>
         <View
-          style={tw("w-full border-b border-dashed border-custom mt-2 mb-4")}
+          style={tw("w-full border-b border-dashed border-custom mt-2  mb-4")}
         ></View>
       </View>
     ));
@@ -306,7 +414,7 @@ const InvoicePDF = ({data}) => {
   );
 
   const Footer = () => (
-    <View style={tw("w-full my-4 mb-2")} fixed>
+    <View style={tw("w-full mt-auto mb-2")} fixed>
       <View style={tw("flex flex-row w-full")}>
         <Text
           style={tw(
@@ -353,11 +461,7 @@ const InvoicePDF = ({data}) => {
             </Text>
           </Text>
           <View style={tw("flex flex-row w-full overflow-hidden")}>
-            <Text
-              style={tw(
-                "flex text-xs flex-wrap items-center"
-              )}
-            >
+            <Text style={tw("flex text-xs flex-wrap items-center")}>
               <Text style={tw("text-sm font-bold")}>İSTANBUL SATIŞ OFİSİ</Text>:
               Huzur Mah. Azerbaycan Cd. No:4 Blok:B Skyland Tower Kat:26 No: 375
               Sarıyer/İST
@@ -377,79 +481,90 @@ const InvoicePDF = ({data}) => {
   );
 
   const Seperator = () => (
-    <View style={tw("flex w-full my-4  border-b border-custom")}></View>
+    <View style={tw("flex w-full my-4 border-b border-custom")}></View>
   );
   const Payment = () => (
-    <View style={tw("flex flex-row w-full border border-custom")}>
-      <View style={tw("flex flex-col w-[25%] gap-y-1 text-sm text-custom")}>
-        <Text style={tw("flex border-b border-r border-custom px-1")}>
+    <View wrap={false} style={tw("flex flex-row w-full border border-custom ")}>
+      <View style={tw("flex flex-col w-[25%] justify-between text-sm text-custom")}>
+        <Text style={tw("flex border-b border-r border-custom px-1 h-5")}>
           Toplam Tutar
         </Text>
-        <Text style={tw("flex border-b border-r border-custom px-1")}>
+        <Text style={tw("flex border-b border-r border-custom px-1 h-5")}>
           Toplam Miktar
         </Text>
-        <Text style={tw("flex border-b border-r border-custom px-1")}>
+        <Text style={tw("flex border-b border-r border-custom px-1 h-5")}>
           Teslimat Şartları
         </Text>
-        <Text style={tw("flex border-b border-r border-custom px-1")}>
+        <Text style={tw("flex border-b border-r border-custom px-1 h-5")}>
           Teslimat Noktası
         </Text>
-        <Text style={tw("flex border-r border-custom px-1")}>
+        <Text style={tw("flex border-r border-custom px-1 h-5")}>
           Ödeme Şekli / Taahhüdü
         </Text>
       </View>
-      <View style={tw("flex flex-col w-[75%] gap-y-1 text-sm")}>
+      <View style={tw("flex flex-col w-[75%] justify-between text-sm")}>
         <View
           style={tw(
-            "flex flex-row w-full justify-between items-center border-b border-custom"
+            "flex flex-row w-full justify-between items-center border-b border-custom  h-5"
           )}
         >
           <Text style={tw("flex border-r border-custom px-1")}>
-            65.110,00 USD
+            {formatDigits(dynoData.paymentInfo.totalPrice)} {" "}{dynoData.otherDetails.currency_code}
           </Text>
-          <Text style={tw("flex text-sm font-bold text-custom px-1")}>
-            %18 KDV Dahil Toplam
+          <Text style={tw("flex text-xs font-bold text-custom px-1 ml-auto")}>
+            %{dynoData.paymentInfo.taxRate} KDV Dahil Toplam:
           </Text>
-          <Text style={tw("flex border-r border-l border-custom px-1")}>
-            76.829,80 USD
+          <Text style={tw("flex border-l border-custom px-1")}>
+            {formatDigits(dynoData.paymentInfo.totalWithTax)}{" "}{dynoData.otherDetails.currency_code}
           </Text>
 
-          <Text style={tw("flex text-xs px-1")}>
+          {/* <Text style={tw("flex text-xs px-1")}>
             Bakiye Tarihi: 11/03/2022
+          </Text> */}
+        </View>
+        <View
+          style={tw(
+            "flex flex-row w-full justify-between items-center border-b border-custom h-5"
+          )}
+        >
+          <Text style={tw("flex px-1")}>
+            {" "}
+            {dynoData.paymentInfo.totalQuantity}{" ton"}
+          </Text>
+          {/* <Text style={tw("flex text-xs")}>Bakiye USD = 0.00</Text> */}
+        </View>
+        <View style={tw("w-full flex h-5")}>
+          <Text style={tw("flex h-5 border-b border-custom px-1")}>
+            {dynoData.paymentInfo.delivery_terms}
           </Text>
         </View>
         <View
           style={tw(
-            "flex flex-row w-full justify-between items-center border-b border-custom"
+            "flex flex-row w-full justify-between items-center border-b border-custom h-5"
           )}
         >
-          <Text style={tw("flex px-1")}>52,00 Ton</Text>
-          <Text style={tw("flex text-xs")}>Bakiye USD = 0.00</Text>
-        </View>
-        <View style={tw("w-full flex ")}>
-          <Text style={tw("flex border-b border-custom px-1")}>
-            EXW. Ex Works Fabrika Teslim INCOTERM 2010
+          <Text style={tw("flex px-1")}>
+            {dynoData.paymentInfo.delivery_point}
           </Text>
+          {/* <Text style={tw("flex text-xs px-1")}>Bakiye TL= 0.00 </Text> */}
         </View>
-        <View
-          style={tw(
-            "flex flex-row w-full justify-between items-center border-b border-custom "
-          )}
-        >
-          <Text style={tw("flex px-1")}>Dilovası</Text>
-          <Text style={tw("flex text-xs px-1")}>Bakiye TL= 0.00 </Text>
-        </View>
-        <View style={tw("flex flex-row w-full justify-between items-center")}>
-          <Text style={tw("flex px-1")}>100% Üretim Öncesi</Text>
-          <View style={tw("flex flex-row justify-between items-center")}>
+        <View style={tw("flex flex-row w-full justify-between items-center h-5")}>
+          <Text style={tw("flex px-1")}>
+            {" "}
+            {dynoData.paymentInfo.payment_type}
+          </Text>
+          <View style={tw("flex flex-row justify-between items-center h-5")}>
             <Text
               style={tw(
                 "flex text-sm font-bold text-custom border-r border-l border-custom px-4"
               )}
             >
-              Vadesi
+              Vade
             </Text>
-            <Text style={tw("flex px-4")}>3 ay</Text>
+            <Text style={tw("flex px-4")}>
+              {" "}
+              {dynoData.paymentInfo.maturity}
+            </Text>
           </View>
         </View>
       </View>
@@ -472,21 +587,27 @@ const InvoicePDF = ({data}) => {
   );
 
   const OtherTerms = () => (
-    <View style={tw("flex flex-col flex-wrap w-full")}>
+    <View wrap={false} style={tw("flex w-full h-[500px]")}>
       <Text style={tw("text-sm font-bold italic mb-1 text-custom")}>
         DİĞER ŞARTLAR
       </Text>
-      <View
-        style={tw(
-          "flex flex-col text-wrap space-y-2 border-t border-l border-r border-custom"
-        )}
-      >
-        {terms.otherTerms.map((term, index) => (
-       
-            <Text style={tw("flex flex-wrap grow text-wrap text-[7px] border-b border-custom")}>
+      <View style={tw("flex flex-col flex-wrap w-full")}>
+        <View
+          style={tw(
+            "flex flex-col text-wrap space-y-2 border-t border-l border-r border-custom"
+          )}
+        >
+          {terms.otherTerms.map((term, index) => (
+            <Text
+              key={index}
+              style={tw(
+                "flex flex-wrap grow text-wrap text-[7px] border-b border-custom"
+              )}
+            >
               {term}
             </Text>
-        ))}
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -498,8 +619,9 @@ const InvoicePDF = ({data}) => {
       </Text>
 
       <View style={tw("flex w-full border border-custom p-2")}>
-        {ibans.map((item) => (
+        {ibans.map((item, index) => (
           <View
+            key={index}
             style={tw(
               "flex w-full flex-row py-1 text-xs justify-between items-start"
             )}
@@ -514,18 +636,24 @@ const InvoicePDF = ({data}) => {
     </View>
   );
 
+
   const FixedOrderDetail = () => (
     <View
       fixed
       render={({ pageNumber, totalPages }) =>
         pageNumber > 1 && (
           <View
-            
-            style={tw("flex flex-row w-full justify-between items-center text-xs pb-1")}
+            style={tw(
+              "flex flex-row w-full justify-between items-center text-xs mb-4"
+            )}
           >
             <Text style={tw("text-xs")}>Siparis No : {data.orderNumber}</Text>
-            <Text style={tw("text-xs")}>Siparis Tarihi : 10/02/2023</Text>
-            <Text style={tw("text-xs")}>{`Sayfa: ${pageNumber} / ${totalPages}`}</Text>
+            <Text style={tw("text-xs")}>
+              Siparis Tarihi : {dynoData.otherDetails.order_date}
+            </Text>
+            <Text
+              style={tw("text-xs")}
+            >{`Sayfa: ${pageNumber} / ${totalPages}`}</Text>
           </View>
         )
       }

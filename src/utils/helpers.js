@@ -1,10 +1,11 @@
 import store from "@/store";
 
 export const groupAttributesByName = (attributes) => {
+   console.log("attr in group", attributes)
   const groupedAttrs = {};
   for (let attr of attributes) {
     if (!groupedAttrs[attr.attribute_name]) {
-      groupedAttrs[attr.attribute_name] = [...attr.values];
+      groupedAttrs[attr.attribute_name] = {values:[...attr.values], packaging: attr.packaging};
     }
   }
   return groupedAttrs;

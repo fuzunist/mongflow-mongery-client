@@ -17,7 +17,7 @@ const SelectProductFromList = ({
   const productId = selectedProduct?.product_id;
   const customerId = selectedCustomer?.customerid;
   const [quantity, setQuantity] = useState(1);
-  const [productType, setProductType] = useState("kg");
+  const [productType, setProductType] = useState("ton");
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -33,19 +33,20 @@ const SelectProductFromList = ({
       return groupAttributesByName(selectedProduct.attributes);
     return {};
   }, [selectedProduct]);
-
+ console.log("groupedAttributes",groupedAttributes)
   const initialValues = useMemo(() => {
     if (!selectedProduct) return {};
 
     return Object.entries(groupedAttributes).reduce(
       (acc, [attrName, attrValues]) => {
-        if (attrValues.length > 1) {
+        if (attrValues.values.length > 1) {
           // Multiple values, create a dropdown
           acc[attrName] = {
             tag: "select",
             label: attrName,
-            value: attrValues[0].value, // default to the first value
-            options: attrValues.map((val) => ({
+            packaging: attrValues?.packaging,
+            value: attrValues?.values[0].value, // default to the first value
+            options: attrValues?.values.map((val) => ({
               key: val.value,
               // value: `${val.value} (${val.extra_price} ${selectedProduct.currency_code})`
               value: val.value,
@@ -58,6 +59,7 @@ const SelectProductFromList = ({
             tag: "input",
             readOnly: true,
             label: attrName,
+            packaging: attrValues.packaging,
             // value: `${singleAttr.value} (${singleAttr.extra_price} ${selectedProduct.currency_code})`
             value: singleAttr.value,
           };
@@ -71,14 +73,13 @@ const SelectProductFromList = ({
   useEffect(() => {
     setQuantity(1);
     setIsOpen(false);
-    setProductType("kg");
+    setProductType("ton");
     return () => {
       setQuantity(1);
       setIsOpen(false);
-      setProductType("kg");
+      setProductType("ton");
     };
   }, []);
-
 
   if (!productId || !customerId || !isOpen) return null;
 
@@ -89,6 +90,9 @@ const SelectProductFromList = ({
           title={t("product_detail_selection")}
           initialValues={initialValues}
           onSubmit={(values) =>
+           {
+            
+
             onContinueOrder(
               values,
               quantity,
@@ -96,7 +100,7 @@ const SelectProductFromList = ({
               close,
               setQuantity,
               setProductType
-            )
+            )}
           }
         >
           {/* Quantity ("Adet") section */}

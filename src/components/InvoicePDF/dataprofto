@@ -1,173 +1,9 @@
-import dayjs from "dayjs";
-const todayDate = dayjs().format("YYYY-MM-DD");
+const dynoData={"orderInfo":[{"id":11,"desc":"Sipariş No","value":"20240208-MON-064-C"},{"id":12,"desc":"Sipariş Tarihi","value":"2024-02-08"},{"id":13,"desc":"Geçerlilik Opsiyonu","value":"23/02/2024 18:51","css":" font-bold text-red-500"},{"id":14,"desc":"Sorumlumuz","value":"mongery"},{"id":15,"desc":"Notlar","value":"NOT"}],"customerInfo":[{"id":1,"desc":"","value":"ÇİTGRASS TEL VE ÇİT SİSTEMLERİ ÇELİK İNŞAAT ANONİM ŞİRKETİ"},{"id":2,"desc":"","value":"Güllü Bağlar, Yaşar Doğu Cd No:5/2, 34906 Pendik/İstanbul, Türkiye"},{"id":4,"desc":"Tel :","value":"0216 393 7303"},{"id":5,"desc":"Vergi Numarası / Vergi Dairesi :","value":"undefined / undefined"},{"id":6,"desc":"Dikkatine : ","value":""}],"paymentInfo":{"totalPrice":8000,"totalWithTax":"9440.0000","taxRate":18,"totalQuantity":3,"delivery_point":"DILOVASI","delivery_terms":"INCOTERM","payment_type":"DOWN PAYMENT","maturity":"0"},"products":[{"name":"GALVANİZLİ TEL","quantity":1,"unitPrice":2000,"totalPrice":2000,"delivery_date":"10/02/2024","techSpecs":{"Tel Çapı":{"value":"0,8 mm","packaging":false},"P.Ağırlık":{"value":"200"},"Çap Toleransları":{"value":"-0,06","packaging":false},"Mukavemet (Min-Max)":{"value":"350 - 500 N/mm²","packaging":false},"Zn Kaplama":{"value":"40 gr/m²","packaging":false}},"packagingSpecs":{"Sarım Türü":{"value":"Rozet Sarım","packaging":true},"İç Çap":{"value":"35.00 cm","packaging":true},"Dış Çap":{"value":"60.00 cm","packaging":true},"Paket":{"value":"Karton","packaging":true},"Sarım":{"value":"Saat Yönünün Tersi","packaging":true},"Açılım":{"value":"Saat Yönü","packaging":true}}},{"name":"GALVANİZLİ TEL","quantity":2,"unitPrice":3000,"totalPrice":6000,"techSpecs":{"Tel Çapı":{"value":"0,8 mm","packaging":false},"P.Ağırlık":{"value":"400"},"Çap Toleransları":{"value":"-0,06","packaging":false},"Mukavemet (Min-Max)":{"value":"350 - 500 N/mm²","packaging":false},"Zn Kaplama":{"value":"40 gr/m²","packaging":false}},"packagingSpecs":{"Sarım Türü":{"value":"Rozet Sarım","packaging":true},"İç Çap":{"value":"35.00 cm","packaging":true},"Dış Çap":{"value":"60.00 cm","packaging":true},"Paket":{"value":"Karton","packaging":true},"Sarım":{"value":"Saat Yönünün Tersi","packaging":true},"Açılım":{"value":"Saat Yönünün Tersi","packaging":true}}}],"otherDetails":{"order_date":"2024-02-08","currency_code":"USD”}}
 
-export const reciept_data = {
-  id: "642be0b4bbe5d71a5341dfb1",
-  invoice_no: "20200669",
-  address: "739 Porter Avenue, Cade, Missouri, 1134",
-  date: "24-09-2019",
-  customerInfo: [
-    {
-      id: 1,
-      desc: "MONGERY YAZILIM İNŞ.MÜH. METAL SAN. VE TİC.LTD.ŞTİ.",
-    },
-    {
-      id: 2,
-      desc: "BELEDİYE EVLERİ MAH. 84174 SOK. NO:3-5 SAFİR PARK SİTESİ E BLOK 1/1 NO:3-5 SAFİR PARK SİTESİ E BLOK 1/1 NO:3-5",
-    },
-    {
-      id: 3,
-      desc: "ÇUKUROVA / ADANA / TÜRKİYE",
-    },
-    {
-      id: 4,
-      desc: "Tel : +90 539 575 15 50",
-    },
-    {
-      id: 5,
-      desc: "Vergi Numarası / Vergi Dairesi : 6221898454 / 5 OCAK",
-    },
-    {
-      id: 6,
-      desc: "Dikkatine: ",
-    },
-  ],
-  orderInfo: [
-    {
-      id: 11,
-      desc: "Sipariş No",
-    },
-    {
-      id: 12,
-      desc: "Sipariş Tarihi",
-    },
-    {
-      id: 13,
-      desc: "Geçerlilik Opsiyonu",
-    },
-    {
-      id: 14,
-      desc: "Sorumlumuz",
-    },
-    {
-      id: 15,
-      desc: "Notlar",
-    },
-  ],
-  orders: [
-    {
-      id: 1,
-      specs: {
-        name: "Galvanizli Tel",
-        diameter: "3.80mm",
-        diameterTolerance: "-0,06 /+0,00",
-        resistance: "600-750 N/mm2",
-        znCoating: "50 gr/m2",
-        weight: "900.00 kg (-/+ %10) ",
-      },
-      packings: {
-        coil: "Rozet Sarım",
-        inoutDiameter: "45.00 / 75.00 cm",
-        material: "Karton",
-        hoop: "Çelik Çember",
-        wrap: "Şirinkli",
-      },
-      coils: {
-        coiling: "Saat Yönünün Tersi",
-        expansion: "Saat Yönü",
-        img: "/clock.png",
-      },
-      delivery: "21. hft 2022",
-      quantity: "25 t",
-      unitPrice: "1.190,00 USD",
-      totalPrice: "29.7750,00 USD",
-    },
-    {
-      id: 2,
-      specs: {
-        name: "Galvanizli Tel",
-        diameter: "3.80mm",
-        diameterTolerance: "-0,06 /+0,00",
-        resistance: "600-750 N/mm2",
-        znCoating: "50 gr/m2",
-        weight: "900.00 kg (-/+ %10) ",
-      },
-      packings: {
-        coil: "Rozet Sarım",
-        inoutDiameter: "45.00 / 75.00 cm",
-        material: "Karton",
-        hoop: "Çelik Çember",
-        wrap: "Şirinkli",
-      },
-      coils: {
-        coiling: "Saat Yönünün Tersi",
-        expansion: "Saat Yönü",
-        img: "/clock.png",
-      },
-      delivery: "21. hft 2022",
-      quantity: "25 t",
-      unitPrice: "1.190,00 USD",
-      totalPrice: "29.7750,00 USD",
-    },
-    {
-      id: 3,
-      specs: {
-        name: "Galvanizli Tel",
-        diameter: "3.80mm",
-        diameterTolerance: "-0,06 /+0,00",
-        resistance: "600-750 N/mm2",
-        znCoating: "50 gr/m2",
-        weight: "900.00 kg (-/+ %10) ",
-      },
-      packings: {
-        coil: "Rozet Sarım",
-        inoutDiameter: "45.00 / 75.00 cm",
-        material: "Karton",
-        hoop: "Çelik Çember",
-        wrap: "Şirinkli",
-      },
-      coils: {
-        coiling: "Saat Yönünün Tersi",
-        expansion: "Saat Yönü",
-        img: "/clock.png",
-      },
-      delivery: "21. hft 2022",
-      quantity: "25 t",
-      unitPrice: "1.190,00 USD",
-      totalPrice: "29.7750,00 USD",
-    },
-    {
-      id: 1,
-      specs: {
-        name: "Galvanizli Tel",
-        diameter: "3.80mm",
-        diameterTolerance: "-0,06 /+0,00",
-        resistance: "600-750 N/mm2",
-        znCoating: "50 gr/m2",
-        weight: "900.00 kg (-/+ %10) ",
-      },
-      packings: {
-        coil: "Rozet Sarım",
-        inoutDiameter: "45.00 / 75.00 cm",
-        material: "Karton",
-        hoop: "Çelik Çember",
-        wrap: "Şirinkli",
-      },
-      coils: {
-        coiling: "Saat Yönünün Tersi",
-        expansion: "Saat Yönü",
-        img: "/clock.png",
-      },
-      delivery: "21. hft 2022",
-      quantity: "25 t",
-      unitPrice: "1.190,00 USD",
-      totalPrice: "29.7750,00 USD",
-    },
-  ],
-};
+
 
 export const terms = {
-  sterm:
+  sterm
     "Bakiye bilgi amaçlıdır. Uyumsuzluk durumunda Mongery Demir Çelik Resmi Defter Kayıtları esastır.",
   mterm:
     "İşbu satış sözleşmesinde belirtilen para cinsinden farklı bir para cinsi ile yapılacak transferlerde Alıcı, Satıcı'nın belirlediği kur/parite oranını kullanır. Satıcı, ödeme vadesi gecikmiş TL bazlı satışlar üzerinden aylık 1,5%, döviz bazlı satışlar üzerinden ise aylık 0,6% vade farkı alma hakkına sahiptir. Fatura tutarı Serbest Piyasa Satış Kurundan veya Satıcının belirlediği bankanın Efektif Döviz Satış Kurundan hesaplanıp fatura tutarı üzerinde belirtilecektir.",
@@ -190,150 +26,44 @@ export const terms = {
 export const ibans= [
   {
     bank: "ZİRAAT BANKASI",
-    branch: "KURTTEPE ŞUBESİ",
+    branch: “ XYZ ŞUBESİ",
     currency: "TL",
-    iban: "TR780001001922976222345001"
+    iban: "TR7800012345678909876543234"
   },
   {
     bank: "ZİRAAT BANKASI",
-    branch: "KURTTEPE ŞUBESİ",
+    branch: "TYU ŞUBESİ",
     currency: "EURO",
-    iban: "TR240001001922976222345003"
+    iban: "TR2234567876543567654345003"
   },
   {
     bank: "İŞ BANKASI",
-    branch: "CEMALPAŞA ŞUBESİ",
+    branch: "IKIYOL ŞUBESİ",
     currency: "TL",
-    iban: "TR070006400000160060607372"
+    iban: "TR0567898765456789876545678"
   },
   {
     bank: "İŞ BANKASI",
-    branch: "CEMALPAŞA ŞUBESİ",
+ branch: “TUMSAN ŞUBESİ",
     currency: "USD",
-    iban: "TR020006400000260060253310"
+    iban: "TR02567878909878909890989080"
   },
   {
     bank: "ALBARAKA",
-    branch: "ADANA ORGANİZE SANAYİ ŞUBESİ",
+ branch: “BURSA SANAYİ ŞUBESİ",
     currency: "TL",
-    iban: "TR320020300008811815000001"
+    iban: "TR320678987654567898765"
   },
   {
     bank: "ALBARAKA",
-    branch: "ADANA ORGANİZE SANAYİ ŞUBESİ",
+ branch: “MERSIN SANAYİ ŞUBESİ",
     currency: "USD",
-    iban: "TR050020300008811815000002"
+    iban: "TR05876789OIUY789878898002"
   },
   {
     bank: "ZİRAAT BANKASI",
-    branch: "KURTTEPE ŞUBESİ",
+    branch: "KURTARAN ŞUBESİ",
     currency: "USD",
-    iban: "TR510001001922976222345002"
+    iban: "TR5176545678IYT78998767802"
   }
 ]
-
-export const getAllData=(data)=>{
-const orderInfo= [
-  {
-    id: 11,
-    desc: "Sipariş No",
-    value: data?.orderNumber
-  },
-  {
-    id: 12,
-    desc: "Sipariş Tarihi",
-    value: todayDate
-  },
-  {
-    id: 13,
-    desc: "Geçerlilik Opsiyonu",
-    value: dayjs(data.valid_date).format('DD/MM/YYYY HH:mm'),
-    css : " font-bold text-red-500"
-  },
-  {
-    id: 14,
-    desc: "Sorumlumuz",
-    value: data.order_responsible
-
-  },
-  {
-    id: 15,
-    desc: "Notlar",
-    value: data.notes
-
-  },
-];
-const customerInfo= [
-  {
-    id: 1,
-    desc: "",
-    value:data?.selectedCustomer?.companyname
-  },
-  {
-    id: 2,
-    desc: "",
-    value:data?.selectedCustomer?.address
-  },
-
-  {
-    id: 4,
-    desc: "Tel :",
-    value:data?.selectedCustomer?.phone
-
-  },
-  {
-    id: 5,
-    desc: "Vergi Numarası / Vergi Dairesi :",
-    value: `${data.taxid} / ${data.taxoffice}`
-  },
-  {
-    id: 6,
-    desc: "Dikkatine : ",
-    value: ""
-  },
-];
-
-
-const paymentInfo= {
-   totalPrice: data.totalPrice,
-   totalWithTax: data.totalWithTax,
-   taxRate: data.taxRate,
-   totalQuantity: data.totalQuantity,
-   delivery_point: data.delivery_point,
-   delivery_terms: data.delivery_terms,
-   payment_type: data.payment_type,
-   maturity: data.maturity
-
-  }
-
-  const products = data?.selectedProducts?.map((product, index) => {
-    const newAttributesObject = Array.isArray(data?.newAttributes) && data?.newAttributes.length!==0
-      ? data?.newAttributes[index]
-      : [];
-  
-    return {
-      name: product.product_name,
-      quantity: product.quantity,
-      unitPrice: product.unitPrice,
-      totalPrice: product.totalPrice,
-      delivery_date: product.delivery_date,
-    techSpecs: Object.entries(newAttributesObject)
-    .filter(([key, value]) => !value.packaging)
-    .reduce((acc, [key, value]) => {
-      return { ...acc, [key]: value, "P.Ağırlık" : {value: product.weight} };
-    }, {}),
-    packagingSpecs: Object.entries(newAttributesObject)
-    .filter(([key, value]) => value.packaging)
-    .reduce((acc, [key, value]) => {
-      return { ...acc, [key]: value };
-    }, {}),
-    };
-  });
-
-   const otherDetails={
-    order_date:todayDate,
-    currency_code: data.currencyCode
-   }
-return {orderInfo, customerInfo, paymentInfo, products, otherDetails}
-
-}

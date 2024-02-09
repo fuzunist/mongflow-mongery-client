@@ -517,11 +517,12 @@ const apps = createSlice({
       state.selected.products.push({
         ...state.selected.product,
         attributes: action.payload.attributes,
-        quantity: action.payload.quantity * 1000, // ton olarak alıp kg olarak kaydediyoruz
+        quantity: action.payload.quantity , // ton olarak alıp kg olarak kaydediyoruz
+        weight: action.payload.weight,
         productType: action.payload.productType,
         orderStatus: [
           {
-            quantity: action.payload.quantity * 1000, // ton olarak alıp kg olarak kaydediyoruz
+            quantity: action.payload.quantity, // ton olarak alıp kg olarak kaydediyoruz
             type: action.payload.orderStatus,
           },
         ],
@@ -538,6 +539,27 @@ const apps = createSlice({
           if (index === action.payload.index) {
             product.unitPrice = action.payload.unitPrice;
             product.totalPrice = product.quantity * action.payload.unitPrice;
+          }
+          return product;
+        }
+      );
+    },
+    _editSelectProductWeight: (state, action) => {
+      state.selected.products = state.selected.products.map(
+        (product, index) => {
+          if (index === action.payload.index) {
+            product.weight = action.payload.weight;
+          }
+          return product;
+        }
+      );
+    },
+    
+    _editSelectProductDelivery: (state, action) => {
+      state.selected.products = state.selected.products.map(
+        (product, index) => {
+          if (index === action.payload.index) {
+            product.delivery_date = action.payload.date;
           }
           return product;
         }
@@ -746,6 +768,8 @@ export const {
   _setSelectProducts,
   _addSelectProduct,
   _editSelectProduct,
+  _editSelectProductWeight,
+  _editSelectProductDelivery,
   _delSelectProduct,
   _clearSelectProducts,
   _setSelectSets,

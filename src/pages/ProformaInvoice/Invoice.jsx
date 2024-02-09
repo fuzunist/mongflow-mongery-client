@@ -14,6 +14,8 @@ import {
   delSelectSet,
   editOrder,
   editSelectProduct,
+  editSelectProductDelivery,
+  editSelectProductWeight,
   editSelectSet,
   setCustomer,
   setOrderNumber,
@@ -25,6 +27,7 @@ import {
   useSelectedProducts,
   useSelectedSets,
   useExpenses,
+  useProducts,
 } from "@/store/hooks/apps";
 import { useUser } from "@/store/hooks/user";
 import { calculateAverageType } from "@/utils/apps";
@@ -37,10 +40,15 @@ import { formatFloat, formatDigits } from "@/utils/helpers";
 import { HiOutlinePrinter } from "react-icons/hi";
 import { BlobProvider } from "@react-pdf/renderer";
 import InvoicePDF from "@/components/InvoicePDF/InvoicePDF";
-
+import { DatePicker, Input, Typography } from "antd";
+import TextArea from "antd/es/input/TextArea";
+import dayjs from "dayjs";
+import locale from "antd/es/date-picker/locale/tr_TR";
+import "dayjs/locale/tr";
 
 const Invoice = ({ selectedCustomer, editingOrder }) => {
   const user = useUser();
+  const products = useProducts();
   const orders = useOrders();
   const orderNumber = useOrderNumber();
   const selectedProducts = useSelectedProducts();
@@ -50,6 +58,13 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const [orderDetails, setOrderDetails] = useState({});
+
+  const onChangeDetail = (value, name) => {
+    setOrderDetails({ ...orderDetails, [name]: value });
+  };
+  console.log("orderDetails, ", orderDetails);
+   console.log("333 selectedProducts", selectedProducts)
 
   const totalProductQuantity = useMemo(() => {
     if (!editingOrder || !editingOrder.products) return 0;
@@ -180,16 +195,86 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
     }
   };
 
-  const pdfData={
-    initialValues:initialValues,
-    selectedProducts:selectedProducts,
-    user:user,
-    selectedCustomer:selectedCustomer,
-    totalPrice:totalPrice,
-    taxRate:1 + initialValues.taxRate,
-    orderNumber:orderNumber
-  }
-   console.log("pdf Data,", pdfData)
+  const newAttr =
+    selectedProducts.length !== 0 &&
+    selectedProducts?.map((product, index) => {
+      //  console.log("product s117 ", product)
+      const attributes = products.find(
+        (item) => item.product_id === product.product_id
+      ).attributes;
+      //  console.log(attributes," attributea s117")
+
+      return Object.fromEntries(
+        Object.entries(product.attributes).map(([key, value]) => {
+          //  console.log("s117 key val", key,value)
+          const packaging = attributes.find(
+            (attr) => attr.attribute_name === key
+          ).packaging;
+          //  console.log("packaging s117", packaging)
+          return [key, { value: value, packaging: packaging }];
+        })
+      );
+    });
+ console.log("new attr 333", newAttr )
+
+    const prodx = selectedProducts?.map((product, index) => {
+      // Check if newAttributes[index] exists and is an array
+      const newAttributesObject = Array.isArray(newAttr) && newAttr.length!==0
+        ? newAttr[index]
+        : [];
+  
+         console.log("333 newAttributesObject", newAttributesObject)
+    
+      return {
+        name: product.product_name,
+        quantity: product.quantity,
+        unitPrice: product.unitPrice,
+        totalPrice: product.totalPrice,
+        delivery_date: product.delivery_date,
+      //   techSpecs: Object.entries(newAttributesObject)
+      // .filter(([key, value]) => !value.packaging)
+      // .map(([key, value]) => ({ [key]: value })),
+      techSpecs: Object.entries(newAttributesObject)
+      .filter(([key, value]) => !value.packaging)
+      .reduce((acc, [key, value]) => {
+        return { ...acc, [key]: value, weight: product.weight };
+      }, {}),
+    packagingSpecs: Object.entries(newAttributesObject)
+      .filter(([key, value]) => value.packaging)
+      .map(([key, value]) => ({ [key]: value })),
+      };
+    });
+
+     console.log("333 prodx", prodx)
+
+     const totalProductsQuantity = useMemo(() => {
+      if (!selectedProducts || selectedProducts.length===0) return 0;
+  
+      return selectedProducts.reduce((total, product) => {
+        return total + (product.quantity || 0);
+      }, 0);
+    }, [selectedProducts]);
+  const pdfData = {
+    initialValues: initialValues,
+    selectedProducts: selectedProducts,
+    user: user,
+    selectedCustomer: selectedCustomer,
+    totalPrice: totalPrice,
+    totalWithTax: (totalPrice * (1 + initialValues.taxRate)).toFixed(4),
+    taxRate: initialValues.taxRate * 100,
+    currencyCode: initialValues.currencyCode,
+    orderNumber: orderNumber,
+    maturity: orderDetails?.maturity,
+    valid_date: orderDetails?.valid_date,
+    delivery_terms: orderDetails?.delivery_terms,
+    delivery_point: orderDetails?.delivery_point,
+    payment_type: orderDetails?.payment_type,
+    notes: orderDetails?.notes,
+    order_responsible: user.username,
+    newAttributes: newAttr,
+    totalQuantity: totalProductsQuantity,
+  };
+  console.log("pdf Data,", pdfData);
   const onClick = () => {
     if (i18n.language.includes("tr"))
       return invoiceToPDF(
@@ -263,12 +348,16 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
           <div className="flex justify-between items-start">
             <div className=" flex flex-1 flex-col gap-2">
               <span>
-                <span className="font-semibold">{t("customername")}:</span>{" "}
-                {selectedCustomer.customername}
-              </span>
-              <span>
                 <span className="font-semibold">{t("companyname")}:</span>{" "}
                 {selectedCustomer.companyname}
+              </span>
+              <span>
+                <span className="font-semibold">{t("taxid")}:</span>{" "}
+                {selectedCustomer.taxid}
+              </span>
+              <span>
+                <span className="font-semibold">{t("taxoffice")}:</span>{" "}
+                {selectedCustomer.taxoffice}
               </span>
               <span>
                 <span className="font-semibold">{t("phone")}:</span>{" "}
@@ -294,6 +383,10 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
                 <span className="font-semibold">{t("order_number")}:</span>{" "}
                 {editingOrder?.order_number ?? orderNumber}
               </span>
+              <span>
+                <span className="font-semibold">{t("order_responsible")}:</span>{" "}
+                {user.username}
+              </span>
             </div>
           </div>
           <hr className="w-full border-border-light dark:border-border-dark" />
@@ -302,10 +395,10 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
               <span
                 className={`${
                   excludedCosts.includes(user.usertype)
-                    ? "basis-[calc(30%_-_0.5rem)] "
+                    ? "basis-[calc(15%_-_0.5rem)] "
                     : editingOrder
                     ? "basis-[calc(10%_-_0.5rem)] "
-                    : "basis-[calc(30%_-_0.5rem)] "
+                    : "basis-[calc(15%_-_0.5rem)] "
                 } mx-1`}
               >
                 {t("product")}
@@ -315,6 +408,12 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
               </span>
               <span className="basis-[calc(10%_-_0.5rem)] mx-1 ">
                 {t("quantity")}
+              </span>
+              <span className="basis-[calc(10%_-_0.5rem)] mx-1 ">
+                {t("weight")}
+              </span>
+              <span className="basis-[calc(10%_-_0.5rem)] mx-1 ">
+                {t("deliveryDate")}
               </span>
               {editingOrder && !excludedCosts.includes(user.usertype) && (
                 <span className="basis-[calc(15%_-_0.5rem)] mx-1 ">
@@ -333,7 +432,7 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
                 className={`${
                   editingOrder
                     ? "basis-[calc(15%_-_0.5rem)] "
-                    : "basis-[calc(25%_-_0.5rem)] "
+                    : "basis-[calc(20%_-_0.5rem)] "
                 } mx-1`}
               >
                 {t("total")}
@@ -348,10 +447,10 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
                 <span
                   className={`${
                     excludedCosts.includes(user.usertype)
-                      ? "basis-[calc(30%_-_0.5rem)] "
+                      ? "basis-[calc(15%_-_0.5rem)] "
                       : editingOrder
                       ? "basis-[calc(10%_-_0.5rem)] "
-                      : "basis-[calc(30%_-_0.5rem)] "
+                      : "basis-[calc(15%_-_0.5rem)] "
                   } mx-1  hover:line-through hover:text-red-500 cursor-pointer `}
                   onClick={() => delSelectProduct(index)}
                 >
@@ -368,6 +467,44 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
                 </span>
                 <span className="basis-[calc(10%_-_0.5rem)] mx-1">
                   {product.quantity} {t(product.productType)}
+                </span>
+                <span className="basis-[calc(10%_-_0.5rem)] mx-1">
+                  <Modal
+                    text={product?.weight ?? 0}
+                    className=" mx-1 cursor-pointer select-none"
+                  >
+                    <input
+                      type="number"
+                      placeholder="Ağırlık Girin (kg)"
+                      value={product?.weight}
+                      onChange={(e) =>
+                        editSelectProductWeight(index, e.target.value)
+                      }
+                      className="w-full py-2 transition-all outline-none bg-input-bg-light dark:bg-input-bg-dark border rounded border-input-border-light dark:border-input-border-dark"
+                    />
+                  </Modal>
+                </span>
+                <span className="basis-[calc(10%_-_0.5rem)] mx-1">
+                  <Modal
+                    text={product?.delivery_date ?? " Tarih Seçiniz"}
+                    className=" mx-1 cursor-pointer select-none"
+                  >
+                    <DatePicker
+                      locale={locale}
+                      format={"DD/MM/YYYY"}
+                      placeholder="Tarih Girin"
+                      onChange={(e) =>{
+                       console.log("333 ",dayjs(e).format("DD/MM/YYYY"))
+                        return  editSelectProductDelivery(
+                          index,
+                          dayjs(e).format("DD/MM/YYYY")
+                        )
+                      }
+                       
+                      }
+                      className="w-full py-2 transition-all outline-none bg-input-bg-light dark:bg-input-bg-dark border rounded border-input-border-light dark:border-input-border-dark"
+                    />
+                  </Modal>
                 </span>
                 {editingOrder && !excludedCosts.includes(user.usertype) && (
                   <span className="basis-[calc(15%_-_0.5rem)] mx-1 ">
@@ -400,7 +537,7 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
                   className={`mx-1 ${
                     editingOrder
                       ? "basis-[calc(15%_-_0.5rem)]"
-                      : "basis-[calc(25%_-_0.5rem)]"
+                      : "basis-[calc(20%_-_0.5rem)]"
                   }`}
                 >
                   {formatDigits(product.totalPrice)}
@@ -487,6 +624,7 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
                 >
                   <option value={0}>%0</option>
                   <option value={0.1}>%10</option>
+                  <option value={0.18}>%18</option>
                   <option value={0.2}>%20</option>
                 </select>
               </div>
@@ -594,27 +732,77 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
           </div>
           <hr className="w-full border-border-light dark:border-border-dark" />
         </div>
-        <div className="flex flex-wrap justify-end text-center gap-2 px-4">
-          {/* <button
-            onClick={onClick}
-            className="py-2 px-4 rounded bg-purple hover:bg-purple-hover text-white font-semibold"
-          >
-            {t("saveAsExcel")}
-          </button> */}
+        <div className="grid grid-cols-3 w-full justify-center text-center gap-3 gap-x-8 px-4 my-6">
+          <div className="flex flex-row -space-x-4">
+            <Input
+              className="w-44 text-black disabled:text-black disabled:cursor-default"
+              disabled
+              variant="filled"
+              value={"Geçerlilik Opsiyonu"}
+              placeholder="Geçerlilik Opsiyonu"
+            />
+            <DatePicker
+              showTime
+              name="valid_date"
+              format="DD-MM-YYYY HH:mm"
+              locale={locale}
+              prevIcon="Geçerlilik Opsiyonu"
+              onChange={(e) => onChangeDetail(e, "valid_date")}
+              className="rounded-l-none flex-1"
+            />
+          </div>
+          <div>
+            <Input
+              addonBefore="Teslimat Şartları"
+              name="delivery_terms"
+              onChange={(e) => onChangeDetail(e.target.value, e.target.name)}
+            />
+          </div>
+          <div>
+            <Input
+              addonBefore="Teslimat Noktası"
+              name="delivery_point"
+              onChange={(e) => onChangeDetail(e.target.value, e.target.name)}
+            />
+          </div>
+          <div>
+            <Input
+              addonBefore="Ödeme Şekli"
+              name="payment_type"
+              onChange={(e) => onChangeDetail(e.target.value, e.target.name)}
+            />
+          </div>
+          <div>
+            <Input
+              addonBefore="Vade"
+              name="maturity"
+              onChange={(e) => onChangeDetail(e.target.value, e.target.name)}
+            />
+          </div>
+          <div>
+            <Input
+              className="resize-y"
+              addonBefore="Notlar"
+              name="notes"
+              onChange={(e) => onChangeDetail(e.target.value, e.target.name)}
+            />
+          </div>
+        </div>
+        <hr className="w-full border-border-light dark:border-border-dark" />
 
+        <div className="flex flex-wrap justify-center text-center gap-2 px-4">
           <BlobProvider document={<InvoicePDF data={pdfData} />}>
             {({ url, blob }) => (
               <a
                 href={url}
                 target="_blank"
                 style={{
-                  padding: '0.5rem 1rem', // py-2 px-4
-                  borderRadius: '0.375rem', // rounded
-                  backgroundColor: '#5b69bc', // bg-purple
-                  color: '#fff', // text-white
-                  fontWeight: '600', // font-semibold
-                  cursor: 'pointer',
-                  
+                  padding: "0.5rem 1rem", // py-2 px-4
+                  borderRadius: "0.375rem", // rounded
+                  backgroundColor: "#5b69bc", // bg-purple
+                  color: "#fff", // text-white
+                  fontWeight: "600", // font-semibold
+                  cursor: "pointer",
                 }}
               >
                 {/* <HiOutlinePrinter size={14} /> */}

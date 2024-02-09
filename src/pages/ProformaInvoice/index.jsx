@@ -39,7 +39,7 @@ const ProformaInvoice = () => {
     addSelectProduct(attributes, quantity, productType, OrderStatus[0]);
     setProduct(null);
     setQuantity(1);
-    setProductType("kg");
+    setProductType("ton");
     closeModal();
   };
 
@@ -54,7 +54,7 @@ const ProformaInvoice = () => {
     addSelectSet("order", attributes, quantity, productType, OrderStatus[0]);
     setSet(null);
     setQuantity(1);
-    setProductType("kg");
+    setProductType("ton");
     closeModal();
   };
 

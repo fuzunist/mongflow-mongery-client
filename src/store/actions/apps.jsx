@@ -61,6 +61,8 @@ import {
   _editExpenseItemFreq,
   _addRecipeMaterialLog,
   _editRecipeMaterialLog,
+  _editSelectProductWeight,
+  _editSelectProductDelivery,
 } from "../reducers/apps";
 
 export const promiseAll = (access_token, usertype) =>
@@ -133,7 +135,6 @@ export const addRangeContacts = (contacts) =>
 export const editContact = (contact) => store.dispatch(_editContact(contact));
 export const delContact = (id) => store.dispatch(_delContact(id));
 
-
 export const addOrder = (order) => store.dispatch(_addOrder(order));
 export const editOrder = (order) => store.dispatch(_editOrder(order));
 export const delOrder = (order_id) => store.dispatch(_delOrder(order_id));
@@ -158,8 +159,7 @@ export const setOrderStatusSet = (
 
 export const setCustomer = (customerID) =>
   store.dispatch(_setCustomer(customerID));
-  export const setContact = (id) =>
-  store.dispatch(_setContact(id));
+export const setContact = (id) => store.dispatch(_setContact(id));
 export const setProduct = (productID) => store.dispatch(_setProduct(productID));
 export const setSet = (setID) => store.dispatch(_setSet(setID));
 
@@ -176,9 +176,17 @@ export const addSelectProduct = (
   );
 export const editSelectProduct = (index, unitPrice) =>
   store.dispatch(_editSelectProduct({ index, unitPrice }));
-export const delSelectProduct = (index) =>
+
+export const editSelectProductWeight = (index, weight) =>
+  store.dispatch(_editSelectProductWeight({ index, weight }));
+
+  export const editSelectProductDelivery = (index, date) =>
+  store.dispatch(_editSelectProductDelivery({ index, date }));
+
+  export const delSelectProduct = (index) =>
   store.dispatch(_delSelectProduct(index));
-export const clearSelectProducts = () => store.dispatch(_clearSelectProducts());
+
+  export const clearSelectProducts = () => store.dispatch(_clearSelectProducts());
 
 export const setSelectSets = (products) =>
   store.dispatch(_setSelectSets(products));
