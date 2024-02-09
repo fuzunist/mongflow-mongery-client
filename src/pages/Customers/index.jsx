@@ -22,11 +22,11 @@ const Customers = () => {
   const searchValue = useSearch();
   const user = useUser();
   const [error, setError] = useState("");
+  const [page,setPage]= useState(1)
 
-  console.log("selected customer here,", selectedCustomer);
-  const selectedContacts = selectedCustomer?.contacts?.map((jsonString) =>
-    JSON.parse(jsonString)
-  );
+ console.log("page xx", page)
+  const pageCustomers=customers?.filter((customer)=> customer?.customer_type?.includes(page));
+
 
   const authenticate = useMemo(
     () => ["admin", "stock_manager"].includes(user.usertype),
@@ -47,16 +47,16 @@ const Customers = () => {
   const closeModal = () => setCustomer(null);
 
   const filteredCustomers = useMemo(() => {
-    if (!searchValue) return customers;
+    if (!searchValue) return pageCustomers;
 
-    return customers.filter(
+    return pageCustomers.filter(
       (customer) =>
         customer.companyname
           .toLowerCase()
           .startsWith(searchValue.toLowerCase()) ||
         customer.email.toLowerCase().startsWith(searchValue.toLowerCase())
     );
-  }, [searchValue, customers]);
+  }, [searchValue, customers, pageCustomers]);
 
   const dataSource = filteredCustomers.map((customer, index) => ({
     key: index,
@@ -187,7 +187,7 @@ const Customers = () => {
 
   return (
     <>
-      <Header authenticate={authenticate} />
+      <Header authenticate={authenticate} page={page} setPage={setPage} />
       <Row align={"center"} className="mt-8 ">
         <Card variant="overflow">
           <Card.Body>
@@ -231,14 +231,7 @@ const Customers = () => {
                   expandRowByClick: true,
                 }}
               >
-                {/* <Column title="İsim" dataIndex="companyname" key="name" />
-                <Column title="İsim" dataIndex="email" key="email" />
-                <Column title="İsim" dataIndex="phone" key="phone" />
-                <Column title="İsim" dataIndex="website" key="website" />
-                <Column title="İsim" dataIndex="address" key="address" />
-                <Column title="İsim" dataIndex="products" key="products" />
-                <Column title="İsim" dataIndex="action" key="action" /> */}
-
+      
               </Table>
             </Space>
           </Card.Body>

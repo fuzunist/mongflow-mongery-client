@@ -129,7 +129,7 @@ const CreateEditCustomerForm = ({ onChange, fields, onFinish, editing, error, se
 
         <Form.Item
           name="products"
-          label="Ürün Grupları Seçiniz"
+          label="Ürün Grupları"
           rules={[
             {
               type: "array",
@@ -145,6 +145,26 @@ const CreateEditCustomerForm = ({ onChange, fields, onFinish, editing, error, se
             ))}
           </Select>
         </Form.Item>
+
+        <Form.Item
+          name="customer_type"
+          label="Müşteri Tipi"
+          rules={[
+            {
+              type: "array",
+            },
+          ]}
+        >
+          
+          <Select mode="multiple" placeholder="Müşteri Tipi Seçiniz">
+            {[{id:1, name: "Müşteri"}, {id:2, name: "Tedarikçi"}].map((option, index) => (
+              <Option key={index} value={option.id}>
+                {option.name}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+    
     
         <Form.List name="contacts">
           {(fields, { add, remove }, { errors }) => (

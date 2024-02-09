@@ -55,6 +55,10 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
       value: editing ? selectedCustomer.products : [],
     },
     {
+      name: ["customer_type"],
+      value: editing ? selectedCustomer.customer_type : [],
+    },
+    {
       name: ["contacts"],
       value: editing ? selectedContacts : [],
     },
@@ -73,7 +77,9 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
       address: values.address,
       website: values.website,
       products: values.products,
+      customer_type: values.customer_type,
       contacts: values.contacts,
+
     };
     const response = await addCustomerToDB(user.tokens.access_token, data);
     console.log("response", response);
@@ -94,6 +100,7 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
       address: values.address,
       website: values.website,
       products: values.products,
+      customer_type: values.customer_type,
       contacts: values.contacts,
     };
     const response = await editCustomerToDB(

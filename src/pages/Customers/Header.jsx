@@ -3,8 +3,10 @@ import Search from '@/components/Search'
 import CreateEditCustomer from '@/modals/CreateEditCustomer'
 import { PlusIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import Navigation from './Navigation'
+import { useState } from 'react'
 
-const Header = ({ authenticate }) => {
+const Header = ({ authenticate, page, setPage }) => {
     const { t } = useTranslation()
 
     return (
@@ -31,6 +33,9 @@ const Header = ({ authenticate }) => {
                 )}
 
                 <Search />
+            </div>
+            <div>
+                <Navigation page={page} setPage={setPage} />
             </div>
           
         </>

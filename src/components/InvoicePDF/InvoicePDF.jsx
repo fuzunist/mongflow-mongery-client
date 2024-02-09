@@ -63,7 +63,7 @@ const InvoicePDF = ({ data }) => {
             Vergi Dairesi : ZİYAPAŞA V.D.
           </Text>
           <Text style={tw("items-start text-xs pb-1")}>
-            Eposta : info@mongery.com.TR
+            Eposta : info@mongery.com.tr
           </Text>
           <Text style={tw("items-start text-xs")}>
             İnternet Sitesi : www.mongery.com.tr
