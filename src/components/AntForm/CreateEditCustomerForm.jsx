@@ -12,6 +12,7 @@ const { Option } = Select;
 
 const CreateEditCustomerForm = ({ onChange, fields, onFinish, editing, error, setError }) => {
   const { t } = useTranslation();
+const customerTypes = [{id:1, name: "Müşteri"}, {id:2, name: "Tedarikçi"}, {id:3, name: "İhracat"}, {id:4, name: "İthalat"}]
 
   const formItemLayout = {
     labelCol: {
@@ -157,7 +158,7 @@ const CreateEditCustomerForm = ({ onChange, fields, onFinish, editing, error, se
         >
           
           <Select mode="multiple" placeholder="Müşteri Tipi Seçiniz">
-            {[{id:1, name: "Müşteri"}, {id:2, name: "Tedarikçi"}].map((option, index) => (
+            {customerTypes.map((option, index) => (
               <Option key={index} value={option.id}>
                 {option.name}
               </Option>

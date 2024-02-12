@@ -7,7 +7,7 @@ import CreateEditCustomer from "@/modals/CreateEditCustomer";
 import { delCustomer, setCustomer } from "@/store/actions/apps";
 import { useMemo, useState } from "react";
 import { useUser } from "@/store/hooks/user";
-import { Space, Table, Tag } from "antd";
+import { Popconfirm, Space, Table, Tag, message } from "antd";
 import { ClipboardEditIcon, Trash2Icon, ContactIcon, Headphones } from "lucide-react";
 import { delCustomerFromDB } from "@/services/customer";
 import Col from "@/components/Col";
@@ -41,6 +41,7 @@ const Customers = () => {
     );
     if (response?.error) return setError(response.error);
     delCustomer(customerid);
+    message.success('Müşteri başarılı bir şekilde silindi.');
     closeModal();
   };
 
@@ -171,13 +172,23 @@ const Customers = () => {
             </Modal>
           </div>
           <div className="flex">
+          <Popconfirm
+          placement="left"
+          title={"Silmek istediğinizden emin misiniz?"}
+        
+          okText="Evet"
+          cancelText="Hayır"
+          onConfirm={() => onDelete(record.id)}
+          onCancel={()=>message.error('Müşteri silinmedi.')}
+        >
             <button
               className="p-1.5 bg-danger hover:bg-alert-danger-fg-light transition-colors text-white rounded"
-              onClick={() => onDelete(record.id)}
+              // onClick={}
             >
               <Trash2Icon size={18} strokeWidth={2.5} />
               {/* {t("delete")} */}
             </button>
+            </Popconfirm>
           </div>
         </Space>
       ),
@@ -202,16 +213,15 @@ const Customers = () => {
                 columns={columns}
                 expandable={{
                   expandedRowRender: (record) => (
-                    <div className="flex flex-col w-full justify-center ">
+                    <div className="flex flex-col w-[60%] justify-start items-start">
                     <Table
                       showHeader={false}
                       pagination={false}
                       dataSource={record.contacts}
                     >
                       <Column title="İsim" dataIndex="name" key="name" />
-
-                      <Column  title="Email" dataIndex="email" key="email" />
                       <Column title="Telefon" dataIndex="phone" key="phone" />
+                      <Column  title="Email" dataIndex="email" key="email" />
                       <Column
                         title="Rol"
                         dataIndex="role"
