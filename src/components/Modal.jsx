@@ -1,3 +1,4 @@
+import { setProduct } from "@/store/actions/apps";
 import { Dialog, Transition } from "@headlessui/react";
 import classNames from "classnames";
 import { useEffect } from "react";
@@ -19,8 +20,13 @@ const Modal = ({
     setIsOpen(directRender);
   }, [directRender]);
 
-  const open = () => setIsOpen(true);
-  const close = closeModal ?? (() => setIsOpen(false));
+  const open = () => {
+    setIsOpen(true)  
+  };
+  const close = closeModal ?? (() => {
+    setIsOpen(false)
+    setProduct(null)
+  });
 
   return (
     <>

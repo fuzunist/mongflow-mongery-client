@@ -28,7 +28,7 @@ socket.on('notification', (arg) => {
             break
         case 'stock':
             addStock(arg.stock)
-            addNotification('stock', arg.stock.stock_id)
+            addNotification('stock', arg.stock.id)
             break
         case 'stock_update':
             editStock(arg.stock)

@@ -6,12 +6,13 @@ import { Provider } from "react-redux";
 import store from "./store";
 import "./i18n";
 import "./utils/socket";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, Empty } from "antd";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
       <ConfigProvider
+      renderEmpty={() => <Empty description="Veri bulunamadı"/>}
     theme={{
       token: {
         // // Seed Token

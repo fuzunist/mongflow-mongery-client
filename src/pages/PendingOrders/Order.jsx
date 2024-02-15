@@ -11,7 +11,7 @@ import { useEffect, useState, useMemo } from "react";
 import { formatDigits } from "@/utils/helpers";
 import OrderRecipeDetails from "@/modals/OrderRecipeDetails";
 import { useExpenses, useExchangeRates } from "@/store/hooks/apps";
-import { updateRecipeMaterialStocksToDB } from "@/services/recipematerial";
+import { updateRecipeMaterialStocksToDB } from "@/services/recipematerialstocks";
 import getProductionTime from "@/utils/getProductionTime";
 
 const Order = ({ order }) => {

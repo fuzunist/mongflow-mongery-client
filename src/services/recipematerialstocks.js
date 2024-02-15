@@ -1,13 +1,10 @@
 import axios from "axios";
 
-export const addRecipeMaterialToDB = async (access_token, params) => {
+export const addRecipeStockLogToDB = async (access_token, params) => {
   try {
-    const { material } = params;
     const { data } = await axios.post(
-      `${import.meta.env.VITE_API_ENDPOINT}/recipe/materials`,
-      {
-        material,
-      },
+      `${import.meta.env.VITE_API_ENDPOINT}/stock/recipematerial`,
+      params,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -24,7 +21,7 @@ export const addRecipeMaterialToDB = async (access_token, params) => {
 export const getRecipeMaterialsFromDB = async (access_token) => {
   try {
     const { data } = await axios.get(
-      `${import.meta.env.VITE_API_ENDPOINT}/recipe/materials`,
+      `${import.meta.env.VITE_API_ENDPOINT}/stock/recipematerial`,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -43,7 +40,7 @@ export const getRecipeMaterialsFromDB = async (access_token) => {
 export const editRecipeMaterialToDB = async (access_token, params, id) => {
   try {
     const { data } = await axios.put(
-      `${import.meta.env.VITE_API_ENDPOINT}/recipe/materials/${id}`,
+      `${import.meta.env.VITE_API_ENDPOINT}/stock/recipematerial/${id}`,
       params,
       {
         headers: {

@@ -82,7 +82,7 @@ const SelectProductFromList = ({
     const field=Object.entries(initialValues).map((([key, value])=>(
       {
         name:key,
-        value: value.value
+        value: value.value,
       }
     )))
     

@@ -56,6 +56,7 @@ const SelectProductFromListForm = ({
     setError(errorInfo);
   };
   const [form] = Form.useForm();
+   console.log("getfieldvalue", form.getFieldValue(["Tel Çapı"]))
   console.log("fields", fields);
   return (
     <div className="flex flex-col justify-center items-center">
@@ -73,10 +74,13 @@ const SelectProductFromListForm = ({
           maxWidth: 500,
         }}
         fields={fields}
+        onFieldsChange={(v)=> console.log("xc, ",v)}
+        onValuesChange={(v)=> console.log("xcv, ",v)}
+        form={form}
       >
         {Object.entries(initialValues)?.map(([key, value], index) => (
           <Form.Item key={index} name={key} label={key}>
-            <Select showSearch>
+            <Select showSearch onChange={(e)=> console.log("change:", e)} >
               {Object.entries(value?.options).map(
                 ([optionkey, optionvalue], index) => (
                   <Option key={index} value={optionvalue?.value}>

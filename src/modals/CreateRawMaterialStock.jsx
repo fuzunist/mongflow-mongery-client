@@ -3,17 +3,17 @@ import {
   addRawMaterialLogToDB,
   editRawMaterialLogToDB,
   editRawMaterialToDB,
-} from "@/services/rawmaterial";
+} from "@/services/rawmaterialstocks";
 import { useUser } from "@/store/hooks/user";
 import { dateToIsoFormatWithTimezoneOffset } from "@/utils/helpers";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRawMaterials } from "@/store/hooks/apps";
-import {
-  addRawMaterialLog,
-  editRawMaterialLog,
-  editRawMaterial,
-} from "@/store/actions/apps";
+// import {
+//   addRawMaterialLog,
+//   editRawMaterialLog,
+//   editRawMaterial,
+// } from "@/store/actions/apps";
 
 const CreateRawMaterialStock = ({ closeModal, editing = false, selected }) => {
   const user = useUser();
@@ -140,8 +140,8 @@ const CreateRawMaterialStock = ({ closeModal, editing = false, selected }) => {
       const [addRawMaterialLogResponse, editRawStockResponse] =
         await Promise.all([addRawMaterialLogPromise, editRawStockPromise]);
 
-      addRawMaterialLog(addRawMaterialLogResponse);
-      editRawMaterial(editRawStockResponse);
+      // addRawMaterialLog(addRawMaterialLogResponse);
+      // editRawMaterial(editRawStockResponse);
       setSubmitting(false);
       closeModal();
     } catch (err) {
@@ -162,7 +162,7 @@ const CreateRawMaterialStock = ({ closeModal, editing = false, selected }) => {
         selected.id
       );
       if (response?.error) return setError(response.error);
-      editRawMaterialLog(response);
+      // editRawMaterialLog(response);
       setSubmitting(false);
       closeModal();
     } catch (err) {

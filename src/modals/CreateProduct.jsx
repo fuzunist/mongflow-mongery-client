@@ -55,8 +55,8 @@ const CreateProduct = ({ closeModal, selectedProduct, type }) => {
     if (!values.productName) errors.productName = "Required";
     // if (!values.defaultPrice) errors.defaultPrice = 'Required'
     // if (!values.defaultCurrency) errors.defaultCurrency = 'Required'
-    if (values.attributes.length === 0)
-      errors.attributes = "Add at least one feature. 1";
+    // if (values.attributes.length === 0)
+    //   errors.attributes = "Add at least one feature. 1";
     if (values.attributes.some((attr) => !attr.attribute_name))
       errors.attributes = "Add at least one feature. 2";
     if (values.attributes.some((attr) => attr.values.length === 0))
@@ -68,6 +68,7 @@ const CreateProduct = ({ closeModal, selectedProduct, type }) => {
 
   const onSubmit = async (values, { setSubmitting }) => {
     setError("");
+     console.log("values of on submşt create producr", values)
     const response = await addProductToDB(
       user.tokens.access_token,
       values.productName,

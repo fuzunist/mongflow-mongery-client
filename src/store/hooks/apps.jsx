@@ -31,6 +31,12 @@ export const useContacts = () => useSelector((state) => state.apps.contacts);
 
 export const useOrders = () => useSelector((state) => state.apps.orders);
 export const useStocks = () => useSelector((state) => state.apps.stocks);
+export const useLastProductStocks = () => useSelector((state) => state.apps.lastProductStocks);
+export const useLastProductStockWarehouse = () => useSelector((state) => state.apps.lastProductStockWarehouse);
+
+export const useRawMaterialStocks = () => useSelector((state) => state.apps.rawMaterialStocks);
+export const useRecipeMaterialStocks = () => useSelector((state) => state.apps.recipeMaterialStocks);
+
 export const useProductions = () =>
   useSelector((state) => state.apps.productions);
 

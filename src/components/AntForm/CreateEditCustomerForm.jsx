@@ -12,7 +12,7 @@ const { Option } = Select;
 
 const CreateEditCustomerForm = ({ onChange, fields, onFinish, editing, error, setError }) => {
   const { t } = useTranslation();
-const customerTypes = [{id:1, name: "Müşteri"}, {id:2, name: "Tedarikçi"}, {id:3, name: "İhracat"}, {id:4, name: "İthalat"}]
+const customerTypes = [{id:1, name: "Müşteri"}, {id:2, name: "Tedarikçi"}, {id:3, name: "İhracat"}, {id:4, name: "İthalat"}, {id:5, name: "Yeni Müşteri"}]
 
   const formItemLayout = {
     labelCol: {

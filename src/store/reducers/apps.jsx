@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getCustomersFromDB ,getContactsFromDB} from "@/services/customer";
+import { getCustomersFromDB, getContactsFromDB } from "@/services/customer";
 import { getOrdersFromDB } from "@/services/order";
 import { getProductsFromDB } from "@/services/product";
 import {
@@ -10,11 +10,11 @@ import {
 import {
   getRecipeMaterialsFromDB,
   getRecipeMaterialLogsFromDB,
-} from "@/services/recipematerial";
+} from "@/services/recipematerialstocks";
 import {
   getRawMaterialsFromDB,
   getRawMaterialLogsFromDB,
-} from "@/services/rawmaterial";
+} from "@/services/rawmaterialstocks";
 import { getStocksFromDB } from "@/services/stock";
 import { getUsersFromDB } from "@/services/auth";
 import { getTodayExchangeRates } from "@/services/other";
@@ -27,10 +27,9 @@ import {
 } from "@/services/expenses";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
+import { getProductStockWarehouse } from "@/services/lastproductstocks";
 
-  const todayDate=dayjs().format('YYYY-MM-DD');
-
-
+const todayDate = dayjs().format("YYYY-MM-DD");
 
 export const _promiseAll = createAsyncThunk(
   "apps/promiseAll",
@@ -49,6 +48,7 @@ export const _promiseAll = createAsyncThunk(
       contacts,
       orders,
       stocks,
+      lastProductStockWarehouse,
       productions,
       expensesItems,
       expensesClasses,
@@ -66,9 +66,13 @@ export const _promiseAll = createAsyncThunk(
       getRawMaterialsFromDB(access_token),
       getSetsFromDB(access_token),
       getCustomersFromDB(access_token),
-      getContactsFromDB(access_token,{startDate: todayDate, endDate:todayDate}),
+      getContactsFromDB(access_token, {
+        startDate: todayDate,
+        endDate: todayDate,
+      }),
       getOrdersFromDB(access_token),
       getStocksFromDB(access_token),
+      getProductStockWarehouse(access_token),
       getProductionsFromDB(access_token),
       getExpensesItemsFromDB(access_token),
       getExpensesClassesFromDB(access_token),
@@ -113,6 +117,11 @@ export const _promiseAll = createAsyncThunk(
       return rejectWithValue({ type: "getOrdersFromDB", error: orders.error });
     else if (stocks?.error)
       return rejectWithValue({ type: "getStocksFromDB", error: stocks.error });
+    else if (lastProductStockWarehouse?.error)
+      return rejectWithValue({
+        type: "getlastProductStockWarehouseFromDB",
+        error: lastProductStockWarehouse.error,
+      });
     else if (productions?.error)
       return rejectWithValue({
         type: "getProductionsFromDB",
@@ -155,7 +164,7 @@ export const _promiseAll = createAsyncThunk(
         type: "productionRecipesFromDB",
         error: productionRecipes.error,
       });
-      if (contacts?.error)
+    if (contacts?.error)
       return rejectWithValue({
         type: "getContactsFromDB",
         error: contacts.error,
@@ -174,6 +183,7 @@ export const _promiseAll = createAsyncThunk(
       contacts,
       orders,
       stocks,
+      lastProductStockWarehouse,
       productions,
       expensesItems,
       expensesClasses,
@@ -193,7 +203,7 @@ export const _promiseAll = createAsyncThunk(
 const initialState = {
   loading: true,
   customers: [],
-  contacts:[],
+  contacts: [],
   products: [],
   recipes: [],
   productionRecipes: [],
@@ -205,6 +215,13 @@ const initialState = {
   sets: [],
   orders: [],
   stocks: [],
+  lastProductStocks: [],
+  lastProductStockLogs: [],
+  lastProductStockWarehouse: [],
+  rawMaterialStocks: [],
+  rawMaterialStockLogs: [],
+  recipeMaterialStocks: [],
+  recipeMaterialStockLogs: [],
   productions: [],
   users: [],
   exchangeRates: [],
@@ -231,6 +248,37 @@ const apps = createSlice({
     _addStock: (state, action) => {
       state.stocks = [...state.stocks, action.payload].sort(
         (a, b) => new Date(a.date) - new Date(b.date)
+      );
+    },
+    _addLastProductStock: (state, action) => {
+      state.lastProductStocks = state.lastProductStocks.map((stock) => {
+        if (stock.id === action.payload.id) {
+          stock = action.payload;
+          return stock;
+        }
+      });
+    },
+    _addLastProductStockLog: (state, action) => {
+      state.lastProductStockLogs = [
+        ...state.lastProductStockLogs,
+        action.payload,
+      ];
+    },
+    _addLastProductStockWarehouse: (state, action) => {
+      state.lastProductStockWarehouse = [
+        ...state.lastProductStockWarehouse,
+        action.payload,
+      ];
+    },
+    _editLastProductStockWarehouse: (state, action) => {
+      console.log("action p", action.payload);
+      state.lastProductStockWarehouse = state.lastProductStockWarehouse.map(
+        (stock) => {
+          if (stock.id === action.payload.id) {
+            stock = action.payload;
+          }
+          return stock;
+        }
       );
     },
     _editStock: (state, action) => {
@@ -277,8 +325,8 @@ const apps = createSlice({
         (customer) => customer.customerid !== action.payload
       );
     },
-    
-   _addRangeContacts: (state, action) => {
+
+    _addRangeContacts: (state, action) => {
       state.contacts = [...action.payload];
     },
 
@@ -287,8 +335,7 @@ const apps = createSlice({
     },
     _editContact: (state, action) => {
       state.contacts = state.contacts.map((contact) => {
-        if (contact.id === action.payload.id)
-        contact = action.payload;
+        if (contact.id === action.payload.id) contact = action.payload;
         return contact;
       });
     },
@@ -322,7 +369,7 @@ const apps = createSlice({
       state.productionRecipes = [...state.productionRecipes, action.payload];
     },
     _editRecipe: (state, action) => {
-       console.log("_editRecipe action.payload", action.payload)
+      console.log("_editRecipe action.payload", action.payload);
       state.recipes = state.recipes.map((recipe) => {
         if (recipe.id === action.payload.id)
           recipe = {
@@ -346,7 +393,10 @@ const apps = createSlice({
       );
     },
     _addRecipeMaterial: (state, action) => {
-       console.log("_addRecipeMaterial action.payload in apps_____", action.payload)
+      console.log(
+        "_addRecipeMaterial action.payload in apps_____",
+        action.payload
+      );
       state.recipeMaterials = [...state.recipeMaterials, action.payload];
     },
     _addRecipeMaterialLog: (state, action) => {
@@ -365,7 +415,10 @@ const apps = createSlice({
       );
     },
     _editRecipeMaterial: (state, action) => {
-      console.log("_editRecipeMaterial action.payload in apps_____", action.payload)
+      console.log(
+        "_editRecipeMaterial action.payload in apps_____",
+        action.payload
+      );
 
       state.recipeMaterials = state.recipeMaterials.map((recipeMaterial) => {
         if (recipeMaterial.id === action.payload.id)
@@ -376,8 +429,28 @@ const apps = createSlice({
         return recipeMaterial;
       });
     },
-    _addRawMaterial: (state, action) => {
-      state.rawMaterials = [...state.rawMaterials, action.payload];
+    _addRawMaterialStock: (state, action) => {
+      state.rawMaterialStocks = [...state.rawMaterialStocks, action.payload];
+
+      state.rawMaterialStocks = state.rawMaterialStocks.map((stock) => {
+        if (stock.id === action.payload.id) {
+          stock = { ...stock, ...action.payload };
+          return stock;
+        }
+      });
+    },
+    _addRecipeMaterialStock: (state, action) => {
+      state.recipeMaterialStocks = [
+        ...state.recipeMaterialStocks,
+        action.payload,
+      ];
+
+      state.recipeMaterialStocks = state.recipeMaterialStocks.map((stock) => {
+        if (stock.id === action.payload.id) {
+          stock = { ...stock, ...action.payload };
+          return stock;
+        }
+      });
     },
     _editRawMaterial: (state, action) => {
       state.rawMaterials = state.rawMaterials.map((rawMaterial) => {
@@ -389,8 +462,17 @@ const apps = createSlice({
         return rawMaterial;
       });
     },
-    _addRawMaterialLog: (state, action) => {
-      state.rawMaterialLogs = [...state.rawMaterialLogs, action.payload];
+    _addRawMaterialStockLog: (state, action) => {
+      state.rawMaterialStockLogs = [
+        ...state.rawMaterialStockLogs,
+        action.payload,
+      ];
+    },
+    _addRecipeMaterialStockLog: (state, action) => {
+      state.recipeMaterialStockLogs = [
+        ...state.recipeMaterialStockLogs,
+        action.payload,
+      ];
     },
     _editRawMaterialLog: (state, action) => {
       state.rawMaterialLogs = state.rawMaterialLogs.map((rawMaterialLog) => {
@@ -517,7 +599,7 @@ const apps = createSlice({
       state.selected.products.push({
         ...state.selected.product,
         attributes: action.payload.attributes,
-        quantity: action.payload.quantity , // ton olarak alıp kg olarak kaydediyoruz
+        quantity: action.payload.quantity, // ton olarak alıp kg olarak kaydediyoruz
         weight: action.payload.weight,
         productType: action.payload.productType,
         orderStatus: [
@@ -554,7 +636,7 @@ const apps = createSlice({
         }
       );
     },
-    
+
     _editSelectProductDelivery: (state, action) => {
       state.selected.products = state.selected.products.map(
         (product, index) => {
@@ -671,8 +753,9 @@ const apps = createSlice({
       state.sets = [];
       state.orders = [];
       state.customers = [];
-      state.contacts=[];
+      state.contacts = [];
       state.stocks = [];
+      state.lastProductStockWarehouse = [];
       state.productions = [];
       state.users = [];
       state.exchangeRates = [];
@@ -707,6 +790,8 @@ const apps = createSlice({
       state.customers = action.payload.customers;
       state.contacts = action.payload.contacts;
       state.stocks = action.payload.stocks;
+      state.lastProductStockWarehouse =
+        action.payload.lastProductStockWarehouse;
       state.productions = action.payload.productions;
       state.users = action.payload.users;
       state.exchangeRates = action.payload.exchangeRates;
@@ -724,6 +809,10 @@ const apps = createSlice({
 
 export const {
   _addStock,
+  _addLastProductStock,
+  _addLastProductStockLog,
+  _addLastProductStockWarehouse,
+  _editLastProductStockWarehouse,
   _editStock,
   _delStock,
   _addProduction,
@@ -751,9 +840,11 @@ export const {
   _addRecipeMaterialLog,
   _editRecipeMaterialLog,
   _addRecipeMaterial,
-  _addRawMaterial,
+  _addRawMaterialStockLog,
   _editRawMaterial,
-  _addRawMaterialLog,
+  _addRawMaterialStock,
+  _addRecipeMaterialStock,
+  _addRecipeMaterialStockLog,
   _editRawMaterialLog,
   _editRecipe,
   _delRecipe,

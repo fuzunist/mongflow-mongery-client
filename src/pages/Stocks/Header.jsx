@@ -7,7 +7,7 @@ import { PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-const Header = ({ stocks }) => {
+const Header = ({ stocks, page }) => {
     const { t } = useTranslation()
     const products = useProducts()
     const [zeros, setZeros] = useState(true)
@@ -15,6 +15,7 @@ const Header = ({ stocks }) => {
     return (
         <div className='flex-1 flex max-[576px]:flex-col justify-between gap-y-4 mb-6'>
             <Modal
+            width="lg"
                 className='bg-purple hover:bg-purple-hover text-white rounded-full py-2 px-4 flex justify-center items-center gap-2'
                 text={
                     <>
@@ -22,13 +23,13 @@ const Header = ({ stocks }) => {
                             size={14}
                             strokeWidth={2}
                         />{' '}
-                        {t('addStock')}
+                        {t('Ürün Alımı Ekle')}
                     </>
                 }
             >
-                {({ close }) => <CreateStock closeModal={close} />}
+                {({ close }) => <CreateStock closeModal={close} page={page} />}
             </Modal>
-            <div className='flex justify-center items-center gap-4'>
+            {/* <div className='flex justify-center items-center gap-4'>
                 <label className='flex justify-center items-center gap-2 cursor-pointer'>
                     <span className='text-text-dark-light dark:text-text-dark-dark text-sm font-semibold select-none'>{t('allStocks')}</span>
                     <input
@@ -44,7 +45,7 @@ const Header = ({ stocks }) => {
                 >
                     {t('saveAsExcel')}
                 </button>
-            </div>
+            </div> */}
         </div>
     )
 }

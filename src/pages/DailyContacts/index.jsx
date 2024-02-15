@@ -13,7 +13,7 @@ import CreateEditCustomer from "@/modals/CreateEditCustomer";
 import { delCustomer, setCustomer, setContact, delContact } from "@/store/actions/apps";
 import { useMemo, useState } from "react";
 import { useUser } from "@/store/hooks/user";
-import { Space, Table, Tag } from "antd";
+import { Popconfirm, Space, Table, Tag } from "antd";
 import { ClipboardEditIcon, Trash2Icon } from "lucide-react";
 import { delContactFromDB, delCustomerFromDB } from "@/services/customer";
 import CreateEditContact from "@/modals/CreateEditContact";
@@ -53,6 +53,7 @@ const DailyContacts = () => {
     );
     if (response?.error) return setError(response.error);
     delContact(id);
+    message.success('İletişim başarılı bir şekilde silindi.');
     closeModal();
   };
 
@@ -146,13 +147,23 @@ const DailyContacts = () => {
             </Modal>
           </div>
           <div className="flex">
+          <Popconfirm
+          placement="left"
+          title={"Silmek istediğinizden emin misiniz?"}
+        
+          okText="Evet"
+          cancelText="Hayır"
+          onConfirm={() => onDelete(record.id)}
+          onCancel={()=>message.error('İletişim silinmedi.')}
+        >
             <button
               className="p-1.5 bg-danger hover:bg-alert-danger-fg-light transition-colors text-white rounded"
-              onClick={() => onDelete(record.id)}
+              // onClick={() => onDelete(record.id)}
             >
               <Trash2Icon size={18} strokeWidth={2.5} />
               {/* {t("delete")} */}
             </button>
+            </Popconfirm>
           </div>
         </Space>
       ),

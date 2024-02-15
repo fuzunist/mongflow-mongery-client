@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useRecipeMaterials, useRecipes } from "@/store/hooks/apps";
 import FormikForm from "@/components/FormikForm";
 import { useUser } from "@/store/hooks/user";
-import { editRecipeMaterialToDB } from "@/services/recipematerial";
+import { editRecipeMaterialToDB } from "@/services/recipematerialstocks";
 import { editRecipeMaterial } from "@/store/actions/apps";
 import { useTranslation } from "react-i18next";
 

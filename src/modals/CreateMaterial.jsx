@@ -3,8 +3,8 @@ import {
   addRecipeMaterialLogToDB,
   editRecipeMaterialLogToDB,
   editRecipeMaterialToDB,
-  addRecipeMaterialToDB
-} from "@/services/recipematerial";
+  // addRecipeStockLogToDB
+} from "@/services/recipematerialstocks";
 import { useUser } from "@/store/hooks/user";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -42,21 +42,21 @@ const CreateMaterial = ({ closeModal, editing = false, selected }) => {
     setSubmitting(true);
   
 
-    const addRecipeMaterialResponse =await addRecipeMaterialToDB(
-      user.tokens.access_token,
-      values
-    ).catch((error) => {
-      console.error("Error in addRecipeMaterialLogToDB:", error);
-      setError(error);
-      throw error;
-    });
-     console.log(addRecipeMaterialResponse)
+    // const addRecipeMaterialResponse =await addRecipeMaterialToDB(
+    //   user.tokens.access_token,
+    //   values
+    // ).catch((error) => {
+    //   console.error("Error in addRecipeMaterialLogToDB:", error);
+    //   setError(error);
+    //   throw error;
+    // });
+    //  console.log(addRecipeMaterialResponse)
 
-     if(addRecipeMaterialResponse?.error){
-        return setError(addRecipeMaterialResponse?.error);
-     }
+    //  if(addRecipeMaterialResponse?.error){
+    //     return setError(addRecipeMaterialResponse?.error);
+    //  }
 
-     addRecipeMaterial(addRecipeMaterialResponse);
+    //  addRecipeMaterial(addRecipeMaterialResponse);
       setSubmitting(false);
       closeModal();
     } catch (err) {

@@ -3,17 +3,17 @@ import {
   addRecipeMaterialLogToDB,
   editRecipeMaterialLogToDB,
   editRecipeMaterialToDB,
-} from "@/services/recipematerial";
+} from "@/services/recipematerialstocks";
 import { editRecipeMaterial } from "@/store/actions/apps";
 import { useUser } from "@/store/hooks/user";
 import { dateToIsoFormatWithTimezoneOffset } from "@/utils/helpers";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecipeMaterials } from "@/store/hooks/apps";
-import {
-  addRecipeMaterialLog,
-  editRecipeMaterialLog,
-} from "@/store/actions/apps";
+// import {
+//   addRecipeMaterialLog,
+//   editRecipeMaterialLog,
+// } from "@/store/actions/apps";
 
 const CreateMaterialStock = ({ closeModal, editing = false, selected }) => {
   const user = useUser();
@@ -144,7 +144,7 @@ const CreateMaterialStock = ({ closeModal, editing = false, selected }) => {
         return setError(editStockResponse?.error);
       }
 
-      addRecipeMaterialLog(addRecipeMaterialLogResponse);
+      // addRecipeMaterialLog(addRecipeMaterialLogResponse);
       editRecipeMaterial(editStockResponse);
       setSubmitting(false);
       closeModal();
@@ -166,7 +166,7 @@ const CreateMaterialStock = ({ closeModal, editing = false, selected }) => {
         selected.id
       );
       if (response?.error) return setError(response.error);
-      editRecipeMaterialLog(response);
+      // editRecipeMaterialLog(response);
       setSubmitting(false);
       closeModal();
     } catch (err) {

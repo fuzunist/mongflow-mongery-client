@@ -131,7 +131,6 @@ const CreateEditContactForm = ({
             options={personSelectOptions}
           />
         </Form.Item>
-
         <Form.Item
           name="contacttype"
           label={t("İletişim Türü")}

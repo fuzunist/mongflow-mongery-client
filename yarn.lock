@@ -231,6 +231,14 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.22.5"
 
+"@babel/runtime-corejs3@^7.22.5":
+  version "7.23.9"
+  resolved "https://registry.npmjs.org/@babel/runtime-corejs3/-/runtime-corejs3-7.23.9.tgz"
+  integrity sha512-oeOFTrYWdWXCvXGB5orvMTJ6gCZ9I6FBjR+M38iKNXCsPxr4xT0RTdg5uz1H7QP8pp74IzPtwritEr+JscqHXQ==
+  dependencies:
+    core-js-pure "^3.30.2"
+    regenerator-runtime "^0.14.0"
+
 "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.1", "@babel/runtime@^7.10.4", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.0", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.7", "@babel/runtime@^7.18.0", "@babel/runtime@^7.18.3", "@babel/runtime@^7.19.4", "@babel/runtime@^7.20.0", "@babel/runtime@^7.20.13", "@babel/runtime@^7.20.7", "@babel/runtime@^7.21.0", "@babel/runtime@^7.22.5", "@babel/runtime@^7.23.2", "@babel/runtime@^7.23.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
   version "7.23.6"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.23.6.tgz"
@@ -767,6 +775,11 @@
   dependencies:
     legacy-swc-helpers "npm:@swc/helpers@=0.4.14"
     tslib "^2.4.0"
+
+"@tsconfig/node18@^18.2.2":
+  version "18.2.2"
+  resolved "https://registry.npmjs.org/@tsconfig/node18/-/node18-18.2.2.tgz"
+  integrity sha512-d6McJeGsuoRlwWZmVIeE8CUA27lu6jLjvv1JzqmpsytOYYbVi1tHZEnwCNVOXnj4pyLvneZlFlpXUK+X9wBWyw==
 
 "@types/babel__core@^7.20.3":
   version "7.20.4"
@@ -1532,6 +1545,11 @@ copy-to-clipboard@^3.3.1, copy-to-clipboard@^3.3.3:
   integrity sha512-2KV8NhB5JqC3ky0r9PMCAZKbUHSwtEo4CwCs0KXgruG43gX5PMqDEBbVU4OUzw2MuAWUfsuFmWvEKG5QRfSnJA==
   dependencies:
     toggle-selection "^1.0.6"
+
+core-js-pure@^3.30.2:
+  version "3.35.1"
+  resolved "https://registry.npmjs.org/core-js-pure/-/core-js-pure-3.35.1.tgz"
+  integrity sha512-zcIdi/CL3MWbBJYo5YCeVAAx+Sy9yJE9I3/u9LkFABwbeaPhTMRWraM8mYFp9jW5Z50hOy7FVzCc8dCrpZqtIQ==
 
 core-util-is@~1.0.0:
   version "1.0.3"
@@ -5076,6 +5094,15 @@ tslib@2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.0.1.tgz"
   integrity sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ==
+
+turkey-neighbourhoods@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.npmjs.org/turkey-neighbourhoods/-/turkey-neighbourhoods-3.1.0.tgz"
+  integrity sha512-c2a6PvF+j1tbRDhgqvnEUODzbGSl70JH8/3t8YF8YgM22bEiJ1s84dryWrsAL7wS0psXwEP7Yea16X0EK5dTTQ==
+  dependencies:
+    "@babel/runtime" "^7.22.5"
+    "@babel/runtime-corejs3" "^7.22.5"
+    "@tsconfig/node18" "^18.2.2"
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"

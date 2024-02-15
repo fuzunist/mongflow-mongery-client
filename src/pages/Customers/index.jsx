@@ -199,25 +199,37 @@ const Customers = () => {
   return (
     <>
       <Header authenticate={authenticate} page={page} setPage={setPage} />
-      <Row align={"center"} className="mt-8 ">
-        <Card variant="overflow">
+      <Row align={"center"} className="mt-8">
+        <Card>
           <Card.Body>
             <Space
               split={true}
-              size={"small"}
               direction="vertical"
-              className="w-full"
+              size={"middle"}
             >
+            <div className="flex flex-col flex-1 w-full">
               <Table
+              // className="w-max"
+              locale={{emptyText:"Veri Bulunamadı"} }
+
                 dataSource={dataSource}
+              size={"small"}
+            scroll={
+             { x: 1000,
+              y: 900
+            }
+            }
                 columns={columns}
+                // pagination={false}
                 expandable={{
                   expandedRowRender: (record) => (
-                    <div className="flex flex-col w-[60%] justify-start items-start">
+                    <div className="flex flex-col w-[60%] justify-start items-start py-2 ">
                     <Table
                       showHeader={false}
                       pagination={false}
                       dataSource={record.contacts}
+                      locale={{emptyText:"Veri Bulunamadı"} }
+                    
                     >
                       <Column title="İsim" dataIndex="name" key="name" />
                       <Column title="Telefon" dataIndex="phone" key="phone" />
@@ -243,6 +255,7 @@ const Customers = () => {
               >
       
               </Table>
+              </div>
             </Space>
           </Card.Body>
         </Card>

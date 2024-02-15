@@ -110,17 +110,17 @@ export default [
       ],
     },
   },
+  // {
+  //   key: "apps-stocks",
+  //   icon: Layers,
+  //   url: "/apps/stocks",
+  //   authenticate: {
+  //     type: "usertype",
+  //     value: ["admin", "stock_manager", "boss"],
+  //   },
+  // },
   {
     key: "apps-stocks",
-    icon: Layers,
-    url: "/apps/stocks",
-    authenticate: {
-      type: "usertype",
-      value: ["admin", "stock_manager", "boss"],
-    },
-  },
-  {
-    key: "apps-rawmaterials-stocks",
     icon: Layers,
     url: "/apps/rawmaterials-stocks",
     authenticate: {

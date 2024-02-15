@@ -1,9 +1,8 @@
 import FormikForm from "@/components/FormikForm";
-import { addRawMaterialToDB } from "@/services/rawmaterial";
+// import { addRawMaterialToDB } from "@/services/rawmaterialstocks";
 import { useUser } from "@/store/hooks/user";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { addRawMaterial } from "@/store/actions/apps";
 
 const CreateRawMaterial = ({ closeModal, editing = false, selected }) => {
   const user = useUser();
@@ -47,7 +46,7 @@ const CreateRawMaterial = ({ closeModal, editing = false, selected }) => {
         return setError(addRawMaterialResponse?.error);
       }
 
-      addRawMaterial(addRawMaterialResponse);
+      // addRawMaterial(addRawMaterialResponse);
       setSubmitting(false);
       closeModal();
     } catch (err) {

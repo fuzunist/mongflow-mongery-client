@@ -11,7 +11,7 @@ import {
 } from "@/services/recipe";
 import { calculateAverageType } from "@/utils/apps";
 
-import { updateRecipeMaterialStocksInProductionToDB } from "@/services/recipematerial";
+import { updateRecipeMaterialStocksInProductionToDB } from "@/services/recipematerialstocks";
 import {
   addProductionRecipe,
   addRecipe,
