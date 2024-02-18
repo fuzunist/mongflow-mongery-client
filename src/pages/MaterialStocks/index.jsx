@@ -1,6 +1,6 @@
 import Header from "./Header";
 import { useMemo, useState } from "react";
-import Logs from "./Logs/index.jsx";
+import Logs from "@/pages/MaterialStocks/Logs";
 
 const MaterialStocks = () => {
   const [page, setPage] = useState("lastProductStocks");
