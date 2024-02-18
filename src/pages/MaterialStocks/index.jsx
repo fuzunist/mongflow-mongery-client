@@ -1,6 +1,6 @@
 import Header from "./Header";
 import { useMemo, useState } from "react";
-import Logs from "@/pages/MaterialStocks/Logs";
+import Log from "./Logs/Log";
 
 const MaterialStocks = () => {
   const [page, setPage] = useState("lastProductStocks");
@@ -8,7 +8,7 @@ const MaterialStocks = () => {
   return (
     <>
       <Header page={page} setPage={setPage} />
-      <Logs page={page} />
+      <Log page={page} />
     </>
   );
 };
