@@ -1,5 +1,5 @@
 import Header from "./Header";
-import { useMemo, useState } from "react";
+import {useState } from "react";
 import Log from "./Logs/Log";
 
 const MaterialStocks = () => {
