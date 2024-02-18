@@ -23,17 +23,13 @@ import Productions from "@/pages/Productions";
 
 
 //auth
-import Login from "@/pages/Login";
-import Register from "@/pages/Register";
+// import Login from "@/pages/Login";
+// import Register from "@/pages/Register";
 import LogOut from "@/pages/LogOut";
-import ForgetPassword from "@/pages/ForgetPassword";
 import Profile from "@/pages/Profile";
-import Materials from "@/pages/Materials";
+// import Materials from "@/pages/Materials";
 import Expenses from "@/pages/Expenses";
-import RecipeMaterialStocks from "@/pages/RecipeMaterialStocks";
-import RawMaterialStocks from "@/pages/RawMaterialStocks";
 import MaterialStocks from "@/pages/MaterialStocks";
-import InvoiceView from "@/components/InvoicePDF/InvoiceView.jsx";
 
 
 const routes = createBrowserRouter([
@@ -131,11 +127,11 @@ const routes = createBrowserRouter([
         element: <Productions />,
         errorElement: <NotFound />,
       },
-      {
-        path: "apps/materials",
-        element: <Materials />,
-        errorElement: <NotFound />,
-      },
+      // {
+      //   path: "apps/materials",
+      //   element: <Materials />,
+      //   errorElement: <NotFound />,
+      // },
       {
         path: "apps/expenses",
         element: <Expenses />,
