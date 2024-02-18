@@ -4,7 +4,6 @@ import Log from "./Logs/Log";
 
 const MaterialStocks = () => {
   const [page, setPage] = useState("lastProductStocks");
-
   return (
     <>
       <Header page={page} setPage={setPage} />
