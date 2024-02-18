@@ -243,7 +243,6 @@ const initialState = {
   lastProductStockLogs: [],
   lastProductStockWarehouse: [],
   rawMaterialStocks: [],
-  rawMaterialStockLogs: [],
   recipeMaterialStocks: [],
   productions: [],
   users: [],
