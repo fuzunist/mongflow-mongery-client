@@ -9,11 +9,11 @@ import {
 } from "@/services/recipe";
 import {
   getRecipeMaterialsFromDB,
-  getRecipeMaterialLogsFromDB,
+  getRecipeMaterialStockLogsFromDB,
 } from "@/services/recipematerialstocks";
 import {
   getRawMaterialsFromDB,
-  getRawMaterialLogsFromDB,
+  getRawMaterialStockLogsFromDB,
 } from "@/services/rawmaterialstocks";
 import { getStocksFromDB } from "@/services/stock";
 import { getUsersFromDB } from "@/services/auth";
@@ -27,9 +27,11 @@ import {
 } from "@/services/expenses";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
-import { getProductStockWarehouse } from "@/services/lastproductstocks";
+import { getProductStockLogsFromDB, getProductStockWarehouse, getProductStocks } from "@/services/lastproductstocks";
 
 const todayDate = dayjs().format("YYYY-MM-DD");
+const threeDaysAgo=dayjs().subtract(3, 'day').format("YYYY-MM-DD");
+const lastMonthDate = dayjs().subtract(30, 'day').format("YYYY-MM-DD");
 
 export const _promiseAll = createAsyncThunk(
   "apps/promiseAll",
@@ -39,16 +41,18 @@ export const _promiseAll = createAsyncThunk(
       recipes,
       productionRecipes,
       specialRecipes,
-      recipeMaterialLogs,
+      recipeMaterialStockLogs,
       recipeMaterials,
-      rawMaterialLogs,
+      rawMaterialStockLogs,
       rawMaterials,
       sets,
       customers,
       contacts,
       orders,
       stocks,
+      lastProductStocks,
       lastProductStockWarehouse,
+      lastProductStockLogs,
       productions,
       expensesItems,
       expensesClasses,
@@ -60,19 +64,30 @@ export const _promiseAll = createAsyncThunk(
       getRecipesFromDB(access_token),
       getProductionRecipesFromDB(access_token),
       getSpecialRecipesFromDB(access_token),
-      getRecipeMaterialLogsFromDB(access_token),
+      getRecipeMaterialStockLogsFromDB(access_token, {
+        startDate: lastMonthDate,
+        endDate: todayDate,
+      }),
       getRecipeMaterialsFromDB(access_token),
-      getRawMaterialLogsFromDB(access_token),
+      getRawMaterialStockLogsFromDB(access_token, {
+        startDate: lastMonthDate,
+        endDate: todayDate,
+      }),
       getRawMaterialsFromDB(access_token),
       getSetsFromDB(access_token),
       getCustomersFromDB(access_token),
       getContactsFromDB(access_token, {
-        startDate: todayDate,
+        startDate: threeDaysAgo,
         endDate: todayDate,
       }),
       getOrdersFromDB(access_token),
       getStocksFromDB(access_token),
+      getProductStocks(access_token),
       getProductStockWarehouse(access_token),
+      getProductStockLogsFromDB(access_token, {
+        startDate: lastMonthDate,
+        endDate: todayDate,
+      }),
       getProductionsFromDB(access_token),
       getExpensesItemsFromDB(access_token),
       getExpensesClassesFromDB(access_token),
@@ -117,10 +132,17 @@ export const _promiseAll = createAsyncThunk(
       return rejectWithValue({ type: "getOrdersFromDB", error: orders.error });
     else if (stocks?.error)
       return rejectWithValue({ type: "getStocksFromDB", error: stocks.error });
-    else if (lastProductStockWarehouse?.error)
+    else if (lastProductStocks?.error)
+      return rejectWithValue({ type: "lastProductStocksFromDB", error: lastProductStocks.error });
+    else if (lastProductStocks?.error)
       return rejectWithValue({
         type: "getlastProductStockWarehouseFromDB",
         error: lastProductStockWarehouse.error,
+      });
+      else if (lastProductStockLogs?.error)
+      return rejectWithValue({
+        type: "getlastProductStockLogsFromDB",
+        error: lastProductStockLogs.error,
       });
     else if (productions?.error)
       return rejectWithValue({
@@ -139,10 +161,10 @@ export const _promiseAll = createAsyncThunk(
         type: "getRawMaterialStocks",
         error: rawMaterials.error,
       });
-    else if (recipeMaterialLogs?.error)
+    else if (recipeMaterialStockLogs?.error)
       return rejectWithValue({
-        type: "getRecipeMaterialLogs",
-        error: recipeMaterialLogs.error,
+        type: "getrecipeMaterialStockLogs",
+        error: recipeMaterialStockLogs.error,
       });
     else if (expenses?.error)
       return rejectWithValue({
@@ -174,16 +196,18 @@ export const _promiseAll = createAsyncThunk(
       recipes,
       productionRecipes,
       specialRecipes,
-      recipeMaterialLogs,
+      recipeMaterialStockLogs,
       recipeMaterials,
-      rawMaterialLogs,
+      rawMaterialStockLogs,
       rawMaterials,
       sets,
       customers,
       contacts,
       orders,
       stocks,
+      lastProductStocks,
       lastProductStockWarehouse,
+      lastProductStockLogs,
       productions,
       expensesItems,
       expensesClasses,
@@ -209,9 +233,9 @@ const initialState = {
   productionRecipes: [],
   specialRecipes: [],
   recipeMaterials: [],
-  recipeMaterialLogs: [],
+  recipeMaterialStockLogs: [],
   rawMaterials: [],
-  rawMaterialLogs: [],
+  rawMaterialStockLogs: [],
   sets: [],
   orders: [],
   stocks: [],
@@ -221,7 +245,6 @@ const initialState = {
   rawMaterialStocks: [],
   rawMaterialStockLogs: [],
   recipeMaterialStocks: [],
-  recipeMaterialStockLogs: [],
   productions: [],
   users: [],
   exchangeRates: [],
@@ -264,6 +287,10 @@ const apps = createSlice({
         action.payload,
       ];
     },
+
+    _addAllRangeProductStockLogs: (state, action) => {
+      state.lastProductStockLogs = [...action.payload];
+    },
     _addLastProductStockWarehouse: (state, action) => {
       state.lastProductStockWarehouse = [
         ...state.lastProductStockWarehouse,
@@ -281,6 +308,94 @@ const apps = createSlice({
         }
       );
     },
+    _addAllRangeRawMaterialStockLogs: (state, action) => {
+      state.rawMaterialStockLogs = [...action.payload];
+    },
+    _addRawMaterialStockLog: (state, action) => {
+      state.rawMaterialStockLogs = [
+        ...state.rawMaterialStockLogs,
+        action.payload,
+      ];
+    },
+    _editrawMaterialStockLog: (state, action) => {
+      state.rawMaterialStockLogs = state.rawMaterialStockLogs.map((rawMaterialStockLog) => {
+        if (rawMaterialStockLog.id === action.payload.id)
+          rawMaterialStockLog = {
+            ...rawMaterialStockLog,
+            ...action.payload,
+          };
+        return rawMaterialStockLog;
+      });
+    },
+    _addRawMaterialStock: (state, action) => {
+      state.rawMaterialStocks = [...state.rawMaterialStocks, action.payload];
+
+      state.rawMaterialStocks = state.rawMaterialStocks.map((stock) => {
+        if (stock.id === action.payload.id) {
+          stock = { ...stock, ...action.payload };
+          return stock;
+        }
+      });
+    },
+    _addRecipeMaterialStock: (state, action) => {
+      state.recipeMaterialStocks = [
+        ...state.recipeMaterialStocks,
+        action.payload,
+      ];
+
+      state.recipeMaterialStocks = state.recipeMaterialStocks.map((stock) => {
+        if (stock.id === action.payload.id) {
+          stock = { ...stock, ...action.payload };
+          return stock;
+        }
+      });
+    },
+    _editRawMaterial: (state, action) => {
+      state.rawMaterials = state.rawMaterials.map((rawMaterial) => {
+        if (rawMaterial.id === action.payload.id)
+          rawMaterial = {
+            ...rawMaterial,
+            ...action.payload,
+          };
+        return rawMaterial;
+      });
+    },
+    _addAllRangeRecipeMaterialStockLogs : (state, action)=>{
+      state.recipeMaterialStockLogs = [...action.payload];
+    },
+    _addRecipeMaterialStockLog: (state, action) => {
+      state.recipeMaterialStockLogs = [
+        ...state.recipeMaterialStockLogs,
+        action.payload,
+      ];
+    },
+    _editRecipeMaterialStockLog: (state, action) => {
+      state.recipeMaterialStockLogs = state.recipeMaterialStockLogs.map(
+        (recipeMaterialStockLog) => {
+          if (recipeMaterialStockLog.id === action.payload.id)
+            recipeMaterialStockLog = {
+              ...recipeMaterialStockLog,
+              ...action.payload,
+            };
+          return recipeMaterialStockLog;
+        }
+      );
+    },
+    _addRecipeMaterial: (state, action) => {
+      state.recipeMaterials = [...state.recipeMaterials, action.payload];
+    },
+
+    _editRecipeMaterial: (state, action) => {
+      state.recipeMaterials = state.recipeMaterials.map((recipeMaterial) => {
+        if (recipeMaterial.id === action.payload.id)
+          recipeMaterial = {
+            ...recipeMaterial,
+            ...action.payload,
+          };
+        return recipeMaterial;
+      });
+    },
+    
     _editStock: (state, action) => {
       state.stocks = state.stocks.map((stock) => {
         if (stock.stock_id === action.payload.stock_id)
@@ -331,7 +446,7 @@ const apps = createSlice({
     },
 
     _addContact: (state, action) => {
-      state.contacts = [...state.contacts, action.payload];
+      state.contacts = [action.payload,...state.contacts];
     },
     _editContact: (state, action) => {
       state.contacts = state.contacts.map((contact) => {
@@ -392,99 +507,7 @@ const apps = createSlice({
         (specialRecipe) => specialRecipe.id !== action.payload
       );
     },
-    _addRecipeMaterial: (state, action) => {
-      console.log(
-        "_addRecipeMaterial action.payload in apps_____",
-        action.payload
-      );
-      state.recipeMaterials = [...state.recipeMaterials, action.payload];
-    },
-    _addRecipeMaterialLog: (state, action) => {
-      state.recipeMaterialLogs = [...state.recipeMaterialLogs, action.payload];
-    },
-    _editRecipeMaterialLog: (state, action) => {
-      state.recipeMaterialLogs = state.recipeMaterialLogs.map(
-        (recipeMaterialLog) => {
-          if (recipeMaterialLog.id === action.payload.id)
-            recipeMaterialLog = {
-              ...recipeMaterialLog,
-              ...action.payload,
-            };
-          return recipeMaterialLog;
-        }
-      );
-    },
-    _editRecipeMaterial: (state, action) => {
-      console.log(
-        "_editRecipeMaterial action.payload in apps_____",
-        action.payload
-      );
-
-      state.recipeMaterials = state.recipeMaterials.map((recipeMaterial) => {
-        if (recipeMaterial.id === action.payload.id)
-          recipeMaterial = {
-            ...recipeMaterial,
-            ...action.payload,
-          };
-        return recipeMaterial;
-      });
-    },
-    _addRawMaterialStock: (state, action) => {
-      state.rawMaterialStocks = [...state.rawMaterialStocks, action.payload];
-
-      state.rawMaterialStocks = state.rawMaterialStocks.map((stock) => {
-        if (stock.id === action.payload.id) {
-          stock = { ...stock, ...action.payload };
-          return stock;
-        }
-      });
-    },
-    _addRecipeMaterialStock: (state, action) => {
-      state.recipeMaterialStocks = [
-        ...state.recipeMaterialStocks,
-        action.payload,
-      ];
-
-      state.recipeMaterialStocks = state.recipeMaterialStocks.map((stock) => {
-        if (stock.id === action.payload.id) {
-          stock = { ...stock, ...action.payload };
-          return stock;
-        }
-      });
-    },
-    _editRawMaterial: (state, action) => {
-      state.rawMaterials = state.rawMaterials.map((rawMaterial) => {
-        if (rawMaterial.id === action.payload.id)
-          rawMaterial = {
-            ...rawMaterial,
-            ...action.payload,
-          };
-        return rawMaterial;
-      });
-    },
-    _addRawMaterialStockLog: (state, action) => {
-      state.rawMaterialStockLogs = [
-        ...state.rawMaterialStockLogs,
-        action.payload,
-      ];
-    },
-    _addRecipeMaterialStockLog: (state, action) => {
-      state.recipeMaterialStockLogs = [
-        ...state.recipeMaterialStockLogs,
-        action.payload,
-      ];
-    },
-    _editRawMaterialLog: (state, action) => {
-      state.rawMaterialLogs = state.rawMaterialLogs.map((rawMaterialLog) => {
-        if (rawMaterialLog.id === action.payload.id)
-          rawMaterialLog = {
-            ...rawMaterialLog,
-            ...action.payload,
-          };
-        return rawMaterialLog;
-      });
-    },
-
+   
     _addSet: (state, action) => {
       state.sets = [...state.sets, action.payload];
     },
@@ -747,7 +770,7 @@ const apps = createSlice({
       state.recipes = [];
       state.productionRecipes = [];
       state.specialRecipes = [];
-      state.recipeMaterialLogs = [];
+      state.recipeMaterialStockLogs = [];
       state.recipeMaterials = [];
       state.rawMaterials = [];
       state.sets = [];
@@ -755,7 +778,9 @@ const apps = createSlice({
       state.customers = [];
       state.contacts = [];
       state.stocks = [];
+      state.lastProductStocks=[];
       state.lastProductStockWarehouse = [];
+      state.lastProductStockLogs = [];
       state.productions = [];
       state.users = [];
       state.exchangeRates = [];
@@ -781,17 +806,20 @@ const apps = createSlice({
       state.recipes = action.payload.recipes;
       state.productionRecipes = action.payload.productionRecipes;
       state.specialRecipes = action.payload.specialRecipes;
-      state.recipeMaterialLogs = action.payload.recipeMaterialLogs;
+      state.recipeMaterialStockLogs = action.payload.recipeMaterialStockLogs;
       state.recipeMaterials = action.payload.recipeMaterials;
-      state.rawMaterialLogs = action.payload.rawMaterialLogs;
+      state.rawMaterialStockLogs = action.payload.rawMaterialStockLogs;
       state.rawMaterials = action.payload.rawMaterials;
       state.sets = action.payload.sets;
       state.orders = action.payload.orders;
       state.customers = action.payload.customers;
       state.contacts = action.payload.contacts;
       state.stocks = action.payload.stocks;
+      state.lastProductStocks=action.payload.lastProductStocks;
       state.lastProductStockWarehouse =
         action.payload.lastProductStockWarehouse;
+      state.lastProductStockLogs =
+        action.payload.lastProductStockLogs;
       state.productions = action.payload.productions;
       state.users = action.payload.users;
       state.exchangeRates = action.payload.exchangeRates;
@@ -813,6 +841,9 @@ export const {
   _addLastProductStockLog,
   _addLastProductStockWarehouse,
   _editLastProductStockWarehouse,
+  _addAllRangeProductStockLogs,
+  _addAllRangeRawMaterialStockLogs,
+  _addAllRangeRecipeMaterialStockLogs,
   _editStock,
   _delStock,
   _addProduction,
@@ -837,8 +868,7 @@ export const {
   _addProductionRecipe,
   _addSpecialRecipe,
   _editRecipeMaterial,
-  _addRecipeMaterialLog,
-  _editRecipeMaterialLog,
+  _editRecipeMaterialStockLog,
   _addRecipeMaterial,
   _addRawMaterialStockLog,
   _editRawMaterial,

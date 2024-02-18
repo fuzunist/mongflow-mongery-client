@@ -8,7 +8,12 @@ import { delCustomer, setCustomer } from "@/store/actions/apps";
 import { useMemo, useState } from "react";
 import { useUser } from "@/store/hooks/user";
 import { Popconfirm, Space, Table, Tag, message } from "antd";
-import { ClipboardEditIcon, Trash2Icon, ContactIcon, Headphones } from "lucide-react";
+import {
+  ClipboardEditIcon,
+  Trash2Icon,
+  ContactIcon,
+  Headphones,
+} from "lucide-react";
 import { delCustomerFromDB } from "@/services/customer";
 import Col from "@/components/Col";
 import Card from "@/components/Card";
@@ -22,11 +27,12 @@ const Customers = () => {
   const searchValue = useSearch();
   const user = useUser();
   const [error, setError] = useState("");
-  const [page,setPage]= useState(1)
+  const [page, setPage] = useState(1);
 
- console.log("page xx", page)
-  const pageCustomers=customers?.filter((customer)=> customer?.customer_type?.includes(page));
-
+  console.log("page xx", page);
+  const pageCustomers = customers?.filter((customer) =>
+    customer?.customer_type?.includes(page)
+  );
 
   const authenticate = useMemo(
     () => ["admin", "stock_manager"].includes(user.usertype),
@@ -40,9 +46,12 @@ const Customers = () => {
       customerid
     );
     if (response?.error) return setError(response.error);
-    delCustomer(customerid);
-    message.success('Müşteri başarılı bir şekilde silindi.');
-    closeModal();
+
+    setTimeout(() => {
+      closeModal();
+      delCustomer(customerid);
+      message.success("Müşteri başarılı bir şekilde silindi.");
+    }, 2000);
   };
 
   const closeModal = () => setCustomer(null);
@@ -84,36 +93,31 @@ const Customers = () => {
       title: "Şirket İsmi",
       dataIndex: "companyname",
       key: "companyname",
-      className: "text-sm"
+      className: "text-sm",
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      className: "text-sm"
-
-      
+      className: "text-sm",
     },
     {
       title: "Telefon",
       dataIndex: "phone",
       key: "phone",
-      className: "text-sm"
-
+      className: "text-sm",
     },
     {
       title: "Website",
       dataIndex: "website",
       key: "website",
-      className: "text-sm break-words "
-      
+      className: "text-sm break-words ",
     },
     {
       title: "Adres",
       dataIndex: "address",
       key: "address",
-      className: "text-xs"
-
+      className: "text-xs",
     },
     {
       title: "Ürün Grupları",
@@ -140,17 +144,21 @@ const Customers = () => {
       render: (_, record) => (
         <Space size="middle">
           <div className=" flex" onClick={() => setCustomer(record.id)}>
-          <Modal
-            text={
-              <div className="bg-green-700 hover:bg-green-600 text-white rounded p-1.5">
-                <Headphones size={18} strokeWidth={2.5} />
-              </div>
-            }
-          >
-            {({ close }) => (
-              <CreateEditContact editing={false} closeModal={close} record={record} />
-            )}
-          </Modal>
+            <Modal
+              text={
+                <div className="bg-green-700 hover:bg-green-600 text-white rounded p-1.5">
+                  <Headphones size={18} strokeWidth={2.5} />
+                </div>
+              }
+            >
+              {({ close }) => (
+                <CreateEditContact
+                  editing={false}
+                  closeModal={close}
+                  record={record}
+                />
+              )}
+            </Modal>
           </div>
           <div className="flex" onClick={() => setCustomer(record.id)}>
             <Modal
@@ -172,22 +180,21 @@ const Customers = () => {
             </Modal>
           </div>
           <div className="flex">
-          <Popconfirm
-          placement="left"
-          title={"Silmek istediğinizden emin misiniz?"}
-        
-          okText="Evet"
-          cancelText="Hayır"
-          onConfirm={() => onDelete(record.id)}
-          onCancel={()=>message.error('Müşteri silinmedi.')}
-        >
-            <button
-              className="p-1.5 bg-danger hover:bg-alert-danger-fg-light transition-colors text-white rounded"
-              // onClick={}
+            <Popconfirm
+              placement="left"
+              title={"Silmek istediğinizden emin misiniz?"}
+              okText="Evet"
+              cancelText="Hayır"
+              onConfirm={() => onDelete(record.id)}
+              onCancel={() => message.error("Müşteri silinmedi.")}
             >
-              <Trash2Icon size={18} strokeWidth={2.5} />
-              {/* {t("delete")} */}
-            </button>
+              <button
+                className="p-1.5 bg-danger hover:bg-alert-danger-fg-light transition-colors text-white rounded"
+                // onClick={}
+              >
+                <Trash2Icon size={18} strokeWidth={2.5} />
+                {/* {t("delete")} */}
+              </button>
             </Popconfirm>
           </div>
         </Space>
@@ -195,66 +202,66 @@ const Customers = () => {
     },
   ];
 
-
   return (
     <>
       <Header authenticate={authenticate} page={page} setPage={setPage} />
-      <Row align={"center"} className="mt-8">
-        <Card>
+      <Row align={"center"} className="mt-8 ">
+        <Card variant="overflow">
           <Card.Body>
-            <Space
-              split={true}
-              direction="vertical"
-              size={"middle"}
-            >
-            <div className="flex flex-col flex-1 w-full">
-              <Table
-              // className="w-max"
-              locale={{emptyText:"Veri Bulunamadı"} }
-
-                dataSource={dataSource}
-              size={"small"}
-            scroll={
-             { x: 1000,
-              y: 900
-            }
-            }
-                columns={columns}
-                // pagination={false}
-                expandable={{
-                  expandedRowRender: (record) => (
-                    <div className="flex flex-col w-[60%] justify-start items-start py-2 ">
-                    <Table
-                      showHeader={false}
-                      pagination={false}
-                      dataSource={record.contacts}
-                      locale={{emptyText:"Veri Bulunamadı"} }
-                    
-                    >
-                      <Column title="İsim" dataIndex="name" key="name" />
-                      <Column title="Telefon" dataIndex="phone" key="phone" />
-                      <Column  title="Email" dataIndex="email" key="email" />
-                      <Column
-                        title="Rol"
-                        dataIndex="role"
-                        key="role"
-                        render={(tag) => (
-                          <>
-                            <Tag color="green" key={"role"}>
-                              {tag}
-                            </Tag>
-                          </>
-                        )}
-                      />
-                    </Table>
-                     </div>
-                  ),
-                  rowExpandable: (record) => record.name !== "Not Expandable",
-                  expandRowByClick: true,
-                }}
+            <Space split={true} direction="vertical" size={"middle"}>
+              <div
+                className={`flex flex-col flex-1 w-full border ${
+                  searchValue ? " border-blue-300" : ""
+                } `}
               >
-      
-              </Table>
+                <Table
+                  locale={{ emptyText: "Veri Bulunamadı" }}
+                  pagination={{
+                    showTotal: (total) => `Toplam Firma: ${total} adet `,
+                    pageSizeOptions: [20, 50, 100, 200, 300],
+                    defaultPageSize: 20,
+                    hideOnSinglePage: true,
+                  }}
+                  dataSource={dataSource}
+                  size={"small"}
+                  scroll={{ x: 1000, y: 900 }}
+                  columns={columns}
+                  // pagination={false}
+                  expandable={{
+                    expandedRowRender: (record) => (
+                      <div className="flex flex-col w-[60%] justify-start items-start py-2 ">
+                        <Table
+                          showHeader={false}
+                          pagination={false}
+                          dataSource={record.contacts}
+                          locale={{ emptyText: "Veri Bulunamadı" }}
+                        >
+                          <Column title="İsim" dataIndex="name" key="name" />
+                          <Column
+                            title="Telefon"
+                            dataIndex="phone"
+                            key="phone"
+                          />
+                          <Column title="Email" dataIndex="email" key="email" />
+                          <Column
+                            title="Rol"
+                            dataIndex="role"
+                            key="role"
+                            render={(tag) => (
+                              <>
+                                <Tag color="green" key={"role"}>
+                                  {tag}
+                                </Tag>
+                              </>
+                            )}
+                          />
+                        </Table>
+                      </div>
+                    ),
+                    rowExpandable: (record) => record.name !== "Not Expandable",
+                    expandRowByClick: true,
+                  }}
+                ></Table>
               </div>
             </Space>
           </Card.Body>

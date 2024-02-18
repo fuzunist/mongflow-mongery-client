@@ -36,7 +36,7 @@ const ProductStockForm = ({
   setError,
   setCurrency,
   rate,
-  currency
+  currency,
 }) => {
   const { t } = useTranslation();
   const selectedProduct = useProduct();
@@ -137,6 +137,18 @@ const ProductStockForm = ({
           rules={[
             {
               required: true,
+              message: initialValues.quantity.label + " Girilmelidir!",
+            },
+          ]}
+          name={"quantity"}
+          label={initialValues.quantity.label}
+        >
+          <InputNumber className="w-full" min={0} />
+        </Form.Item>
+        <Form.Item
+          rules={[
+            {
+              required: true,
               message: initialValues.price.label + " Girilmelidir!",
             },
           ]}
@@ -144,101 +156,6 @@ const ProductStockForm = ({
           label={initialValues.price.label}
         >
           <InputNumber className="w-full" prefix={currency} min={0} />
-        </Form.Item>
-
-        <Form.Item
-          rules={[
-            {
-              required: true,
-              message: initialValues.quantity.label + " Girilmelidir!",
-            },
-          ]}
-          name={"quantity"}
-          label={initialValues.quantity.label}
-        >
-          <InputNumber  className="w-full" min={0} />
-        </Form.Item>
-
-        <Form.Item
-          rules={[
-            {
-              required: true,
-              message: initialValues.waybill.label + " Girilmelidir!",
-            },
-          ]}
-          name={"waybill"}
-          label={initialValues.waybill.label}
-        >
-          <Input type="text" />
-        </Form.Item>
-
-        <Form.Item
-          rules={[
-            {
-              required: true,
-              message: "İrsaliye Tarihi Girilmelidir!",
-            },
-          ]}
-          name={"date"}
-          label="İrsaliye Tarihi"
-        >
-          <DatePicker
-            className="w-full"
-            locale={locale}
-            format={"DD/MM/YYYY"}
-          />
-        </Form.Item>
-
-        <Form.Item
-          rules={[
-            {
-              required: true,
-              message: "Tedarikçi Girilmelidir!",
-            },
-          ]}
-          name={"customer_id"}
-          label="Tedarikçi"
-        >
-          <Select
-            showSearch
-            filterOption={(input, option) =>
-              option.props.children
-                .toLowerCase()
-                .indexOf(input.toLowerCase()) >= 0 ||
-              option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-          >
-            {initialValues.customer_id?.options?.map((cus, index) => (
-              <Option key={index} value={cus.customer_id}>
-                {cus?.companyname}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-
-        <Form.Item
-          rules={[
-            {
-              required: true,
-              message: "Tedarikçi İl İlçe Girilmelidir",
-            },
-          ]}
-          name={"address"}
-          label="Tedarikçi İl İlçe"
-        >
-          <Cascader
-            options={initialValues.address.options}
-            placeholder="İl İlçe Seçiniz"
-            showSearch={{
-              ...(inputValue, path) =>
-                path.some(
-                  (option) =>
-                    option.label
-                      .toLowerCase()
-                      .indexOf(inputValue.toLowerCase()) > -1
-                ),
-            }}
-          />
         </Form.Item>
 
         <Form.Item
@@ -309,10 +226,90 @@ const ProductStockForm = ({
           <Input type="number" />
         </Form.Item>
 
-        <Form.Item 
-          name={"details"}
-          label="Alım Detayı">
-          <TextArea  />
+        <Form.Item
+          rules={[
+            {
+              required: true,
+              message: initialValues.waybill.label + " Girilmelidir!",
+            },
+          ]}
+          name={"waybill"}
+          label={initialValues.waybill.label}
+        >
+          <Input type="text" />
+        </Form.Item>
+
+        <Form.Item
+          rules={[
+            {
+              required: true,
+              message: "İrsaliye Tarihi Girilmelidir!",
+            },
+          ]}
+          name={"date"}
+          label="İrsaliye Tarihi"
+        >
+          <DatePicker
+            className="w-full"
+            locale={locale}
+            format={"DD/MM/YYYY"}
+          />
+        </Form.Item>
+
+        <Form.Item
+          rules={[
+            {
+              required: true,
+              message: "Tedarikçi Girilmelidir!",
+            },
+          ]}
+          name={"customer_id"}
+          label="Tedarikçi"
+        >
+          <Select
+            showSearch
+            filterOption={(input, option) =>
+              option.props.children
+                .toLowerCase()
+                .indexOf(input.toLowerCase()) >= 0 ||
+              option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
+            {initialValues.customer_id?.options?.map((cus, index) => (
+              <Option key={index} value={cus.customerid}>
+                {cus?.companyname}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          rules={[
+            {
+              required: true,
+              message: "Tedarikçi İl İlçe Girilmelidir",
+            },
+          ]}
+          name={"address"}
+          label="Tedarikçi İl İlçe"
+        >
+          <Cascader
+            options={initialValues.address.options}
+            placeholder="İl İlçe Seçiniz"
+            showSearch={{
+              ...(inputValue, path) =>
+                path.some(
+                  (option) =>
+                    option.label
+                      .toLowerCase()
+                      .indexOf(inputValue.toLowerCase()) > -1
+                ),
+            }}
+          />
+        </Form.Item>
+
+        <Form.Item name={"details"} label="Alım Detayı">
+          <TextArea />
         </Form.Item>
         <Form.Item
           wrapperCol={{

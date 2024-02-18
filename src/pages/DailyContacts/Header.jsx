@@ -13,7 +13,6 @@ import { useUser } from "@/store/hooks/user";
 import { addRangeContacts } from "@/store/actions/apps";
 import { useState } from "react";
 
-
 const Header = ({ authenticate }) => {
   const user = useUser();
   const { t } = useTranslation();
@@ -40,7 +39,8 @@ const Header = ({ authenticate }) => {
     } else {
       console.log("Clear");
       const todayDate = dayjs().format("YYYY-MM-DD");
-      const data = { startDate: todayDate, endDate: todayDate };
+      const threeDaysAgo = dayjs().subtract(3, "day").format("YYYY-MM-DD");
+      const data = { startDate: threeDaysAgo, endDate: todayDate };
 
       const getContactsResponse = await getContactsFromDB(
         user.tokens.access_token,

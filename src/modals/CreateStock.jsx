@@ -98,7 +98,6 @@ const CreateStock = ({ closeModal, editing = false, selected, page }) => {
       waybill: { value: "", label: "İrsaliye No" },
       date: { value: "", label: "İrsaliye Tarihi" },
       customer_id: {
-        value: "",
         options: customers.filter((cus) => cus.customer_type.includes(2)),
         label: "Tedarikçi",
       },

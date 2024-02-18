@@ -20,12 +20,11 @@ export const addProductStockLogToDB = async (access_token, params) => {
 };
 
 
-//bu aslında post olacak ve tarih olacak son bir ay default olacak
-export const getProductStockLogToDB = async (access_token, params) => {
+//tarih aralığı olacak son bir ay default olacak
+export const getProductStockLogsFromDB = async (access_token, params) => {
   try {
-
     const { data } = await axios.get(
-      `${import.meta.env.VITE_API_ENDPOINT}/stock/lastproduct`,
+      `${import.meta.env.VITE_API_ENDPOINT}/stock/lastproduct/logs?startDate=${params.startDate}&endDate=${params.endDate}`,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -51,6 +50,25 @@ export const getProductStockWarehouse = async (access_token) => {
       }
     );
 
+    return data;
+  } catch (e) {
+    return e.response.data;
+  }
+};
+
+export const getProductStocks = async (access_token) => {
+  try {
+
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API_ENDPOINT}/stock/lastproduct/stocks`,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+
+     console.log("getProductStocks", data)
     return data;
   } catch (e) {
     return e.response.data;

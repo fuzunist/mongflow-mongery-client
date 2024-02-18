@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Card, Form, Input, Select, Space, Typography } from "antd";
+import { Button, Card, Form, Input, InputNumber, Select, Space, Typography } from "antd";
 const { Paragraph } = Typography;
 import { useTranslation } from "react-i18next";
 import {
@@ -17,6 +17,8 @@ const SelectProductFromListForm = ({
   onFinish,
   error,
   setError,
+  quantity,
+  setQuantity
 }) => {
   const { t } = useTranslation();
 
@@ -91,6 +93,10 @@ const SelectProductFromListForm = ({
             </Select>
           </Form.Item>
         ))}
+
+        <Form.Item name="Miktar (ton)" label="Miktar (ton)">
+          <InputNumber defaultValue={quantity} onChange={(e)=> setQuantity(e)} />
+        </Form.Item>
 
         <Form.Item
           wrapperCol={{

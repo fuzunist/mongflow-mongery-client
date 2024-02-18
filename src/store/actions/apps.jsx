@@ -57,8 +57,6 @@ import {
   _addExpenseItem,
   _editExpenses,
   _editExpenseItemFreq,
-  _addRecipeMaterialLog,
-  _editRecipeMaterialLog,
   _editSelectProductWeight,
   _editSelectProductDelivery,
   _addLastProductStockLog,
@@ -67,8 +65,12 @@ import {
   _addRawMaterialStock,
   _addRecipeMaterialStock,
   _addRecipeMaterialStockLog,
+  _editRecipeMaterialStockLog,
   _addLastProductStockWarehouse,
-  _editLastProductStockWarehouse
+  _editLastProductStockWarehouse,
+  _addAllRangeProductStockLogs,
+  _addAllRangeRawMaterialStockLogs,
+  _addAllRangeRecipeMaterialStockLogs
 } from "../reducers/apps";
 
 export const promiseAll = (access_token, usertype) =>
@@ -81,6 +83,15 @@ export const addLastProductStock = (stock) =>
 
   export const addLastProductStockLog = (log) =>
   store.dispatch(_addLastProductStockLog(log));
+ 
+  export const addAllRangeProductStockLogs = (log) =>
+  store.dispatch(_addAllRangeProductStockLogs(log));
+  
+  export const addAllRangeRawMaterialStockLogs = (log) =>
+  store.dispatch(_addAllRangeRawMaterialStockLogs(log));
+
+  export const addAllRangeRecipeMaterialStockLogs = (log) =>
+  store.dispatch(_addAllRangeRecipeMaterialStockLogs(log));
 
   export const addLastProductStockWarehouse = (stock) =>
   store.dispatch(_addLastProductStockWarehouse(stock));
@@ -97,8 +108,6 @@ export const addRawMaterialStockLog = (rawStockLog) =>
   export const addRecipeMaterialStock = (recipeStock) =>
   store.dispatch(_addRecipeMaterialStock(recipeStock));
 
-export const addRecipeMaterialStockLog = (recipeStockLog) =>
-  store.dispatch(_addRecipeMaterialStockLog(recipeStockLog));
 
 export const editRawMaterial = (rawMaterial) =>
   store.dispatch(_editRawMaterial(rawMaterial));
@@ -135,11 +144,11 @@ export const delSpecialRecipe = (recipeId) =>
 export const addRecipeMaterial = (recipeMaterial) =>
   store.dispatch(_addRecipeMaterial(recipeMaterial));
 
-export const addRecipeMaterialLog = (recipeMaterialLog) =>
-  store.dispatch(_addRecipeMaterialLog(recipeMaterialLog));
+export const addRecipeMaterialStockLog = (recipeMaterialLog) =>
+  store.dispatch(_addRecipeMaterialStockLog(recipeMaterialLog));
 
-export const editRecipeMaterialLog = (recipeMaterialLog) =>
-  store.dispatch(_editRecipeMaterialLog(recipeMaterialLog));
+export const editRecipeMaterialStockLog = (recipeMaterialLog) =>
+  store.dispatch(_editRecipeMaterialStockLog(recipeMaterialLog));
 
 export const editRecipeMaterial = (recipeMaterial) =>
   store.dispatch(_editRecipeMaterial(recipeMaterial));

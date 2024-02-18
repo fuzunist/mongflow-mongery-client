@@ -7,6 +7,7 @@ import { useProductions, useStocks } from "@/store/hooks/apps";
 import ProductionChart from "./ProductionChart";
 import SalesChart from "./SalesChart";
 import RecipeStockChart from "./RecipeStockChart";
+import LastProductStockChart from "./LastProductStockChart";
 import RawStockChart from "./RawStockChart";
 import ExpensesChart from "./ExpensesChart";
 import IncomeExpenseChart from "./IncomeExpenseChart";
@@ -28,23 +29,22 @@ const Dasboard = () => {
       {/* <Warnings /> */}
       {user.usertype === "boss" && <Orders />}
 
+<LastProductStockChart />
       <RecipeStockChart />
       <RawStockChart />
       <SalesChart />
       <ExpensesChart />
-      {/* <IncomeExpenseChart /> */}
-      {/* <OrderStatusChart /> */}
-      {/* <CompanyOrderChart /> */}
-
-      {/* <TargetSales /> */}
+      <IncomeExpenseChart /> 
+      <OrderStatusChart />
+      <CompanyOrderChart />
+      <TargetSales /> 
       <CostPerOrderChart />
-
-      {/* <StockChart title={t("stocks")} stocks={stocks} t={t} />
+      <StockChart title={t("stocks")} stocks={stocks} t={t} />
       <ProductionChart
         title={t("productions")}
         productions={productions}
         t={t}
-      /> */}
+      />
     </Row>
   );
 };

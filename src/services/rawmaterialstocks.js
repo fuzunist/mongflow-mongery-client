@@ -38,6 +38,8 @@ export const getRawMaterialsFromDB = async (access_token) => {
   }
 };
 
+
+
 export const editRawMaterialToDB = async (access_token, params, id) => {
   try {
     const { data } = await axios.put(
@@ -91,6 +93,26 @@ export const getRawMaterialLogsFromDB = async (access_token) => {
     return data;
   } catch (e) {
     console.log(e);
+    return e.response.data;
+  }
+};
+
+//tarih aralığı olacak son bir ay default olacak
+export const getRawMaterialStockLogsFromDB = async (access_token, params) => {
+  try {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API_ENDPOINT}/stock/rawmaterial/logs?startDate=${params.startDate}&endDate=${params.endDate}`,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+
+     console.log( "getRawMaterialStockLogsFromDB", data)
+    return data;
+  } catch (e) {
+     console.log(e)
     return e.response.data;
   }
 };

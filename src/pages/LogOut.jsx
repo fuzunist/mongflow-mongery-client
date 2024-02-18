@@ -14,6 +14,13 @@ const LogOut = () => {
   useEffect(() => {
     const performLogout = async () => {
       try {
+        if(cookies?.access_token===undefined){
+           console.log("1st lo if")
+        setLogOut();
+         console.log(import.meta.env.VITE_CENTRAL_URL)
+        return (window.location.href = import.meta.env.VITE_CENTRAL_URL);
+        }
+         console.log("later lo if")
         sessionStorage.removeItem("beforePathname");
         removeCookie("access_token");
         removeCookie("refresh_token");
@@ -21,6 +28,10 @@ const LogOut = () => {
         return (window.location.href = import.meta.env.VITE_CENTRAL_URL);
       } catch (error) {
         console.error("Logout failed:", error);
+        setLogOut();
+
+        return (window.location.href = import.meta.env.VITE_CENTRAL_URL);
+
       }
     };
     performLogout();

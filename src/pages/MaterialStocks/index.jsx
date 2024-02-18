@@ -7,18 +7,16 @@ import { useUser } from "@/store/hooks/user";
 import RawMaterialStocks from "@/pages/RawMaterialStocks";
 import RecipeMaterialStocks from "@/pages/RecipeMaterialStocks";
 import Stocks from "../Stocks";
+import Logs from "./Logs";
 
 const MaterialStocks = () => {
-  const [page, setPage] = useState("rawMaterialStocks");
+  const [page, setPage] = useState("lastProductStocks");
 
   return (
     <>
       <Header page={page} setPage={setPage} />
-      <Row>
-        <div className="flex flex-col w-full">
-          <Stocks page={page} />
-        </div>
-      </Row>
+      <Logs page={page} />
+    
     </>
   );
 };

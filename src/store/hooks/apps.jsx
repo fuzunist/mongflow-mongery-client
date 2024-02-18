@@ -17,10 +17,10 @@ export const useRecipeMaterials = () =>
   useSelector((state) => state.apps.recipeMaterials);
 
 export const useRecipeMaterialLogs = () =>
-  useSelector((state) => state.apps.recipeMaterialLogs);
+  useSelector((state) => state.apps.recipeMaterialStockLogs);
 
 export const useRawMaterialLogs = () =>
-  useSelector((state) => state.apps.rawMaterialLogs);
+  useSelector((state) => state.apps.rawMaterialStockLogs);
 
 export const useRawMaterials = () =>
   useSelector((state) => state.apps.rawMaterials);
@@ -33,6 +33,7 @@ export const useOrders = () => useSelector((state) => state.apps.orders);
 export const useStocks = () => useSelector((state) => state.apps.stocks);
 export const useLastProductStocks = () => useSelector((state) => state.apps.lastProductStocks);
 export const useLastProductStockWarehouse = () => useSelector((state) => state.apps.lastProductStockWarehouse);
+export const useLastProductStockLogs= () => useSelector((state) => state.apps.lastProductStockLogs);
 
 export const useRawMaterialStocks = () => useSelector((state) => state.apps.rawMaterialStocks);
 export const useRecipeMaterialStocks = () => useSelector((state) => state.apps.recipeMaterialStocks);

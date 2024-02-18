@@ -106,7 +106,8 @@ const SelectProductFromList = ({
   return (
     <Modal directRender={true} closeModal={() => setProduct(null)}>
       {({ close }) => (
-       <SelectProductFromListForm initialValues={initialValues} fields={fields} onFinish={(values)=>{
+       <SelectProductFromListForm setQuantity={setQuantity} quantity={quantity} initialValues={initialValues} fields={fields} onFinish={(values)=>{
+         console.log("valuesss o", values)
         onContinueOrder(
           values,
           quantity,
@@ -114,7 +115,7 @@ const SelectProductFromList = ({
           close,
           setQuantity,
           setProductType
-        )
+        ) 
        }} />
       )}
     </Modal>

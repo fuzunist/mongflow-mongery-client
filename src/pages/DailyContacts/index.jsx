@@ -13,7 +13,7 @@ import CreateEditCustomer from "@/modals/CreateEditCustomer";
 import { delCustomer, setCustomer, setContact, delContact } from "@/store/actions/apps";
 import { useMemo, useState } from "react";
 import { useUser } from "@/store/hooks/user";
-import { Popconfirm, Space, Table, Tag } from "antd";
+import { Popconfirm, Space, Table, Tag , message} from "antd";
 import { ClipboardEditIcon, Trash2Icon } from "lucide-react";
 import { delContactFromDB, delCustomerFromDB } from "@/services/customer";
 import CreateEditContact from "@/modals/CreateEditContact";
@@ -24,6 +24,8 @@ const { Column, ColumnGroup } = Table;
 const DailyContacts = () => {
   const customers = useCustomers();
   const contacts = useContacts();
+  const today=dayjs().format("DD-MM-YYYY");
+
 
   const companyNames = customers.map((customer) => ({
     name: customer.companyname,
@@ -52,9 +54,14 @@ const DailyContacts = () => {
       id
     );
     if (response?.error) return setError(response.error);
+   
+
+    setTimeout(() => {
+    closeModal();
     delContact(id);
     message.success('İletişim başarılı bir şekilde silindi.');
-    closeModal();
+    }, 2000);
+    
   };
 
   const closeModal = () => setCustomer(null);
@@ -87,6 +94,10 @@ const DailyContacts = () => {
       title: "Tarih",
       dataIndex: "date",
       key: "date",
+      render: (_, record) => {
+        return (
+          <div className={`${record.date===today ? "flex bg-green-100 p-2 " : ""}`}>{ record.date===today ? "Bugün" :record.date}</div>
+      )},
     },
     {
       title: "Saat",

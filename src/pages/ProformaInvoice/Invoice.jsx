@@ -209,7 +209,7 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
           //  console.log("s117 key val", key,value)
           const packaging = attributes.find(
             (attr) => attr.attribute_name === key
-          ).packaging;
+          )?.packaging;
           //  console.log("packaging s117", packaging)
           return [key, { value: value, packaging: packaging }];
         })

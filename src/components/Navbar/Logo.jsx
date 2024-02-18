@@ -14,7 +14,7 @@ const Logo = () => {
 
     return (
         <Link
-            to='/'
+            to='/dashboard'
             className='max-[992px]:w-[70px] w-[240px] float-left flex justify-center items-center h-full bg-leftbar-light dark:bg-leftbar-dark'
         >
             <img

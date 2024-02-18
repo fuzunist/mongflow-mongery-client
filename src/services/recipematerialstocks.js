@@ -143,6 +143,27 @@ export const getRecipeMaterialLogsFromDB = async (access_token) => {
   }
 };
 
+//tarih aralığı olacak son bir ay default olacak
+export const getRecipeMaterialStockLogsFromDB = async (access_token, params) => {
+  try {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_API_ENDPOINT}/stock/recipematerial/logs?startDate=${params.startDate}&endDate=${params.endDate}`,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+
+     console.log("getRecipeMaterialStockLogsFromDB", data)
+    return data;
+  } catch (e) {
+     console.log(e)
+    return e.response.data;
+  }
+};
+
+
 export const editRecipeMaterialLogToDB = async (access_token, params, id) => {
   try {
     const { data } = await axios.patch(

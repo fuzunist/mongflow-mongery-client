@@ -15,19 +15,15 @@ const Stocks = ({page}) => {
 
 
 
-    useEffect(()=>{
-
-        switch(page){
-            case page==="lastProductStocks":
-             setStocks([...lastProductStocks]);
-         
-             case page==="rawMaterialStocks":
-             setStocks([...rawMaterialStocks]);
-         
-             case page==="recipeMaterialStocks":
-             setStocks([...recipeMaterialStocks]);
-         }
-    }, [page])
+    useEffect(() => {
+        if (page === "lastProductStocks") {
+            setStocks([...lastProductStocks]);
+        } else if (page === "rawMaterialStocks") {
+            setStocks([...rawMaterialStocks]);
+        } else if (page === "recipeMaterialStocks") {
+            setStocks([...recipeMaterialStocks]);
+        }
+    }, [page]);
 
     return (
         <>

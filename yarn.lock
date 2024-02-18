@@ -979,7 +979,14 @@ ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
-antd@^5.12.4:
+antd-phone-input@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.npmjs.org/antd-phone-input/-/antd-phone-input-0.3.4.tgz"
+  integrity sha512-VP/ZqUGspbnzTvK8c/KDoad3rZWIzReDMa/AQ50EebBu0jeYK+Da2TCOGvQYd+TnudGt0f5gyPDJP73lMV/xRw==
+  dependencies:
+    react-phone-hooks "^0.1.0-beta.1"
+
+antd@^5.12.4, antd@>=4:
   version "5.12.4"
   resolved "https://registry.npmjs.org/antd/-/antd-5.12.4.tgz"
   integrity sha512-myj2qtWJdob2mQKNAac5bt2zBfaspP+ufqq/pgnOqZ4u4NVVEYbILWa3+ihaqXZHIz1krykFrye8BCyelD9TeQ==
@@ -4244,6 +4251,11 @@ react-pdf@^7.7.0:
     tiny-invariant "^1.0.0"
     warning "^4.0.0"
 
+react-phone-hooks@^0.1.0-beta.1:
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/react-phone-hooks/-/react-phone-hooks-0.1.0.tgz"
+  integrity sha512-UxFcp9Igph5p+9Vzsu5cHGr3ef9C90cy1u5s0Od8jbo+j8pni4tsITTnWjVbB+PWNcZ5TSst8LEq+ISKxHVfkg==
+
 "react-redux@^7.2.1 || ^8.0.2", react-redux@^8.1.3:
   version "8.1.3"
   resolved "https://registry.npmjs.org/react-redux/-/react-redux-8.1.3.tgz"
@@ -4344,7 +4356,7 @@ react-xml-parser@^1.1.8:
   resolved "https://registry.npmjs.org/react-xml-parser/-/react-xml-parser-1.1.8.tgz"
   integrity sha512-yX9k9LNCRzzNnFWoyo9cWEjtor6n6VD0Uh7z1ww5rIP6h5vdhJKEmowsm9RumEJMRdr7akcT4mMBScpsz573qQ==
 
-react@*, "react@^16 || ^17 || ^18", "react@^16.3.0 || ^17.0.0 || ^18.0.0", "react@^16.5.1 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0  || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.2 || ^17.0 || ^18.x", "react@^16.9.0 || ^17.0.0 || ^18", react@^18.2.0, "react@>= 16.3", "react@>= 16.3.0", "react@>= 16.8.0", react@>=0.13, react@>=16.0.0, react@>=16.11.0, react@>=16.3.0, react@>=16.4.0, react@>=16.6.0, react@>=16.8, react@>=16.8.0, react@>=16.9.0:
+react@*, "react@^16 || ^17 || ^18", "react@^16.3.0 || ^17.0.0 || ^18.0.0", "react@^16.5.1 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0  || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.2 || ^17.0 || ^18.x", "react@^16.9.0 || ^17.0.0 || ^18", react@^18.2.0, "react@>= 16.3", "react@>= 16.3.0", "react@>= 16.8.0", react@>=0.13, react@>=16, react@>=16.0.0, react@>=16.11.0, react@>=16.3.0, react@>=16.4.0, react@>=16.6.0, react@>=16.8, react@>=16.8.0, react@>=16.9.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==

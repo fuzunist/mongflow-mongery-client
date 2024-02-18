@@ -8,6 +8,8 @@ import {
   MinusCircleOutlined,
 } from "@ant-design/icons";
 import FormError from "../FormikForm/FormError";
+import PhoneInput from "antd-phone-input";
+
 const { Option } = Select;
 
 const CreateEditCustomerForm = ({ onChange, fields, onFinish, editing, error, setError }) => {
@@ -76,7 +78,7 @@ const customerTypes = [{id:1, name: "Müşteri"}, {id:2, name: "Tedarikçi"}, {i
           rules={[
             {
               required: true,
-              message: "Company Name is required!",
+              message: "Şirket İsmi Girilmelidir!",
             },
           ]}
         >
@@ -146,14 +148,18 @@ const customerTypes = [{id:1, name: "Müşteri"}, {id:2, name: "Tedarikçi"}, {i
             ))}
           </Select>
         </Form.Item>
-
         <Form.Item
           name="customer_type"
           label="Müşteri Tipi"
           rules={[
             {
               type: "array",
+          
             },
+            {
+              required: true,
+              message: "Müşteri Tipi Girilmelidir!",
+            }
           ]}
         >
           

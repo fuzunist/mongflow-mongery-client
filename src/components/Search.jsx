@@ -3,17 +3,21 @@ import { useTranslation } from 'react-i18next'
 
 import { useSearch } from '@/store/hooks/apps'
 import { setSearch } from '@/store/actions/apps'
+import { Input } from 'antd';
+
 
 const Search = () => {
     const { t } = useTranslation()
     const searchValue = useSearch()
     return (
         <div className='relative'>
-            <input
+            <Input
                 placeholder={t('search')}
-                className='rounded-full bg-topsearch-light dark:bg-topsearch-dark border-topbar-light dark:border-topbar-dark py-2 px-6 outline-none w-full'
+                className='rounded-2xl py-1.5 w-64'
                 value={searchValue}
                 onChange={(e) => setSearch(e.target.value)}
+                allowClear
+                size='middle'
             />
             <SearchIcon
                 size={14.4}
