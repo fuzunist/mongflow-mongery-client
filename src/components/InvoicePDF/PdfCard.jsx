@@ -4,7 +4,6 @@ import { HiOutlineDownload, HiOutlinePrinter } from "react-icons/hi";
 import { FiShare2 } from "react-icons/fi";
 import { saveAs } from "file-saver";
 import InvoicePDF from "./InvoicePDF.jsx";
-import { styles } from "./styles";
 import { PDFDownloadLink, BlobProvider } from '@react-pdf/renderer';
 
 const PdfCard = ({ title }) => {

@@ -11,7 +11,6 @@ import {
   Space,
   Typography,
 } from "antd";
-const { Paragraph } = Typography;
 import { useTranslation } from "react-i18next";
 import {
   CloseOutlined,
@@ -19,9 +18,8 @@ import {
   MinusCircleOutlined,
 } from "@ant-design/icons";
 import FormError from "../FormikForm/FormError";
-import { useProduct, useProducts } from "@/store/hooks/apps";
+import { useProduct } from "@/store/hooks/apps";
 import { setProduct } from "@/store/actions/apps";
-import FormItem from "antd/es/form/FormItem";
 import locale from "antd/es/date-picker/locale/tr_TR";
 import TextArea from "antd/es/input/TextArea";
 
