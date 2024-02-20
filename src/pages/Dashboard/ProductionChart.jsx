@@ -42,12 +42,12 @@ const ProductionChart = ({ title, productions, t }) => {
         <Col variant={width > 600 ? '1/2' : 'full'}>
             <Card>
                 <Card.Body>
-                    <Select
+                    {/* <Select
                         className='absolute top-0 right-0 mt-4 mr-6 min-w-[10rem] text-sm'
                         value={selected}
                         onChange={setSelected}
                         options={options}
-                    />
+                    /> */}
                     <h4 className='text-text-dark-light dark:text-text-dark-dark text-base mb-9'>{title}</h4>
                     <div>
                         <BarChart

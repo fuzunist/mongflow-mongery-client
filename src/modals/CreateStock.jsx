@@ -90,7 +90,7 @@ const CreateStock = ({ closeModal, editing = false, selected, page }) => {
   }, [currency]);
 
   const initialValues = useMemo(() => {
-    return {
+    return { 
       product_id: { value: "", options: pageForm.products, label: "Ürün" },
       attributes: { value: {}, options: [], label: "Özellikler" },
       price: { value: 0, label: "Birim Fiyat" },
@@ -101,7 +101,7 @@ const CreateStock = ({ closeModal, editing = false, selected, page }) => {
         options: customers.filter((cus) => cus.customer_type.includes(2)),
         label: "Tedarikçi",
       },
-      address: { value: "", label: "Adres", options: cityOptions },
+      address: { value: "", label: "Depo İl/İlçe", options: cityOptions },
       payment_type: {
         value: "",
         label: "Ödeme Şekli",

@@ -1,5 +1,4 @@
 import Card from "@/components/Card";
-
 import Row from "@/components/Row";
 import { useSearch } from "@/store/hooks/apps";
 import { Space, Table, Tag } from "antd";
@@ -52,7 +51,7 @@ const Items = ({
     product: log?.product_name,
     attributedetails: log?.attributedetails,
     price: log?.price,
-    currency: [log.currency_code, log.exchange_rate],
+    currency: [log.currency_code, log.exchange_rate, log.price],
     exchange_rate: log.exchange_rate,
     quantity: log?.quantity,
     warehouse: log?.customer_city + "/" + log?.customer_county,
@@ -105,6 +104,12 @@ const Items = ({
       dataIndex: "price",
       key: "price",
       className: "text-sm",
+      render: (tag)=>
+      (
+        <span>
+          {tag} ₺
+        </span>
+      )
     },
     {
       title: "Döviz",
@@ -117,7 +122,7 @@ const Items = ({
           <Tag color={tags[0] === "TL" ? "geekblue" : "green"} className="m-1">
             {tags[0] === "TL"
               ? tags[0].toUpperCase()
-              : `${tags[0].toUpperCase()} : ${tags[1]}`}
+              : ` ${tags[0].toUpperCase()==="USD" ? "$" : tags[0].toUpperCase()}1= ${tags[1]} ₺`}
           </Tag>
         </span>
       ),
@@ -223,7 +228,7 @@ const Items = ({
                 size={"small"}
                 scroll={{ x: 900, y: 900 }}
                 columns={columns}
-                expandableC
+                
                 expandable={{
                   expandedRowRender: (record) => {
                     console.log("record io", record);
@@ -269,6 +274,19 @@ const Items = ({
                               <>
                                 <Tag color="orange" key={"payment_date"}>
                                   Ödeme Tarihi: {tag}
+                                </Tag>
+                              </>
+                            )}
+                          />
+
+<Column
+                            title="Detaylar"
+                            dataIndex="details"
+                            key="details"
+                            render={(tag) => (
+                              <>
+                                <Tag color="yellow" key={"details"}>
+                                  Detay: {tag}
                                 </Tag>
                               </>
                             )}

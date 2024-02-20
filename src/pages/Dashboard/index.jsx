@@ -36,15 +36,15 @@ const Dasboard = () => {
       <ExpensesChart />
       <IncomeExpenseChart /> 
       <OrderStatusChart />
-      <CompanyOrderChart />
-      <TargetSales /> 
-      <CostPerOrderChart />
-      <StockChart title={t("stocks")} stocks={stocks} t={t} />
       <ProductionChart
         title={t("productions")}
         productions={productions}
         t={t}
       />
+      <CompanyOrderChart />
+      <TargetSales /> 
+      <CostPerOrderChart />
+     
     </Row>
   );
 };

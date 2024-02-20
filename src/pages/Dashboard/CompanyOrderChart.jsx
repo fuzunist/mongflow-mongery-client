@@ -13,7 +13,7 @@ const CompanyOrderChart = () => {
       {
         data: [
           {
-            x: "Güney Polyester",
+            x: "Ada Demir Çelik",
             y: [
               new Date("2019-02-27").getTime(),
               new Date("2019-03-04").getTime(),
@@ -21,7 +21,7 @@ const CompanyOrderChart = () => {
             fillColor: "#008FFB",
           },
           {
-            x: "Kuzey Tekstil",
+            x: "Batı Tel",
             y: [
               new Date("2019-03-04").getTime(),
               new Date("2019-03-08").getTime(),
@@ -29,7 +29,7 @@ const CompanyOrderChart = () => {
             fillColor: "#00E396",
           },
           {
-            x: "ELDEN Tekstil",
+            x: "Ali Tiren",
             y: [
               new Date("2019-03-07").getTime(),
               new Date("2019-03-10").getTime(),
@@ -37,7 +37,7 @@ const CompanyOrderChart = () => {
             fillColor: "#775DD0",
           },
           {
-            x: "DEN Polyester",
+            x: "MG Demir Çelik",
             y: [
               new Date("2019-03-08").getTime(),
               new Date("2019-03-12").getTime(),
@@ -45,7 +45,7 @@ const CompanyOrderChart = () => {
             fillColor: "#FEB019",
           },
           {
-            x: "Yıldız İplik",
+            x: "Agali Metal",
             y: [
               new Date("2019-03-12").getTime(),
               new Date("2019-03-17").getTime(),

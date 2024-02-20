@@ -147,6 +147,37 @@ const ProductStockForm = ({
           rules={[
             {
               required: true,
+              message: "Döviz Tipi Girilmelidir!",
+            },
+          ]}
+          name={"currency"}
+          label="Döviz Tipi"
+        >
+          <Select onChange={(e) => setCurrency(e)}>
+            {initialValues.currency?.options?.map((cr, index) => (
+              <Option key={index} value={cr}>
+                {cr}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          rules={[
+            {
+              required: true,
+              message: "Döviz Kuru Girilmelidir!",
+            },
+          ]}
+          name={"exchange_rate"}
+          label="Döviz Kuru"
+        >
+          <Input type="number" />
+        </Form.Item>
+        <Form.Item
+          rules={[
+            {
+              required: true,
               message: initialValues.price.label + " Girilmelidir!",
             },
           ]}
@@ -192,37 +223,7 @@ const ProductStockForm = ({
           />
         </Form.Item>
 
-        <Form.Item
-          rules={[
-            {
-              required: true,
-              message: "Döviz Tipi Girilmelidir!",
-            },
-          ]}
-          name={"currency"}
-          label="Döviz Tipi"
-        >
-          <Select onChange={(e) => setCurrency(e)}>
-            {initialValues.currency?.options?.map((cr, index) => (
-              <Option key={index} value={cr}>
-                {cr}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-
-        <Form.Item
-          rules={[
-            {
-              required: true,
-              message: "Döviz Kuru Girilmelidir!",
-            },
-          ]}
-          name={"exchange_rate"}
-          label="Döviz Kuru"
-        >
-          <Input type="number" />
-        </Form.Item>
+        
 
         <Form.Item
           rules={[
@@ -285,11 +286,11 @@ const ProductStockForm = ({
           rules={[
             {
               required: true,
-              message: "Tedarikçi İl İlçe Girilmelidir",
+              message: "Depo İl İlçe Girilmelidir",
             },
           ]}
           name={"address"}
-          label="Tedarikçi İl İlçe"
+          label="Depo İl İlçe"
         >
           <Cascader
             options={initialValues.address.options}

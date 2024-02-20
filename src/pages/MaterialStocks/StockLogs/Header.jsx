@@ -20,6 +20,8 @@ const Header = ({ logs, page }) => {
   const products = useProducts();
   const user= useUser();
   const [pageForm, setPageForm] = useState({});
+  const [title, setTitle] = useState("");
+
 
 
 
@@ -91,6 +93,7 @@ const Header = ({ logs, page }) => {
           addRangeLog: addAllRangeProductStockLogs,
           getLogs :getProductStockLogsFromDB,
         });
+        setTitle("Ürün Alımı Ekle")
         break;
 
       case "recipeMaterialStocks":
@@ -98,12 +101,16 @@ const Header = ({ logs, page }) => {
             addRangeLog: addAllRangeRecipeMaterialStockLogs,
             getLogs :getRecipeMaterialStockLogsFromDB,
           });
+        setTitle("İşlenmiş Hammadde Alımı Ekle")
+
         break;
       case "rawMaterialStocks":
         setPageForm({
             addRangeLog: addAllRangeRawMaterialStockLogs,
             getLogs :getRawMaterialStockLogsFromDB,
           });
+        setTitle("İşlenecek Hammadde Alımı Ekle")
+
         break;
 
       default:
@@ -121,11 +128,11 @@ const Header = ({ logs, page }) => {
         className="bg-purple hover:bg-purple-hover text-white rounded-full py-2 px-4 flex justify-center items-center gap-2"
         text={
           <>
-            <PlusIcon size={14} strokeWidth={2} /> {t("Ürün Alımı Ekle")}
+            <PlusIcon size={14} strokeWidth={2} /> {title}
           </>
         }
       >
-        {({ close }) => <CreateStock closeModal={close} page={page} />}
+        {({ close }) => <CreateStock closeModal={close} page={page} title= {title} />}
       </Modal>
 
       <div className="flex bg-slate-50 p-2 px-4 rounded-full items-center gap-x-4">
