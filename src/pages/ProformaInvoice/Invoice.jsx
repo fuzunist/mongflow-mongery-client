@@ -286,6 +286,8 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
     order_responsible: user.username,
     newAttributes: newAttr,
     totalQuantity: totalProductsQuantity,
+    vatDeclaration: orderDetails?.vat_declaration,
+    vatWitholding: orderDetails?.vat_witholding
   };
   console.log("pdf Data,", pdfData);
   const onClick = () => {

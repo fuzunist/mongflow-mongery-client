@@ -531,10 +531,22 @@ const InvoicePDF = ({ data }) => {
             {dynoData.paymentInfo.totalQuantity}{" ton"}
           </Text>
           {/* <Text style={tw("flex text-xs")}>Bakiye USD = 0.00</Text> */}
+          <Text style={tw("flex text-xs font-bold text-custom px-1 ml-auto")}>
+          Tevkifat KDV :
+          </Text>
+          <Text style={tw("flex border-l border-custom px-1")}>
+            {formatDigits(dynoData.paymentInfo.vatWitholding)}{" "}{dynoData.otherDetails.currency_code}
+          </Text>
         </View>
-        <View style={tw("w-full flex h-5")}>
-          <Text style={tw("flex h-5 border-b border-custom px-1")}>
+        <View style={tw("flex flex-row w-full justify-between items-center border-b border-custom h-5")}>
+          <Text style={tw("flex h-5 px-1")}>
             {dynoData.paymentInfo.delivery_terms}
+          </Text>
+          <Text style={tw("flex text-xs font-bold text-custom px-1 ml-auto")}>
+            Beyan KDV:
+          </Text>
+          <Text style={tw("flex border-l border-custom px-1")}>
+            {formatDigits(dynoData.paymentInfo.vatDeclaration)}{" "}{dynoData.otherDetails.currency_code}
           </Text>
         </View>
         <View

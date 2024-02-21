@@ -253,7 +253,7 @@ const orderInfo= [
   {
     id: 14,
     desc: "Sorumlumuz",
-    value: data.order_responsible
+    value: data.order_responsible.toUpperCase()
 
   },
   {
@@ -302,7 +302,9 @@ const paymentInfo= {
    delivery_point: data.delivery_point,
    delivery_terms: data.delivery_terms,
    payment_type: data.payment_type,
-   maturity: data.maturity
+   maturity: data.maturity,
+   vatDeclaration: data.vatDeclaration,
+   vatWitholding: data.vatWitholding
 
   }
 
