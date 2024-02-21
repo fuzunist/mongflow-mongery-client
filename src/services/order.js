@@ -112,36 +112,12 @@ export const updateOrderStatusSetInDB = async (
 };
 
 export const addOrderToDB = async (
-  access_token,
-  customer_id,
-  currency_code,
-  order_status,
-  order_date,
-  order_number,
-  products,
-  sets,
-  subtotal,
-  tax_rate,
-  total_with_tax,
-  exchange_rate
+  access_token, params
 ) => {
   try {
     const { data } = await axios.post(
       `${import.meta.env.VITE_API_ENDPOINT}/order`,
-      {
-        customer_id,
-        currency_code,
-        order_status,
-        order_date,
-        order_number,
-        products,
-        sets,
-        subtotal,
-        tax_rate,
-        total_with_tax,
-        exchange_rate,
-        total_cost: 0,
-      },
+      params,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,

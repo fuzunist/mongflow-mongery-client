@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { PlusIcon } from 'lucide-react'
 import classNames from 'classnames'
 
-import { useCustomers, useCustomer } from '@/store/hooks/apps'
+import { useCustomers, useCustomer, useSearch } from '@/store/hooks/apps'
 import { setCustomer } from '@/store/actions/apps'
 
 import Card from '@/components/Card'
@@ -10,12 +10,20 @@ import Col from '@/components/Col'
 import Modal from '@/components/Modal'
 import CreateEditCustomer from '@/modals/CreateEditCustomer'
 import { useUser } from '@/store/hooks/user'
+import Search from '@/components/Search'
+import { useMemo } from 'react'
 
 const Customers = () => {
     const user = useUser()
+    const search= useSearch()
     const { t } = useTranslation()
     const customers = useCustomers()
     const selectedCustomer = useCustomer()
+
+    const filteredCustomers= useMemo(()=>{
+
+        return customers.filter((customer)=> customer.companyname.toLocaleLowerCase().includes(search.toLocaleLowerCase()))
+    }, [search, customers])
 
     return (
         <Col variant='1/2'>
@@ -24,6 +32,7 @@ const Customers = () => {
                     <div className='float-right text-left w-full'>
                         <div className='flex items-center justify-between mb-6'>
                             <h4 className='text-text-dark-light dark:text-text-dark-dark text-lg font-semibold'>{t('customers')}</h4>
+                            <Search />
                             {(user.usertype === 'admin' || user.usertype === 'stock_manager') && (
                                 <Modal
                                     className='bg-purple hover:bg-purple-hover text-white rounded-full py-2 px-4 flex justify-center items-center gap-2'
@@ -42,7 +51,7 @@ const Customers = () => {
                             )}
                         </div>
                         <div className='max-h-[300px] overflow-y-auto scroller'>
-                            {customers.map((customer, index) => (
+                            {filteredCustomers.map((customer, index) => (
                                 <div
                                     key={index}
                                     className={classNames('overflow-hidden py-3 relative ', {

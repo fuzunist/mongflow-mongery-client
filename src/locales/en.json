@@ -207,6 +207,8 @@
   "apps-expenses": "Company Expenses",
   "expenses_added_successfully": "Company Expenses successfully updated.",
   "apps-rawmaterials-stocks": "Raw Materials Stocks",
+  "apps-stocks-logs":"Product Stocks Logs",
+
   "addMaterialStock": "Add Material Stocks",
   "cost": "Price",
   "buyingprice": "Buying price ($/kg)",

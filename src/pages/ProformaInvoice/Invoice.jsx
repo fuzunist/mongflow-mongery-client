@@ -40,11 +40,13 @@ import { formatFloat, formatDigits } from "@/utils/helpers";
 import { HiOutlinePrinter } from "react-icons/hi";
 import { BlobProvider } from "@react-pdf/renderer";
 import InvoicePDF from "@/components/InvoicePDF/InvoicePDF";
-import { DatePicker, Input, Typography } from "antd";
+import { DatePicker, Input, Select, Typography } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import dayjs from "dayjs";
 import locale from "antd/es/date-picker/locale/tr_TR";
 import "dayjs/locale/tr";
+
+const Option=Select.Option;
 
 const Invoice = ({ selectedCustomer, editingOrder }) => {
   const user = useUser();
@@ -61,10 +63,11 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
   const [orderDetails, setOrderDetails] = useState({});
 
   const onChangeDetail = (value, name) => {
+     console.log(value, name)
     setOrderDetails({ ...orderDetails, [name]: value });
   };
-  console.log("orderDetails, ", orderDetails);
-   console.log("333 selectedProducts", selectedProducts)
+  // console.log("orderDetails, ", orderDetails);
+  // console.log("333 selectedProducts", selectedProducts);
 
   const totalProductQuantity = useMemo(() => {
     if (!editingOrder || !editingOrder.products) return 0;
@@ -97,28 +100,39 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
 
   const totalPrice = useMemo(() => {
     const _selectedProducts = selectedProducts.map(
-      (product) => product.totalPrice
+      (product) => Number(product.totalPrice)
     );
     const _selectedSets = selectedSets.map((set) => set.totalPrice);
     _selectedProducts.push(..._selectedSets);
     return _selectedProducts.reduce((a, b) => a + b, 0);
   }, [selectedProducts, selectedSets]);
 
+   console.log("order det 101",orderDetails )
   const onSubmit = async () => {
-    const response = await addOrderToDB(
-      user.tokens.access_token,
-      selectedCustomer.customerid,
-      initialValues.currencyCode,
-      initialValues.beginningOrderStatus,
-      new Date().toISOString(),
-      orderNumber,
-      selectedProducts,
-      selectedSets,
-      totalPrice,
-      initialValues.taxRate,
-      totalPrice * (1 + initialValues.taxRate),
-      initialValues.exchange_rate
-    );
+    const data = {
+      customer_id: selectedCustomer.customerid,
+      currency_code: initialValues.currencyCode,
+      order_status: initialValues.beginningOrderStatus,
+      order_date: new Date().toISOString(),
+      order_number: orderNumber,
+      products: selectedProducts,
+      sets: selectedSets,
+      subtotal: totalPrice,
+      tax_rate: initialValues.taxRate,
+      total_with_tax: totalPrice * (1 + initialValues.taxRate),
+      exchange_rate: initialValues.exchange_rate,
+      valid_date: orderDetails.valid_date,
+      delivery_terms: orderDetails.delivery_terms,
+      delivery_point: orderDetails.delivery_point,
+      payment_type: orderDetails.payment_type,
+      maturity: orderDetails.maturity,
+      notes: orderDetails.notes,
+      vat_declaration: orderDetails.vat_declaration,
+      vat_witholding_rate: orderDetails.vat_witholding_rate,
+      vat_witholding: orderDetails.vat_witholding,
+    };
+
+    const response = await addOrderToDB(user.tokens.access_token, data);
 
     if (response.order_id) {
       setSuccessMessage(t("order_added_successfully"));
@@ -215,45 +229,44 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
         })
       );
     });
- console.log("new attr 333", newAttr )
+  // console.log("new attr 333", newAttr);
 
-    const prodx = selectedProducts?.map((product, index) => {
-      // Check if newAttributes[index] exists and is an array
-      const newAttributesObject = Array.isArray(newAttr) && newAttr.length!==0
-        ? newAttr[index]
-        : [];
-  
-         console.log("333 newAttributesObject", newAttributesObject)
-    
-      return {
-        name: product.product_name,
-        quantity: product.quantity,
-        unitPrice: product.unitPrice,
-        totalPrice: product.totalPrice,
-        delivery_date: product.delivery_date,
+  const prodx = selectedProducts?.map((product, index) => {
+    // Check if newAttributes[index] exists and is an array
+    const newAttributesObject =
+      Array.isArray(newAttr) && newAttr.length !== 0 ? newAttr[index] : [];
+
+    // console.log("333 newAttributesObject", newAttributesObject);
+
+    return {
+      name: product.product_name,
+      quantity: product.quantity,
+      unitPrice: product.unitPrice,
+      totalPrice: product.totalPrice,
+      delivery_date: product.delivery_date,
       //   techSpecs: Object.entries(newAttributesObject)
       // .filter(([key, value]) => !value.packaging)
       // .map(([key, value]) => ({ [key]: value })),
       techSpecs: Object.entries(newAttributesObject)
-      .filter(([key, value]) => !value.packaging)
-      .reduce((acc, [key, value]) => {
-        return { ...acc, [key]: value, weight: product.weight };
-      }, {}),
-    packagingSpecs: Object.entries(newAttributesObject)
-      .filter(([key, value]) => value.packaging)
-      .map(([key, value]) => ({ [key]: value })),
-      };
-    });
+        .filter(([key, value]) => !value.packaging)
+        .reduce((acc, [key, value]) => {
+          return { ...acc, [key]: value, weight: product.weight };
+        }, {}),
+      packagingSpecs: Object.entries(newAttributesObject)
+        .filter(([key, value]) => value.packaging)
+        .map(([key, value]) => ({ [key]: value })),
+    };
+  });
 
-     console.log("333 prodx", prodx)
+  // console.log("333 prodx", prodx);
 
-     const totalProductsQuantity = useMemo(() => {
-      if (!selectedProducts || selectedProducts.length===0) return 0;
-  
-      return selectedProducts.reduce((total, product) => {
-        return total + (product.quantity || 0);
-      }, 0);
-    }, [selectedProducts]);
+  const totalProductsQuantity = useMemo(() => {
+    if (!selectedProducts || selectedProducts.length === 0) return 0;
+
+    return selectedProducts.reduce((total, product) => {
+      return total + (product.quantity || 0);
+    }, 0);
+  }, [selectedProducts]);
   const pdfData = {
     initialValues: initialValues,
     selectedProducts: selectedProducts,
@@ -493,15 +506,12 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
                       locale={locale}
                       format={"DD/MM/YYYY"}
                       placeholder="Tarih Girin"
-                      onChange={(e) =>{
-                       console.log("333 ",dayjs(e).format("DD/MM/YYYY"))
-                        return  editSelectProductDelivery(
+                      onChange={(e) => {
+                        return editSelectProductDelivery(
                           index,
                           dayjs(e).format("DD/MM/YYYY")
-                        )
-                      }
-                       
-                      }
+                        );
+                      }}
                       className="w-full py-2 transition-all outline-none bg-input-bg-light dark:bg-input-bg-dark border rounded border-input-border-light dark:border-input-border-dark"
                     />
                   </Modal>
@@ -600,36 +610,97 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
             ))}
           </div>
 
-          <div className="flex flex-col">
-            <div className="flex flex-wrap justify-end text-center">
-              <div className="basis-[calc(24%_-_0.5rem)] mx-1 ">
+          <div className="flex flex-col gap-y-2">
+            <div className="flex  justify-end ">
+              <div className="flex mx-1 ">
                 <span>
-                  <span className="font-semibold">{t("amount")}:</span>{" "}
+                  <span className="font-semibold">{t("nettotal")}:</span>{" "}
                   {formatDigits(totalPrice)}
                 </span>
               </div>
             </div>
-            <div className="flex flex-wrap justify-end text-center">
-              <div className="basis-[calc(24%_-_0.5rem)] mx-1 ">
+            <div className="flex justify-end ">
+              <div className="flex mx-1 ">
                 <span className="font-semibold">{t("vat")}:</span>
-                <select
+                <Select
                   value={initialValues.taxRate}
                   onChange={(e) =>
                     setInitialValues((initialValues) => ({
                       ...initialValues,
-                      taxRate: parseFloat(e.target.value),
+                      taxRate: parseFloat(e),
                     }))
                   }
-                  className="py-2 ml-2 transition-all outline-none bg-input-bg-light dark:bg-input-bg-dark border rounded border-input-border-light dark:border-input-border-dark"
                 >
-                  <option value={0}>%0</option>
-                  <option value={0.1}>%10</option>
-                  <option value={0.18}>%18</option>
-                  <option value={0.2}>%20</option>
-                </select>
+                  <Option value={0}>%0</Option>
+                  <Option value={0.1}>%10</Option>
+                  <Option value={0.18}>%18</Option>
+                  <Option value={0.2}>%20</Option>
+                </Select>
               </div>
             </div>
+
+            <div className="flex  justify-end ">
+              <div className=" mx-1 flex items-center">
+              <span className="font-semibold">{t("Tevkifat Oranı")}:</span>
+                  <Select 
+                   className="w-48" 
+                   onChange={async (e) => {
+                    // onChangeDetail(e, "vat_witholding_rate")
+                    setOrderDetails((prev)=>({...prev, vat_witholding_rate:e }))
+                    setOrderDetails((prev)=>({...prev, vat_witholding:initialValues?.taxRate*totalPrice*e }))
+                    setOrderDetails((prev)=>({...prev, vat_declaration:initialValues?.taxRate*totalPrice*(1-e) }))
+                    setOrderDetails((prev)=>({...prev, taxTotal:totalPrice+ initialValues?.taxRate*totalPrice*(1-e) }))
+
+                  //  await onChangeDetail(formatDigits(initialValues?.taxRate*totalPrice*e), "vat_witholding")
+                  //  await onChangeDetail(formatDigits(initialValues?.taxRate*totalPrice*(1-e)), "vat_declaration")
+
+                  
+                  }}
+                   value={orderDetails.vat_witholding_rate}
+                  >
+                   {
+                    [0,0.1,0.2,0.3,0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1].map((item)=>(
+                      <Option key={item} value={item}
+                      name="vat_witholding_rate"
+                     >
+                        {item===0 ? "Tevkifat Yok" : item===1 ? "Tamamına Tevkifat Uygula" : item*10+"/10"}
+                      </Option>
+                    ))
+                   }
+                  </Select>
+              </div>
+            </div>
+
+            <div className="flex  justify-end ">
+              <div className="flex mx-1 ">
+                <span>
+                  <span className="font-semibold">{t("KDV")}{"( %"}{initialValues.taxRate*100}{" )"}:</span>{" "}
+                  {formatDigits(initialValues?.taxRate*totalPrice)}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex  justify-end ">
+              <div className="flex mx-1 ">
+                <span>
+                  <span className="font-semibold">{t("KDV Tevkifat")}:</span>{" "}
+                  { orderDetails?.vat_witholding_rate ? orderDetails.vat_witholding : 0}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex  justify-end ">
+              <div className="flex mx-1 ">
+                <span>
+                  <span className="font-semibold">{t("KDV Beyan")}:</span>{" "}
+                  {orderDetails?.vat_witholding_rate ? orderDetails.vat_declaration : 0}
+                </span>
+              </div>
+            </div>
+
           </div>
+          
+
           <hr className="w-full border-border-light dark:border-border-dark" />
           <div className="flex flex-wrap justify-end text-end">
             <div className="basis-[calc(34%_-_0.5rem)] mx-1 ">
@@ -726,7 +797,7 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
                   )}
                 </Modal>{" "}
                 <span>{t("taxed_total")}:</span>{" "}
-                {formatDigits(totalPrice * (1 + initialValues.taxRate))}
+                {orderDetails?.vat_witholding_rate ? orderDetails.taxTotal  : 0}
               </span>
             </div>
           </div>

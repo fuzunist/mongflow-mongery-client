@@ -120,9 +120,9 @@ export default [
   //   },
   // },
   {
-    key: "apps-stocks",
+    key: "apps-stocks-logs",
     icon: Layers,
-    url: "/apps/rawmaterials-stocks",
+    url: "apps/stocks-logs",
     authenticate: {
       type: "usertype",
       value: [

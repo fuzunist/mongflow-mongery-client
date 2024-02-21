@@ -42,10 +42,8 @@ const CreateStock = ({ closeModal, editing = false, selected, page }) => {
   const [pageForm, setPageForm] = useState({});
   const { t } = useTranslation();
 
-   console.log("warehouseStocks", warehouseStocks)
   useEffect(() => {
-    console.log("page form", pageForm);
-    console.log("page", page);
+
     switch (page) {
       case "lastProductStocks":
         setPageForm({

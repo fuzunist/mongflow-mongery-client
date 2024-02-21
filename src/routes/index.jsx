@@ -29,7 +29,7 @@ import LogOut from "@/pages/LogOut";
 import Profile from "@/pages/Profile";
 // import Materials from "@/pages/Materials";
 import Expenses from "@/pages/Expenses";
-import MaterialStocks from "@/pages/MaterialStocks";
+import AllStockLogs from "@/pages/AllStockLogs";
 
 
 const routes = createBrowserRouter([
@@ -138,8 +138,8 @@ const routes = createBrowserRouter([
         errorElement: <NotFound />,
       },
       {
-        path: "apps/rawmaterials-stocks",
-        element: <MaterialStocks />,
+        path: "apps/stocks-logs",
+        element: <AllStockLogs />,
         errorElement: <NotFound />,
       },
       {

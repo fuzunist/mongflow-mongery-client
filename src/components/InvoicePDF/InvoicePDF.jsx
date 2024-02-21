@@ -40,7 +40,6 @@ const InvoicePDF = ({ data }) => {
 
   const dynoData = getAllData(data);
 
-  console.log("333 dynodata", JSON.stringify(dynoData));
   const InvoiceTitle = () => (
     <View style={tw("flex flex-row mt-6")}>
       <View
