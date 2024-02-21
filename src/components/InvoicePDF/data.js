@@ -323,7 +323,7 @@ const paymentInfo= {
     techSpecs: Object.entries(newAttributesObject)
     .filter(([key, value]) => !value.packaging)
     .reduce((acc, [key, value]) => {
-      return { ...acc, [key]: value, "P.Ağırlık" : {value: product.weight} };
+      return { ...acc, [key]: value, "P.Ağırlık" : {value: product.weight, packaging: false} };
     }, {}),
     packagingSpecs: Object.entries(newAttributesObject)
     .filter(([key, value]) => value.packaging)

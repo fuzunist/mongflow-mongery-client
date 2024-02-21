@@ -94,8 +94,8 @@ const SelectProductFromListForm = ({
           </Form.Item>
         ))}
 
-        <Form.Item name="Miktar (ton)" label="Miktar (ton)">
-          <InputNumber defaultValue={quantity} onChange={(e)=> setQuantity(e)} />
+        <Form.Item  label="Miktar (ton)">
+          <InputNumber label="Miktar (ton)" defaultValue={quantity} onChange={(e)=> setQuantity(e)} />
         </Form.Item>
 
         <Form.Item
