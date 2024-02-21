@@ -51,7 +51,7 @@ const Customers = () => {
       closeModal();
       delCustomer(customerid);
       message.success("Müşteri başarılı bir şekilde silindi.");
-    }, 2000);
+    }, 1000);
   };
 
   const closeModal = () => setCustomer(null);

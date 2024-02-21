@@ -42,9 +42,9 @@ export const _promiseAll = createAsyncThunk(
       productionRecipes,
       specialRecipes,
       recipeMaterialStockLogs,
-      recipeMaterials,
+      recipeMaterialStocks,
       rawMaterialStockLogs,
-      rawMaterials,
+      rawMaterialStocks,
       sets,
       customers,
       contacts,
@@ -106,10 +106,10 @@ export const _promiseAll = createAsyncThunk(
         type: "getUsersFromDB",
         error: users.error,
       });
-    else if (recipeMaterials?.error)
+    else if (recipeMaterialStocks?.error)
       return rejectWithValue({
         type: "getRecipeMaterialsFromDB",
-        error: recipeMaterials.error,
+        error: recipeMaterialStocks.error,
       });
     else if (recipes?.error)
       return rejectWithValue({
@@ -156,10 +156,10 @@ export const _promiseAll = createAsyncThunk(
         type: "getTodayExchangeRates",
         error: exchangeRates.error,
       });
-    else if (rawMaterials?.error)
+    else if (rawMaterialStocks?.error)
       return rejectWithValue({
         type: "getRawMaterialStocks",
-        error: rawMaterials.error,
+        error: rawMaterialStocks.error,
       });
     else if (recipeMaterialStockLogs?.error)
       return rejectWithValue({
@@ -197,9 +197,9 @@ export const _promiseAll = createAsyncThunk(
       productionRecipes,
       specialRecipes,
       recipeMaterialStockLogs,
-      recipeMaterials,
+      recipeMaterialStocks,
       rawMaterialStockLogs,
-      rawMaterials,
+      rawMaterialStocks,
       sets,
       customers,
       contacts,
@@ -232,9 +232,9 @@ const initialState = {
   recipes: [],
   productionRecipes: [],
   specialRecipes: [],
-  recipeMaterials: [],
+  recipeMaterialStocks: [],
   recipeMaterialStockLogs: [],
-  rawMaterials: [],
+  rawMaterialStocks: [],
   rawMaterialStockLogs: [],
   sets: [],
   orders: [],
@@ -242,8 +242,6 @@ const initialState = {
   lastProductStocks: [],
   lastProductStockLogs: [],
   lastProductStockWarehouse: [],
-  rawMaterialStocks: [],
-  recipeMaterialStocks: [],
   productions: [],
   users: [],
   exchangeRates: [],
@@ -350,7 +348,7 @@ const apps = createSlice({
       });
     },
     _editRawMaterial: (state, action) => {
-      state.rawMaterials = state.rawMaterials.map((rawMaterial) => {
+      state.rawMaterialStocks = state.rawMaterialStocks.map((rawMaterial) => {
         if (rawMaterial.id === action.payload.id)
           rawMaterial = {
             ...rawMaterial,
@@ -385,7 +383,7 @@ const apps = createSlice({
     },
 
     _editRecipeMaterial: (state, action) => {
-      state.recipeMaterials = state.recipeMaterials.map((recipeMaterial) => {
+      state.recipeMaterialStocks = state.recipeMaterialStocks.map((recipeMaterial) => {
         if (recipeMaterial.id === action.payload.id)
           recipeMaterial = {
             ...recipeMaterial,
@@ -770,8 +768,8 @@ const apps = createSlice({
       state.productionRecipes = [];
       state.specialRecipes = [];
       state.recipeMaterialStockLogs = [];
-      state.recipeMaterials = [];
-      state.rawMaterials = [];
+      state.recipeMaterialStocks = [];
+      state.rawMaterialStocks = [];
       state.sets = [];
       state.orders = [];
       state.customers = [];
@@ -806,9 +804,9 @@ const apps = createSlice({
       state.productionRecipes = action.payload.productionRecipes;
       state.specialRecipes = action.payload.specialRecipes;
       state.recipeMaterialStockLogs = action.payload.recipeMaterialStockLogs;
-      state.recipeMaterials = action.payload.recipeMaterials;
+      state.recipeMaterialStocks = action.payload.recipeMaterialStocks;
       state.rawMaterialStockLogs = action.payload.rawMaterialStockLogs;
-      state.rawMaterials = action.payload.rawMaterials;
+      state.rawMaterialStocks = action.payload.rawMaterialStocks;
       state.sets = action.payload.sets;
       state.orders = action.payload.orders;
       state.customers = action.payload.customers;

@@ -15,7 +15,8 @@ import {
   DollarSign,
   
   BookOpenCheck,
-Headphones
+Headphones,
+ShoppingBasket
 } from "lucide-react";
 
 export default [
@@ -110,18 +111,26 @@ export default [
       ],
     },
   },
-  // {
-  //   key: "apps-stocks",
-  //   icon: Layers,
-  //   url: "/apps/stocks",
-  //   authenticate: {
-  //     type: "usertype",
-  //     value: ["admin", "stock_manager", "boss"],
-  //   },
-  // },
+  {
+    key: "apps-stocks",
+    icon: Layers,
+    url: "/apps/stocks",
+    authenticate: {
+      type: "usertype",
+      value: [
+        "admin",
+        "boss",
+        "domestic_market_manager",
+        "foreign_market_manager",
+        "domestic_market_marketing",
+        "foreign_market_marketing",
+        "stock_manager"
+      ],
+    },
+  },
   {
     key: "apps-stocks-logs",
-    icon: Layers,
+    icon: ShoppingBasket,
     url: "apps/stocks-logs",
     authenticate: {
       type: "usertype",

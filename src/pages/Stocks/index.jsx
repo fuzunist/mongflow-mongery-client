@@ -38,6 +38,7 @@ const Stocks = ({page}) => {
                     selected={selected}
                     stocks={stocks}
                 /> */}
+            
             </Row>
         </>
     )

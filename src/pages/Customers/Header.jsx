@@ -12,7 +12,7 @@ const Header = ({ authenticate, page, setPage }) => {
     return (
         <>
             <div className='flex max-[576px]:flex-col justify-between gap-y-4 mb-6'>
-                {authenticate ? (
+               
                     <Modal
                     width='xl'
                         className='bg-purple hover:bg-purple-hover text-white rounded-full py-2 px-4 flex justify-center items-center gap-2'
@@ -28,9 +28,7 @@ const Header = ({ authenticate, page, setPage }) => {
                     >
                         {({ close }) => <CreateEditCustomer editing={false} closeModal={close} />}
                     </Modal>
-                ) : (
-                    <div className='block' />
-                )}
+            
 
                 <Search />
             </div>

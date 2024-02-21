@@ -22,6 +22,7 @@ import DailyProductions from "@/pages/DailyProductions";
 import Productions from "@/pages/Productions";
 
 
+
 //auth
 // import Login from "@/pages/Login";
 // import Register from "@/pages/Register";
@@ -30,6 +31,7 @@ import Profile from "@/pages/Profile";
 // import Materials from "@/pages/Materials";
 import Expenses from "@/pages/Expenses";
 import AllStockLogs from "@/pages/AllStockLogs";
+import AllStocks from "@/pages/AllStocks";
 
 
 const routes = createBrowserRouter([
@@ -112,11 +114,11 @@ const routes = createBrowserRouter([
         element: <ProformaInvoice />,
         errorElement: <NotFound />,
       },
-      {
-        path: "apps/stocks",
-        element: <Stocks />,
-        errorElement: <NotFound />,
-      },
+      // {
+      //   path: "apps/stocks",
+      //   element: <Stocks />,
+      //   errorElement: <NotFound />,
+      // },
       {
         path: "apps/productions/daily",
         element:  <DailyProductions />,
@@ -140,6 +142,11 @@ const routes = createBrowserRouter([
       {
         path: "apps/stocks-logs",
         element: <AllStockLogs />,
+        errorElement: <NotFound />,
+      },
+      {
+        path: "apps/stocks",
+        element: <AllStocks/>,
         errorElement: <NotFound />,
       },
       {

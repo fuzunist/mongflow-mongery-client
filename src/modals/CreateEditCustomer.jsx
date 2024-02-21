@@ -24,7 +24,7 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
   const [fields, setFields] = useState([
     {
       name: ["companyname"],
-      value: editing ? selectedCustomer?.companyname : "",
+      value: editing ? selectedCustomer?.companyname.toUpperCase() : "",
     },
     {
       name: ["taxid"],
@@ -32,7 +32,7 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
     },
     {
       name: ["taxoffice"],
-      value: editing ? selectedCustomer?.taxoffice : "",
+      value: editing ? selectedCustomer?.taxoffice.toUpperCase() : "",
     },
     {
       name: ["email"],
@@ -69,12 +69,12 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
     setError("");
 
     const data = {
-      companyname: values.companyname,
+      companyname: values.companyname.toUpperCase(),
       taxid: values.taxid,
-      taxoffice: values.taxoffice,
+      taxoffice: values.taxoffice.toUpperCase(),
       email: values.email,
       phone: values.phone,
-      address: values.address,
+      address: values.address.toUpperCase(),
       website: values.website,
       products: values.products,
       customer_type: values.customer_type,
@@ -92,12 +92,12 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
     setError("");
     console.log("values in edit", values);
     const data = {
-      companyname: values.companyname,
+      companyname: values.companyname.toUpperCase(),
       taxid: values.taxid,
-      taxoffice: values.taxoffice,
+      taxoffice: values.taxoffice.toUpperCase(),
       email: values.email,
       phone: values.phone,
-      address: values.address,
+      address: values.address.toUpperCase(),
       website: values.website,
       products: values.products,
       customer_type: values.customer_type,
