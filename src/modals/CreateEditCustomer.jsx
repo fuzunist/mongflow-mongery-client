@@ -24,7 +24,7 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
   const [fields, setFields] = useState([
     {
       name: ["companyname"],
-      value: editing ? selectedCustomer?.companyname.toUpperCase() : "",
+      value: editing ? selectedCustomer?.companyname.toLocaleUpperCase('TR') : "",
     },
     {
       name: ["taxid"],
@@ -32,7 +32,7 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
     },
     {
       name: ["taxoffice"],
-      value: editing ? selectedCustomer?.taxoffice.toUpperCase() : "",
+      value: editing ? selectedCustomer?.taxoffice.toLocaleUpperCase('TR') : "",
     },
     {
       name: ["email"],
@@ -44,7 +44,7 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
     },
     {
       name: ["address"],
-      value: editing ? selectedCustomer?.address : "",
+      value: editing ? selectedCustomer?.address.toLocaleUpperCase('TR') : "",
     },
     {
       name: ["website"],
@@ -69,12 +69,12 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
     setError("");
 
     const data = {
-      companyname: values.companyname.toUpperCase(),
+      companyname: values.companyname.toLocaleUpperCase('TR'),
       taxid: values.taxid,
-      taxoffice: values.taxoffice.toUpperCase(),
+      taxoffice: values.taxoffice.toLocaleUpperCase('TR'),
       email: values.email,
       phone: values.phone,
-      address: values.address.toUpperCase(),
+      address: values.address.toLocaleUpperCase('TR'),
       website: values.website,
       products: values.products,
       customer_type: values.customer_type,
@@ -92,12 +92,12 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
     setError("");
     console.log("values in edit", values);
     const data = {
-      companyname: values.companyname.toUpperCase(),
+      companyname: values.companyname.toLocaleUpperCase('TR'),
       taxid: values.taxid,
-      taxoffice: values.taxoffice.toUpperCase(),
+      taxoffice: values.taxoffice.toLocaleUpperCase('TR'),
       email: values.email,
       phone: values.phone,
-      address: values.address.toUpperCase(),
+      address: values.address.toLocaleUpperCase('TR'),
       website: values.website,
       products: values.products,
       customer_type: values.customer_type,

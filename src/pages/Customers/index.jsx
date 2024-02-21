@@ -62,11 +62,11 @@ const Customers = () => {
     return pageCustomers.filter(
       (customer) =>
         customer.companyname
-          .toLocaleLowerCase()
-          .includes(searchValue.toLowerCase()) ||
-        customer.email.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
-        customer.phone.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) ||
-        customer.address.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+          .toLocaleLowerCase("TR")
+          .includes(searchValue.toLocaleLowerCase("TR")) ||
+        customer.email.toLocaleLowerCase("TR").includes(searchValue.toLocaleLowerCase("TR")) ||
+        customer.phone.toLocaleLowerCase("TR").includes(searchValue.toLocaleLowerCase("TR")) ||
+        customer.address.toLocaleLowerCase("TR").includes(searchValue.toLocaleLowerCase("TR"))
     );
   }, [searchValue, customers, pageCustomers]);
 

@@ -1,10 +1,11 @@
 import Header from './Header'
-import { useLastProductStockLogs, useLastProductStocks, useRawMaterialLogs, useRawMaterialStocks, useRecipeMaterialLogs, useRecipeMaterialStocks } from '@/store/hooks/apps'
+import { useLastProductStockLogs, useLastProductStockWarehouse, useLastProductStocks, useRawMaterialLogs, useRawMaterialStocks, useRecipeMaterialLogs, useRecipeMaterialStocks } from '@/store/hooks/apps'
 import { useEffect, useState } from 'react'
 import Items from './Items'
+import WarehouseStocks from './WarehouseStocks'
 
 const Stocks = ({page}) => {
-    const [logs,setLogs]= useState([]) 
+    const [stocks,setStocks]= useState([]) 
     const lastProductLogs=useLastProductStockLogs();
     const rawMaterialLogs=useRawMaterialLogs();
     const recipeMaterialLogs=useRecipeMaterialLogs();
@@ -12,32 +13,39 @@ const Stocks = ({page}) => {
     const lastProductStocks= useLastProductStocks()
     const rawMaterialStocks= useRawMaterialStocks()
     const recipeMaterialStocks= useRecipeMaterialStocks()
+    const lastProductStockWarehouses= useLastProductStockWarehouse()
 
      console.log("useLastProductStocks", lastProductStocks)
      console.log("useRawMaterialStocks", rawMaterialStocks)
      console.log("useRecipeMaterialStocks", recipeMaterialStocks)
-      console.log("useLastProductLogs", lastProductLogs)
+      console.log("uselastProductStockWarehouses", lastProductStockWarehouses)
 
     
 
     useEffect(() => {
         if (page === "lastProductStocks") {
-            setLogs([...lastProductLogs]);
+            setStocks([...lastProductStocks]);
         } else if (page === "rawMaterialStocks") {
-            setLogs([...rawMaterialLogs]);
+            setStocks([...rawMaterialStocks]);
         } else if (page === "recipeMaterialStocks") {
-            setLogs([...recipeMaterialLogs]);
+            setStocks([...recipeMaterialStocks]);
+        } else if (page === "warehouseStocks") {
+            setStocks([...lastProductStockWarehouses]);
         }
-    }, [page,lastProductLogs, rawMaterialLogs, recipeMaterialLogs]);
+    }, [page, lastProductStocks, rawMaterialStocks, recipeMaterialStocks, lastProductStockWarehouses]);
 
     return (
         <>
-            <Header logs={logs} page={page} />
+            <Header page={page} />
+            {
+                page==="warehouseStocks" ? 
+                <WarehouseStocks stocks={stocks} /> : 
                 <Items
-                    logs={logs}
-                    page={page}
+                stocks={stocks}
+                page={page}
+            />
+            }
                 
-                />
                
         </>
     )
