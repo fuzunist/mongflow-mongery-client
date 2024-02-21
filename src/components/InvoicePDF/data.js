@@ -296,6 +296,7 @@ const customerInfo= [
 
 const paymentInfo= {
    totalPrice: data.totalPrice,
+   totalTax: data.totalTax,
    totalWithTax: data.totalWithTax,
    taxRate: data.taxRate,
    totalQuantity: data.totalQuantity,

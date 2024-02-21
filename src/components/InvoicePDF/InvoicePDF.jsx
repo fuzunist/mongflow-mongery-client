@@ -486,7 +486,7 @@ const InvoicePDF = ({ data }) => {
     <View wrap={false} style={tw("flex flex-row w-full border border-custom ")}>
       <View style={tw("flex flex-col w-[25%] justify-between text-sm text-custom")}>
         <Text style={tw("flex border-b border-r border-custom px-1 h-5")}>
-          Toplam Tutar
+          Net Tutar
         </Text>
         <Text style={tw("flex border-b border-r border-custom px-1 h-5")}>
           Toplam Miktar
@@ -511,10 +511,10 @@ const InvoicePDF = ({ data }) => {
             {formatDigits(dynoData.paymentInfo.totalPrice)} {" "}{dynoData.otherDetails.currency_code}
           </Text>
           <Text style={tw("flex text-xs font-bold text-custom px-1 ml-auto")}>
-            %{dynoData.paymentInfo.taxRate} KDV Dahil Toplam:
+            %{dynoData.paymentInfo.taxRate} KDV:
           </Text>
           <Text style={tw("flex border-l border-custom px-1")}>
-            {formatDigits(dynoData.paymentInfo.totalWithTax)}{" "}{dynoData.otherDetails.currency_code}
+            {formatDigits(dynoData.paymentInfo.totalTax)}{" "}{dynoData.otherDetails.currency_code}
           </Text>
 
           {/* <Text style={tw("flex text-xs px-1")}>
@@ -556,6 +556,13 @@ const InvoicePDF = ({ data }) => {
         >
           <Text style={tw("flex px-1")}>
             {dynoData.paymentInfo.delivery_point}
+          </Text>
+
+          <Text style={tw("flex text-xs font-bold text-custom px-1 ml-auto")}>
+            Toplam:
+          </Text>
+          <Text style={tw("flex border-l border-custom px-1")}>
+            {formatDigits(dynoData.paymentInfo.totalWithTax)}{" "}{dynoData.otherDetails.currency_code}
           </Text>
           {/* <Text style={tw("flex text-xs px-1")}>Bakiye TL= 0.00 </Text> */}
         </View>

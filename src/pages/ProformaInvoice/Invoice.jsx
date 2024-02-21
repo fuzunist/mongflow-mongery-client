@@ -273,7 +273,8 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
     user: user,
     selectedCustomer: selectedCustomer,
     totalPrice: totalPrice,
-    totalWithTax: (totalPrice * (1 + initialValues.taxRate)).toFixed(4),
+    totalWithTax: totalPrice + orderDetails.vat_declaration,
+    totalTax: initialValues.taxRate*totalPrice,
     taxRate: initialValues.taxRate * 100,
     currencyCode: initialValues.currencyCode,
     orderNumber: orderNumber,
@@ -288,6 +289,7 @@ const Invoice = ({ selectedCustomer, editingOrder }) => {
     totalQuantity: totalProductsQuantity,
     vatDeclaration: orderDetails?.vat_declaration,
     vatWitholding: orderDetails?.vat_witholding
+
   };
   console.log("pdf Data,", pdfData);
   const onClick = () => {
