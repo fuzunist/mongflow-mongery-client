@@ -51,7 +51,6 @@ const CreateStock = ({ closeModal, editing = false, selected, page }) => {
           addStock: addLastProductStock,
           addLog: addLastProductStockLog,
           addWarehouseStock :addLastProductStockWarehouse,
-          editWarehouseStock: editLastProductStockWarehouse,
           products: products.filter((prod) => prod.product_type === 0),
         });
         break;
@@ -150,12 +149,8 @@ const CreateStock = ({ closeModal, editing = false, selected, page }) => {
     if (response?.error) return setError(response.error);
     pageForm.addStock(response.stocks);
     pageForm.addLog(response.logs);
-    if(response.insertedWarehouseStock){
-        pageForm.addWarehouseStock(response.insertedWarehouseStock)
-    }
-    if(response.updatedWarehouseStock){
-        pageForm.editWarehouseStock(response.updatedWarehouseStock)
-    }
+    response.warehouseStocks && pageForm.addWarehouseStock(response.warehouseStocks)
+  
     closeModal();
   };
 

@@ -255,6 +255,7 @@
   "salesGraph": "Anual Sales Graph",
   "salesQuantity": "Sales Quantity",
   "recipematerialstocks": "Recipe Materials Stocks",
+  "warehouseStocks": "Warehouses",
   "stockquantity": "Stock Quantity",
   "apps-contacts-daily": "Daily Contacts"
 }

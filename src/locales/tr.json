@@ -215,6 +215,7 @@
   "editMaterialStock": "Hammadde Alım Güncelle",
   "rawMaterialStocks": "İşlenecek Hammadde",
   "recipeMaterialStocks": "Hazırda Hammadde",
+  "warehouseStocks": "Depolar",
   "buyinghistory": "Alım Geçmişi",
   "totalstock": "Toplam Stok",
   "processit": "İşlemden Geçir",

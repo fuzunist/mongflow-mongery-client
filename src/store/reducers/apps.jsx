@@ -271,28 +271,64 @@ const apps = createSlice({
       );
     },
     _addLastProductStock: (state, action) => {
-      state.lastProductStocks = state.lastProductStocks.map((stock) => {
-        if (stock.id === action.payload.id) {
-          stock = action.payload;
-          return stock;
-        }
-      });
+      if(state.lastProductStocks.find((item)=> item.id===action.payload.id)){
+        state.lastProductStocks = state.lastProductStocks.map(
+          (stock) => {
+            if (stock.id === action.payload.id) {
+              stock = action.payload;
+            }
+            return stock;
+          }
+        );
+      }else{
+        state.lastProductStocks = [
+          ...state.lastProductStocks,
+          action.payload,
+        ];
+      }
     },
     _addLastProductStockLog: (state, action) => {
-      state.lastProductStockLogs = [
-        ...state.lastProductStockLogs,
-        action.payload,
-      ];
+      if(state.lastProductStockLogs.find((item)=> item.id===action.payload.id)){
+        state.lastProductStockLogs = state.lastProductStockLogs.map(
+          (stock) => {
+            if (stock.id === action.payload.id) {
+              stock = action.payload;
+            }
+            return stock;
+          }
+        );
+      }else{
+        state.lastProductStockLogs = [
+          ...state.lastProductStockLogs,
+         action.payload,
+        ];
+  
+      }
+
     },
 
     _addAllRangeProductStockLogs: (state, action) => {
       state.lastProductStockLogs = [...action.payload];
     },
     _addLastProductStockWarehouse: (state, action) => {
-      state.lastProductStockWarehouse = [
-        ...state.lastProductStockWarehouse,
-        action.payload,
-      ];
+       console.log("_addLastProductStockWarehouse ap", action.payload)
+      if(state.lastProductStockWarehouse.find((item)=> item.id===action.payload.id)){
+        state.lastProductStockWarehouse = state.lastProductStockWarehouse.map(
+          (stock) => {
+            if (stock.id === action.payload.id) {
+              stock = action.payload;
+            }
+            return stock;
+          }
+        );
+      }else{
+        state.lastProductStockWarehouse = [
+          ...state.lastProductStockWarehouse,
+          action.payload,
+        ];
+      }
+     
+      
     },
     _editLastProductStockWarehouse: (state, action) => {
       console.log("action p", action.payload);
@@ -325,27 +361,24 @@ const apps = createSlice({
       });
     },
     _addRawMaterialStock: (state, action) => {
-      state.rawMaterialStocks = [...state.rawMaterialStocks, action.payload];
-
-      state.rawMaterialStocks = state.rawMaterialStocks.map((stock) => {
-        if (stock.id === action.payload.id) {
-          stock = { ...stock, ...action.payload };
-          return stock;
-        }
-      });
+      if(state.rawMaterialStocks.find((item)=> item.id===action.payload.id)){
+        state.rawMaterialStocks = state.rawMaterialStocks.map((stock) => {
+          if (stock.id === action.payload.id) {
+            stock = action.payload;
+            return stock;
+          } 
+        });
+      } else  state.rawMaterialStocks=[...state.rawMaterialStocks, action.payload]
     },
     _addRecipeMaterialStock: (state, action) => {
-      state.recipeMaterialStocks = [
-        ...state.recipeMaterialStocks,
-        action.payload,
-      ];
-
-      state.recipeMaterialStocks = state.recipeMaterialStocks.map((stock) => {
-        if (stock.id === action.payload.id) {
-          stock = { ...stock, ...action.payload };
-          return stock;
-        }
-      });
+      if(state.recipeMaterialStocks.find((item)=> item.id===action.payload.id)){
+        state.recipeMaterialStocks = state.recipeMaterialStocks.map((stock) => {
+          if (stock.id === action.payload.id) {
+            stock = action.payload;
+            return stock;
+          } 
+        });
+      } else  state.recipeMaterialStocks=[...state.recipeMaterialStocks, action.payload]
     },
     _editRawMaterial: (state, action) => {
       state.rawMaterialStocks = state.rawMaterialStocks.map((rawMaterial) => {
@@ -379,7 +412,7 @@ const apps = createSlice({
       );
     },
     _addRecipeMaterial: (state, action) => {
-      state.recipeMaterials = [...state.recipeMaterials, action.payload];
+      // state.recipeMaterials = [...state.recipeMaterials, action.payload];
     },
 
     _editRecipeMaterial: (state, action) => {

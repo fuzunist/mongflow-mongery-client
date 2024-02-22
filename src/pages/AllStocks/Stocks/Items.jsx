@@ -31,9 +31,10 @@ const Items = ({
   }, [page, stocks, searchValue]);
 
 
+   console.log("filteredStocks",filteredStocks)
   const dataSource = filteredStocks.map((stock, index) => ({
     key: index,
-    id: stock.id,
+    id: stock?.id,
     product: stock?.product_name,
     attributedetails: stock?.attributedetails,
     price: stock?.price,

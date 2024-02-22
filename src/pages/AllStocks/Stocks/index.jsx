@@ -1,14 +1,11 @@
 import Header from './Header'
-import { useLastProductStockLogs, useLastProductStockWarehouse, useLastProductStocks, useRawMaterialLogs, useRawMaterialStocks, useRecipeMaterialLogs, useRecipeMaterialStocks } from '@/store/hooks/apps'
+import { useLastProductStockWarehouse, useLastProductStocks, useRawMaterialStocks, useRecipeMaterialStocks } from '@/store/hooks/apps'
 import { useEffect, useState } from 'react'
 import Items from './Items'
 import WarehouseStocks from './WarehouseStocks'
 
 const Stocks = ({page}) => {
     const [stocks,setStocks]= useState([]) 
-    const lastProductLogs=useLastProductStockLogs();
-    const rawMaterialLogs=useRawMaterialLogs();
-    const recipeMaterialLogs=useRecipeMaterialLogs();
 
     const lastProductStocks= useLastProductStocks()
     const rawMaterialStocks= useRawMaterialStocks()
@@ -30,7 +27,7 @@ const Stocks = ({page}) => {
         } else if (page === "recipeMaterialStocks") {
             setStocks([...recipeMaterialStocks]);
         } else if (page === "warehouseStocks") {
-            setStocks([...lastProductStockWarehouses]);
+            setStocks([]);
         }
     }, [page, lastProductStocks, rawMaterialStocks, recipeMaterialStocks, lastProductStockWarehouses]);
 
@@ -39,7 +36,7 @@ const Stocks = ({page}) => {
             <Header page={page} />
             {
                 page==="warehouseStocks" ? 
-                <WarehouseStocks stocks={stocks} /> : 
+                <WarehouseStocks stocks={lastProductStockWarehouses} /> : 
                 <Items
                 stocks={stocks}
                 page={page}

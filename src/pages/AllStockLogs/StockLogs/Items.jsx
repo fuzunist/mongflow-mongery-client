@@ -24,20 +24,20 @@ const Items = ({
         log.waybill.includes(searchValue) ||
         log.date.includes(searchValue) ||
         log.customer_city
-          .toLocaleLowerCase()
-          .includes(searchValue.toLocaleLowerCase()) ||
+          .toLocaleLowerCase("TR")
+          .includes(searchValue.toLocaleLowerCase("TR")) ||
         log.customer_county
-          .toLocaleLowerCase()
-          .includes(searchValue.toLocaleLowerCase()) ||
+          .toLocaleLowerCase("TR")
+          .includes(searchValue.toLocaleLowerCase("TR")) ||
         JSON.stringify(log.attributedetails)
-          .toLocaleLowerCase()
-          .includes(searchValue.toLocaleLowerCase()) ||
+          .toLocaleLowerCase("TR")
+          .includes(searchValue.toLocaleLowerCase("TR")) ||
         log.companyname
-          .toLocaleLowerCase()
-          .includes(searchValue.toLocaleLowerCase()) ||
+          .toLocaleLowerCase("TR")
+          .includes(searchValue.toLocaleLowerCase("TR")) ||
         log.product_name
-          .toLocaleLowerCase()
-          .includes(searchValue.toLocaleLowerCase())
+          .toLocaleLowerCase("TR")
+          .includes(searchValue.toLocaleLowerCase("TR"))
     );
   }, [page, logs, searchValue]);
 
@@ -98,6 +98,18 @@ const Items = ({
           )
         );
       },
+    },
+    {
+      title: "Miktar",
+      dataIndex: "quantity",
+      key: "quantity",
+      className: "text-sm",
+      render: (tag)=>
+      (
+        <span>
+          {tag} ton
+        </span>
+      )
     },
     {
       title: "Fiyat",
