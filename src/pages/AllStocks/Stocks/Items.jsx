@@ -117,6 +117,7 @@ const Items = ({
                 scroll={{ x: 900, y: 900 }}
                 columns={columns}
                 showHeader={dataSource.length ? true : false}
+                className="flex justify-center"
               ></Table>
             </div>
           </Space>

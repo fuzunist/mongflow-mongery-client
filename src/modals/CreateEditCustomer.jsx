@@ -24,7 +24,7 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
   const [fields, setFields] = useState([
     {
       name: ["companyname"],
-      value: editing ? selectedCustomer?.companyname.toLocaleUpperCase('TR') : "",
+      value: editing ? selectedCustomer?.companyname?.toLocaleUpperCase('TR') : "",
     },
     {
       name: ["taxid"],
@@ -32,7 +32,7 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
     },
     {
       name: ["taxoffice"],
-      value: editing ? selectedCustomer?.taxoffice.toLocaleUpperCase('TR') : "",
+      value: editing ? selectedCustomer?.taxoffice?.toLocaleUpperCase('TR') : "",
     },
     {
       name: ["email"],
@@ -44,7 +44,7 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
     },
     {
       name: ["address"],
-      value: editing ? selectedCustomer?.address.toLocaleUpperCase('TR') : "",
+      value: editing ? selectedCustomer?.address?.toLocaleUpperCase('TR') : "",
     },
     {
       name: ["website"],
@@ -52,11 +52,11 @@ const CreateEditCustomer = ({ closeModal, selectedCustomer, editing }) => {
     },
     {
       name: ["products"],
-      value: editing ? selectedCustomer.products : [],
+      value: editing ? selectedCustomer?.products : [],
     },
     {
       name: ["customer_type"],
-      value: editing ? selectedCustomer.customer_type : [],
+      value: editing ? selectedCustomer?.customer_type : [],
     },
     {
       name: ["contacts"],
