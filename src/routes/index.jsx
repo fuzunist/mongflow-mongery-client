@@ -120,7 +120,7 @@ const routes = createBrowserRouter([
       //   errorElement: <NotFound />,
       // },
       {
-        path: "apps/productions/daily",
+        path: "apps/productions-daily",
         element:  <DailyProductions />,
         errorElement: <NotFound />,
       },

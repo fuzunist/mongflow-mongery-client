@@ -11,12 +11,11 @@ import {
   Factory,
   Layers,
   Contact2,
-
   DollarSign,
-  
   BookOpenCheck,
 Headphones,
-ShoppingBasket
+ShoppingBasket,
+Truck
 } from "lucide-react";
 
 export default [
@@ -155,6 +154,23 @@ export default [
       value: ["admin", "stock_manager", "boss", "production_manager"],
     },
   },
+  {
+  key: "apps-shipments",
+  icon: Truck,
+  url: "/apps/shipments",
+  authenticate: {
+    type: "usertype",
+    value: [
+      "admin",
+      "boss",
+      "domestic_market_manager",
+      "foreign_market_manager",
+      "domestic_market_marketing",
+      "foreign_market_marketing",
+      "stock_manager",
+    ],
+  },
+  },
   // {
   //   key: "apps-materials",
   //   icon: CircleDollarSign,
@@ -193,7 +209,7 @@ export default [
   {
     key: "apps-shifts-daily",
     icon: BookOpenCheck,
-    url: "/apps/productions/daily",
+    url: "/apps/productions-daily",
     authenticate: {
       type: "usertype",
       value: ["admin", "stock_manager", "boss", "production_manager"],

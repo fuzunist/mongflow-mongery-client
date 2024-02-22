@@ -116,8 +116,7 @@ const Items = ({
                 size={"small"}
                 scroll={{ x: 900, y: 900 }}
                 columns={columns}
-                
-             
+                showHeader={dataSource.length ? true : false}
               ></Table>
             </div>
           </Space>

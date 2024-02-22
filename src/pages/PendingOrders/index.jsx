@@ -46,7 +46,6 @@ const PendingOrders = () => {
 
   useEffect(() => {
     setSearch("");
-
     return () => {
       setSearch("");
     };

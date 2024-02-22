@@ -229,7 +229,7 @@ const Items = ({
               } `}
             >
               <Table
-                tableLayout="auto"
+                // tableLayout="auto"
                 locale={{ emptyText: "Veri Bulunamadı" }}
                 pagination={{
                   showTotal: (total) => `Toplam Kayıt: ${total} adet `,
@@ -240,7 +240,7 @@ const Items = ({
                 size={"small"}
                 scroll={{ x: 900, y: 900 }}
                 columns={columns}
-                
+                showHeader={dataSource.length ? true : false}
                 expandable={{
                   expandedRowRender: (record) => {
                     console.log("record io", record);
