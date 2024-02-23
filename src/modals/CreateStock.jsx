@@ -8,19 +8,16 @@ import {
   addRawMaterialStockLog,
   addRecipeMaterialStock,
   addRecipeMaterialStockLog,
-  editLastProductStockWarehouse,
 } from "@/store/actions/apps";
 import {
   useCustomers,
   useExchangeRates,
   useProduct,
   useProducts,
-  useLastProductStockWarehouse
+  useLastProductStockWarehouse,
 } from "@/store/hooks/apps";
 import { useUser } from "@/store/hooks/user";
-import {
-  transformToFloat,
-} from "@/utils/helpers";
+import { transformToFloat } from "@/utils/helpers";
 import { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getCityOptions } from "@/utils/getCityOptions";
@@ -36,21 +33,20 @@ const CreateStock = ({ closeModal, editing = false, selected, page }) => {
   const customers = useCustomers();
   const products = useProducts();
   const selectedProduct = useProduct();
-  const warehouseStocks= useLastProductStockWarehouse()
+  const warehouseStocks = useLastProductStockWarehouse();
   const [error, setError] = useState("");
   const [currency, setCurrency] = useState("TL");
   const [pageForm, setPageForm] = useState({});
   const { t } = useTranslation();
 
   useEffect(() => {
-
     switch (page) {
       case "lastProductStocks":
         setPageForm({
           addToDB: addProductStockLogToDB,
           addStock: addLastProductStock,
           addLog: addLastProductStockLog,
-          addWarehouseStock :addLastProductStockWarehouse,
+          addWarehouseStock: addLastProductStockWarehouse,
           products: products.filter((prod) => prod.product_type === 0),
         });
         break;
@@ -87,7 +83,7 @@ const CreateStock = ({ closeModal, editing = false, selected, page }) => {
   }, [currency]);
 
   const initialValues = useMemo(() => {
-    return { 
+    return {
       product_id: { value: "", options: pageForm.products, label: "Ürün" },
       attributes: { value: {}, options: [], label: "Özellikler" },
       price: { value: 0, label: "Birim Fiyat" },
@@ -110,7 +106,17 @@ const CreateStock = ({ closeModal, editing = false, selected, page }) => {
         label: "Döviz",
         options: ["TL", "USD", "EUR"],
       },
-      exchange_rate: { value: currencyRate, label: "Döviz Kuru" },
+      exchange_rate: { value: currencyRate ?? 1, label: "Döviz Kuru" },
+      vat_rate: { value: 0, label: "% KDV", options: [0, 0.1, 0.18, 0.2] },
+      vat_witholding_rate: {
+        value: 0,
+        label: "Tevkifat Oranı",
+        options: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+      },
+      vat_witholding: { value: 0, label: "KDV Tevkifat"},
+      vat_declaration: { value: 0, label: "KDV Beyan"},
+      price_with_vat: { value: 0, label: "KDV Dahil Toplam" },
+
       details: { value: "", label: "Alım Detayı" },
     };
   }, [customers, products, pageForm]);
@@ -119,13 +125,14 @@ const CreateStock = ({ closeModal, editing = false, selected, page }) => {
     const field = Object.entries(initialValues).map(([key, value]) => ({
       name: key,
       value: value?.value,
-    }));
 
+    }));
     setFields(field);
   }, [initialValues]);
 
   const onSubmit = async (values) => {
     setError("");
+     console.log("values of create log", values)
     const data = {
       ...values,
       customer_city: values.address[0],
@@ -139,7 +146,7 @@ const CreateStock = ({ closeModal, editing = false, selected, page }) => {
         format: "DD/MM/YYYY",
       }).toISOString(),
       userid: user.userid,
-      price: transformToFloat(values.price * values.exchange_rate),
+      price: transformToFloat(values.price * values.exchange_rate)
     };
     delete data["address"];
 
@@ -149,8 +156,9 @@ const CreateStock = ({ closeModal, editing = false, selected, page }) => {
     if (response?.error) return setError(response.error);
     pageForm.addStock(response.stocks);
     pageForm.addLog(response.logs);
-    response.warehouseStocks && pageForm.addWarehouseStock(response.warehouseStocks)
-  
+    response.warehouseStocks &&
+      pageForm.addWarehouseStock(response.warehouseStocks);
+
     closeModal();
   };
 

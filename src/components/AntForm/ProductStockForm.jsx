@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Button,
   Card,
@@ -50,11 +50,19 @@ const ProductStockForm = ({
   };
   const [form] = Form.useForm();
 
+  const vat_rate = Form.useWatch(["vat_rate"], form);
+  const vat_witholding_rate = Form.useWatch(["vat_witholding_rate"], form);
+  const price = Form.useWatch(["price"], form);
+
   useEffect(() => {
     form.setFieldsValue({
       exchange_rate: rate,
+      vat_witholding: price * vat_rate * vat_witholding_rate,
+      vat_declaration: price * vat_rate * (1 - vat_witholding_rate),
+      price_with_vat: price + price * vat_rate * (1 - vat_witholding_rate),
     });
-  }, [rate]);
+  }, [rate, vat_rate, vat_witholding_rate, price]);
+
   return (
     <div className="flex flex-col w-full justify-center items-center">
       <h1 className="font-bold text-2xl my-4 ">{"Ürün Stok Ekle"}</h1>
@@ -163,6 +171,7 @@ const ProductStockForm = ({
         </Form.Item>
 
         <Form.Item
+          className={`${currency === "TL" ? "hidden" : ""}`}
           rules={[
             {
               required: true,
@@ -174,6 +183,7 @@ const ProductStockForm = ({
         >
           <Input type="number" />
         </Form.Item>
+
         <Form.Item
           rules={[
             {
@@ -185,6 +195,75 @@ const ProductStockForm = ({
           label={initialValues.price.label}
         >
           <InputNumber className="w-full" prefix={currency} min={0} />
+        </Form.Item>
+
+        <Form.Item
+          rules={[
+            {
+              required: true,
+              message: "KDV Tevkifate Girilmelidir!",
+            },
+          ]}
+          name={"vat_witholding_rate"}
+          label="KDV Tevkifat Oranı"
+        >
+          <Select type="number">
+            {initialValues.vat_witholding_rate?.options?.map((item, index) => (
+              <Option key={index} value={item}>
+                {item === 0
+                  ? "Tevkifat Yok"
+                  : item === 1
+                  ? "Tamamına Tevkifat Uygula"
+                  : item * 10 + "/10"}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          rules={[
+            {
+              required: true,
+              message: "KDV Girilmelidir!",
+            },
+          ]}
+          name={"vat_rate"}
+          label="KDV"
+        >
+          <Select type="number">
+            {initialValues.vat_rate?.options?.map((item, index) => (
+              <Option key={index} value={item}>
+                %{item * 100}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+
+        <Form.Item name="vat_witholding" label="KDV Tevkifat">
+          <InputNumber
+            disabled={true}
+            precision={4}
+            step={0.1}
+            className="w-full bg-white text-black cursor-default"
+          />
+        </Form.Item>
+
+        <Form.Item name="vat_declaration" label="KDV Beyan">
+          <InputNumber
+            disabled={true}
+            precision={4}
+            step={0.1}
+            className="w-full bg-white text-black cursor-default"
+          />
+        </Form.Item>
+
+        <Form.Item name="price_with_vat" label="KDV Dahil Toplam">
+          <InputNumber
+            disabled={true}
+            precision={4}
+            step={0.1}
+            className="w-full bg-white text-black cursor-default"
+          />
         </Form.Item>
 
         <Form.Item
@@ -222,8 +301,6 @@ const ProductStockForm = ({
             format={"DD/MM/YYYY"}
           />
         </Form.Item>
-
-        
 
         <Form.Item
           rules={[
