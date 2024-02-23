@@ -70,7 +70,10 @@ import {
   _editLastProductStockWarehouse,
   _addAllRangeProductStockLogs,
   _addAllRangeRawMaterialStockLogs,
-  _addAllRangeRecipeMaterialStockLogs
+  _addAllRangeRecipeMaterialStockLogs,
+  _delLastProductStockLog,
+  _addAllProductStockWarehouse,
+  _addAllProductStocks
 } from "../reducers/apps";
 
 export const promiseAll = (access_token, usertype) =>
@@ -87,6 +90,13 @@ export const addLastProductStock = (stock) =>
   export const addAllRangeProductStockLogs = (log) =>
   store.dispatch(_addAllRangeProductStockLogs(log));
   
+
+  export const addAllProductStocks = (stock) =>
+  store.dispatch(_addAllProductStocks(stock));
+  
+  export const addAllProductStockWarehouse = (stock) =>
+  store.dispatch(_addAllProductStockWarehouse(stock));
+  
   export const addAllRangeRawMaterialStockLogs = (log) =>
   store.dispatch(_addAllRangeRawMaterialStockLogs(log));
 
@@ -98,6 +108,9 @@ export const addLastProductStock = (stock) =>
 
   export const editLastProductStockWarehouse = (stock) =>
   store.dispatch(_editLastProductStockWarehouse(stock));
+
+  export const delLastProductStockLog = (stock) =>
+  store.dispatch(_delLastProductStockLog(stock));
 
 export const addRawMaterialStock = (rawStock) =>
   store.dispatch(_addRawMaterialStock(rawStock));

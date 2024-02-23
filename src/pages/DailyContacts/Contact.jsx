@@ -43,6 +43,8 @@ const { Column, ColumnGroup } = Table;
     delCustomer(customer.customerid);
     closeModal();
   };
+
+  
   const dataSource= selectedContacts?.map((contact, index)=>({
     key: index,
     name: contact?.name,

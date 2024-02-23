@@ -54,7 +54,7 @@ const CreateEditContact = ({ closeModal, editing, record }) => {
     },
     {
       name: ["person"],
-      value: editing ? selectedContact?.person.toLocaleUpperCase('TR') : "",
+      value: editing ? selectedContact?.person?.toLocaleUpperCase('TR') : "",
     },
     {
       name: ["contacttype"],
@@ -93,7 +93,7 @@ const CreateEditContact = ({ closeModal, editing, record }) => {
       userid: user.userid,
       customerid: record ? customer.customerid : company?.id,
       companyname: record ? customer.companyname : company?.name,
-      person: values.person.toLocaleUpperCase('TR'),
+      person: values?.person,
       contacttype: values.contacttype,
       date: values.date?.toISOString(),
       time: time,

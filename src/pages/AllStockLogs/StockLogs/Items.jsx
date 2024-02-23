@@ -1,19 +1,55 @@
 import Card from "@/components/Card";
 import Row from "@/components/Row";
+import {
+  delLastProductLogFromDB,
+  getProductStockWarehouse,
+  getProductStocks,
+} from "@/services/lastproductstocks";
+import {
+  addAllProductStockWarehouse,
+  addAllProductStocks,
+  delLastProductStockLog,
+} from "@/store/actions/apps";
 import { useSearch } from "@/store/hooks/apps";
-import { Space, Table, Tag } from "antd";
+import { useUser } from "@/store/hooks/user";
+import { Space, Table, Tag, message, Popconfirm } from "antd";
 import Column from "antd/es/table/Column";
 import dayjs from "dayjs";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Trash2Icon } from "lucide-react";
 
 const Items = ({
   logs,
   page,
   // selected, setSelected
 }) => {
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const { t } = useTranslation();
   const searchValue = useSearch();
+  const user = useUser();
+
+  const deleteLog = async (id) => {
+    const response = await delLastProductLogFromDB(
+      user.tokens.access_token,
+      id
+    );
+
+    console.log("response deleteLog", response);
+    if (response?.error) {
+      return console.log(response?.error);
+    }
+
+    delLastProductStockLog(id);
+    const productWareHouses = await getProductStockWarehouse(
+      user.tokens.access_token
+    );
+
+    const productStocks = await getProductStocks(user.tokens.access_token);
+
+    addAllProductStocks(productStocks);
+    addAllProductStockWarehouse(productWareHouses);
+  };
 
   //Buraya customer name ve attributes ler de gelmeli ama belki veritabaından get ile
   const filteredLogs = useMemo(() => {
@@ -104,24 +140,14 @@ const Items = ({
       dataIndex: "quantity",
       key: "quantity",
       className: "text-sm",
-      render: (tag)=>
-      (
-        <span>
-          {tag} ton
-        </span>
-      )
+      render: (tag) => <span>{tag} ton</span>,
     },
     {
       title: "Fiyat",
       dataIndex: "price",
       key: "price",
       className: "text-sm",
-      render: (tag)=>
-      (
-        <span>
-          {tag} ₺
-        </span>
-      )
+      render: (tag) => <span>{tag} ₺</span>,
     },
     {
       title: "Döviz",
@@ -134,7 +160,9 @@ const Items = ({
           <Tag color={tags[0] === "TL" ? "geekblue" : "green"} className="m-1">
             {tags[0] === "TL"
               ? tags[0].toUpperCase()
-              : ` ${tags[0].toUpperCase()==="USD" ? "$" : tags[0].toUpperCase()}1= ${tags[1]} ₺`}
+              : ` ${
+                  tags[0].toUpperCase() === "USD" ? "$" : tags[0].toUpperCase()
+                }1= ${tags[1]} ₺`}
           </Tag>
         </span>
       ),
@@ -151,71 +179,36 @@ const Items = ({
       key: "warehouse",
       className: "text-sm",
     },
-    // {
-    //   title: "İşlemler",
-    //   dataIndex: "action",
-    //   key: "action",
-    //   render: (_, record) => (
-    //     <Space size="middle">
-    //       <div className=" flex"
-    //     //    onClick={() => setCustomer(record.id)}
-    //        >
-    //         <Modal
-    //           text={
-    //             <div className="bg-green-700 hover:bg-green-600 text-white rounded p-1.5">
-    //               <Headphones size={18} strokeWidth={2.5} />
-    //             </div>
-    //           }
-    //         >
-    //           {({ close }) => (
-    //             <CreateEditContact
-    //               editing={false}
-    //               closeModal={close}
-    //               record={record}
-    //             />
-    //           )}
-    //         </Modal>
-    //       </div>
-    //       <div className="flex" onClick={() => setCustomer(record.id)}>
-    //         <Modal
-    //           width="xl"
-    //           className="rounded-full "
-    //           text={
-    //             <div className="bg-purple hover:bg-purple-hover rounded p-1.5 text-white">
-    //               <ClipboardEditIcon className="" size={18} strokeWidth={2.5} />
-    //             </div>
-    //           }
-    //         >
-    //           {({ close }) => (
-    //             <CreateEditCustomer
-    //               editing={true}
-    //               closeModal={close}
-    //               selectedCustomer={selectedCustomer}
-    //             />
-    //           )}
-    //         </Modal>
-    //       </div>
-    //       <div className="flex">
-    //         <Popconfirm
-    //           placement="left"
-    //           title={"Silmek istediğinizden emin misiniz?"}
-    //           okText="Evet"
-    //           cancelText="Hayır"
-    //           onConfirm={() => onDelete(record.id)}
-    //           onCancel={() => message.error("Müşteri silinmedi.")}
-    //         >
-    //           <button
-    //             className="p-1.5 bg-danger hover:bg-alert-danger-fg-light transition-colors text-white rounded"
-    //             // onClick={}
-    //           >
-    //             <Trash2Icon size={18} strokeWidth={2.5} />
-    //             {/* {t("delete")} */}
-    //           </button>
-    //         </Popconfirm>
-    //       </div>
-    //     </Space>
-    //   ),
-    // },
+    {
+      title: "İşlemler",
+      dataIndex: "action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <div className="flex">
+            {/* <Popconfirm
+              placement="center"
+              title={"Silmek istediğinizden emin misiniz?"}
+              okText="Evet"
+              cancelText="Hayır"
+              onConfirm={() => deleteLog(record.id)}
+              onCancel={() => message.error("Kayıt silinmedi.")}
+              okButtonProps={{
+                loading: confirmLoading,
+              }}
+            > */}
+            <button
+              onClick={() => deleteLog(record.id)}
+              className="p-1.5 bg-danger hover:bg-alert-danger-fg-light transition-colors text-white rounded"
+            >
+              <Trash2Icon size={18} strokeWidth={2.5} />
+              {/* {t("delete")} */}
+            </button>
+            {/* </Popconfirm> */}
+          </div>
+        </Space>
+      ),
+    },
   ];
 
   return (
@@ -291,7 +284,7 @@ const Items = ({
                             )}
                           />
 
-<Column
+                          <Column
                             title="Detaylar"
                             dataIndex="details"
                             key="details"

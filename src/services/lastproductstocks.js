@@ -218,3 +218,17 @@ export const editRecipeMaterialLogToDB = async (access_token, params, id) => {
     return e.response.data;
   }
 };
+
+
+export const delLastProductLogFromDB = async (access_token, log_id) => {
+  try {
+      const { data } = await axios.delete(`${import.meta.env.VITE_API_ENDPOINT}/stock/lastproduct/${log_id}`, {
+          headers: {
+              Authorization: `Bearer ${access_token}`
+          }
+      })
+      return data
+  } catch (e) {
+      return e.response.data
+  }
+}

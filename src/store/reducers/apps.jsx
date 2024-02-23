@@ -27,11 +27,15 @@ import {
 } from "@/services/expenses";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
-import { getProductStockLogsFromDB, getProductStockWarehouse, getProductStocks } from "@/services/lastproductstocks";
+import {
+  getProductStockLogsFromDB,
+  getProductStockWarehouse,
+  getProductStocks,
+} from "@/services/lastproductstocks";
 
 const todayDate = dayjs().format("YYYY-MM-DD");
-const threeDaysAgo=dayjs().subtract(3, 'day').format("YYYY-MM-DD");
-const lastMonthDate = dayjs().subtract(30, 'day').format("YYYY-MM-DD");
+const threeDaysAgo = dayjs().subtract(3, "day").format("YYYY-MM-DD");
+const lastMonthDate = dayjs().subtract(30, "day").format("YYYY-MM-DD");
 
 export const _promiseAll = createAsyncThunk(
   "apps/promiseAll",
@@ -133,13 +137,16 @@ export const _promiseAll = createAsyncThunk(
     else if (stocks?.error)
       return rejectWithValue({ type: "getStocksFromDB", error: stocks.error });
     else if (lastProductStocks?.error)
-      return rejectWithValue({ type: "lastProductStocksFromDB", error: lastProductStocks.error });
+      return rejectWithValue({
+        type: "lastProductStocksFromDB",
+        error: lastProductStocks.error,
+      });
     else if (lastProductStocks?.error)
       return rejectWithValue({
         type: "getlastProductStockWarehouseFromDB",
         error: lastProductStockWarehouse.error,
       });
-      else if (lastProductStockLogs?.error)
+    else if (lastProductStockLogs?.error)
       return rejectWithValue({
         type: "getlastProductStockLogsFromDB",
         error: lastProductStockLogs.error,
@@ -271,48 +278,53 @@ const apps = createSlice({
       );
     },
     _addLastProductStock: (state, action) => {
-      if(state.lastProductStocks.find((item)=> item.id===action.payload.id)){
-        state.lastProductStocks = state.lastProductStocks.map(
-          (stock) => {
-            if (stock.id === action.payload.id) {
-              stock = action.payload;
-            }
-            return stock;
+      if (
+        state.lastProductStocks.find((item) => item.id === action.payload.id)
+      ) {
+        state.lastProductStocks = state.lastProductStocks.map((stock) => {
+          if (stock.id === action.payload.id) {
+            stock = action.payload;
           }
-        );
-      }else{
-        state.lastProductStocks = [
-          ...state.lastProductStocks,
-          action.payload,
-        ];
+          return stock;
+        });
+      } else {
+        state.lastProductStocks = [...state.lastProductStocks, action.payload];
       }
     },
     _addLastProductStockLog: (state, action) => {
-      if(state.lastProductStockLogs.find((item)=> item.id===action.payload.id)){
-        state.lastProductStockLogs = state.lastProductStockLogs.map(
-          (stock) => {
-            if (stock.id === action.payload.id) {
-              stock = action.payload;
-            }
-            return stock;
+      if (
+        state.lastProductStockLogs.find((item) => item.id === action.payload.id)
+      ) {
+        state.lastProductStockLogs = state.lastProductStockLogs.map((stock) => {
+          if (stock.id === action.payload.id) {
+            stock = action.payload;
           }
-        );
-      }else{
+          return stock;
+        });
+      } else {
         state.lastProductStockLogs = [
           ...state.lastProductStockLogs,
-         action.payload,
+          action.payload,
         ];
-  
       }
-
     },
 
     _addAllRangeProductStockLogs: (state, action) => {
       state.lastProductStockLogs = [...action.payload];
     },
+    _addAllProductStocks: (state, action) => {
+      state.lastProductStocks = [...action.payload];
+    },
+    _addAllProductStockWarehouse: (state, action) => {
+      state.lastProductStockWarehouse = [...action.payload];
+    },
     _addLastProductStockWarehouse: (state, action) => {
-       console.log("_addLastProductStockWarehouse ap", action.payload)
-      if(state.lastProductStockWarehouse.find((item)=> item.id===action.payload.id)){
+      console.log("_addLastProductStockWarehouse ap", action.payload);
+      if (
+        state.lastProductStockWarehouse.find(
+          (item) => item.id === action.payload.id
+        )
+      ) {
         state.lastProductStockWarehouse = state.lastProductStockWarehouse.map(
           (stock) => {
             if (stock.id === action.payload.id) {
@@ -321,14 +333,12 @@ const apps = createSlice({
             return stock;
           }
         );
-      }else{
+      } else {
         state.lastProductStockWarehouse = [
           ...state.lastProductStockWarehouse,
           action.payload,
         ];
       }
-     
-      
     },
     _editLastProductStockWarehouse: (state, action) => {
       console.log("action p", action.payload);
@@ -341,6 +351,11 @@ const apps = createSlice({
         }
       );
     },
+    _delLastProductStockLog: (state, action) => {
+      state.lastProductStockLogs = state.lastProductStockLogs.filter(
+        (log) => log.id !== action.payload
+      );
+    },
     _addAllRangeRawMaterialStockLogs: (state, action) => {
       state.rawMaterialStockLogs = [...action.payload];
     },
@@ -351,34 +366,45 @@ const apps = createSlice({
       ];
     },
     _editrawMaterialStockLog: (state, action) => {
-      state.rawMaterialStockLogs = state.rawMaterialStockLogs.map((rawMaterialStockLog) => {
-        if (rawMaterialStockLog.id === action.payload.id)
-          rawMaterialStockLog = {
-            ...rawMaterialStockLog,
-            ...action.payload,
-          };
-        return rawMaterialStockLog;
-      });
+      state.rawMaterialStockLogs = state.rawMaterialStockLogs.map(
+        (rawMaterialStockLog) => {
+          if (rawMaterialStockLog.id === action.payload.id)
+            rawMaterialStockLog = {
+              ...rawMaterialStockLog,
+              ...action.payload,
+            };
+          return rawMaterialStockLog;
+        }
+      );
     },
     _addRawMaterialStock: (state, action) => {
-      if(state.rawMaterialStocks.find((item)=> item.id===action.payload.id)){
+      if (
+        state.rawMaterialStocks.find((item) => item.id === action.payload.id)
+      ) {
         state.rawMaterialStocks = state.rawMaterialStocks.map((stock) => {
           if (stock.id === action.payload.id) {
             stock = action.payload;
             return stock;
-          } 
+          }
         });
-      } else  state.rawMaterialStocks=[...state.rawMaterialStocks, action.payload]
+      } else
+        state.rawMaterialStocks = [...state.rawMaterialStocks, action.payload];
     },
     _addRecipeMaterialStock: (state, action) => {
-      if(state.recipeMaterialStocks.find((item)=> item.id===action.payload.id)){
+      if (
+        state.recipeMaterialStocks.find((item) => item.id === action.payload.id)
+      ) {
         state.recipeMaterialStocks = state.recipeMaterialStocks.map((stock) => {
           if (stock.id === action.payload.id) {
             stock = action.payload;
             return stock;
-          } 
+          }
         });
-      } else  state.recipeMaterialStocks=[...state.recipeMaterialStocks, action.payload]
+      } else
+        state.recipeMaterialStocks = [
+          ...state.recipeMaterialStocks,
+          action.payload,
+        ];
     },
     _editRawMaterial: (state, action) => {
       state.rawMaterialStocks = state.rawMaterialStocks.map((rawMaterial) => {
@@ -390,7 +416,7 @@ const apps = createSlice({
         return rawMaterial;
       });
     },
-    _addAllRangeRecipeMaterialStockLogs : (state, action)=>{
+    _addAllRangeRecipeMaterialStockLogs: (state, action) => {
       state.recipeMaterialStockLogs = [...action.payload];
     },
     _addRecipeMaterialStockLog: (state, action) => {
@@ -416,16 +442,18 @@ const apps = createSlice({
     },
 
     _editRecipeMaterial: (state, action) => {
-      state.recipeMaterialStocks = state.recipeMaterialStocks.map((recipeMaterial) => {
-        if (recipeMaterial.id === action.payload.id)
-          recipeMaterial = {
-            ...recipeMaterial,
-            ...action.payload,
-          };
-        return recipeMaterial;
-      });
+      state.recipeMaterialStocks = state.recipeMaterialStocks.map(
+        (recipeMaterial) => {
+          if (recipeMaterial.id === action.payload.id)
+            recipeMaterial = {
+              ...recipeMaterial,
+              ...action.payload,
+            };
+          return recipeMaterial;
+        }
+      );
     },
-    
+
     _editStock: (state, action) => {
       state.stocks = state.stocks.map((stock) => {
         if (stock.stock_id === action.payload.stock_id)
@@ -476,7 +504,7 @@ const apps = createSlice({
     },
 
     _addContact: (state, action) => {
-      state.contacts = [action.payload,...state.contacts];
+      state.contacts = [action.payload, ...state.contacts];
     },
     _editContact: (state, action) => {
       state.contacts = state.contacts.map((contact) => {
@@ -537,7 +565,7 @@ const apps = createSlice({
         (specialRecipe) => specialRecipe.id !== action.payload
       );
     },
-   
+
     _addSet: (state, action) => {
       state.sets = [...state.sets, action.payload];
     },
@@ -808,7 +836,7 @@ const apps = createSlice({
       state.customers = [];
       state.contacts = [];
       state.stocks = [];
-      state.lastProductStocks=[];
+      state.lastProductStocks = [];
       state.lastProductStockWarehouse = [];
       state.lastProductStockLogs = [];
       state.productions = [];
@@ -845,11 +873,10 @@ const apps = createSlice({
       state.customers = action.payload.customers;
       state.contacts = action.payload.contacts;
       state.stocks = action.payload.stocks;
-      state.lastProductStocks=action.payload.lastProductStocks;
+      state.lastProductStocks = action.payload.lastProductStocks;
       state.lastProductStockWarehouse =
         action.payload.lastProductStockWarehouse;
-      state.lastProductStockLogs =
-        action.payload.lastProductStockLogs;
+      state.lastProductStockLogs = action.payload.lastProductStockLogs;
       state.productions = action.payload.productions;
       state.users = action.payload.users;
       state.exchangeRates = action.payload.exchangeRates;
@@ -870,7 +897,10 @@ export const {
   _addLastProductStock,
   _addLastProductStockLog,
   _addLastProductStockWarehouse,
+  _addAllProductStocks,
+  _addAllProductStockWarehouse,
   _editLastProductStockWarehouse,
+  _delLastProductStockLog,
   _addAllRangeProductStockLogs,
   _addAllRangeRawMaterialStockLogs,
   _addAllRangeRecipeMaterialStockLogs,

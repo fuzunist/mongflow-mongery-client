@@ -17,19 +17,19 @@ const WarehouseStocks = ({ stocks }) => {
     return stocks.filter(
       (stock) =>
         JSON.stringify(stock.attributedetails)
-          .toLocaleLowerCase("TR")
+          ?.toLocaleLowerCase("TR")
           .includes(searchValue.toLocaleLowerCase("TR")) ||
         stock.product_name
-          .toLocaleLowerCase("TR")
+          ?.toLocaleLowerCase("TR")
           .includes(searchValue.toLocaleLowerCase("TR")) ||
         stock.customer_name
-          .toLocaleLowerCase("TR")
+          ?.toLocaleLowerCase("TR")
           .includes(searchValue.toLocaleLowerCase("TR")) ||
         stock.customer_city
-          .toLocaleLowerCase("TR")
+          ?.toLocaleLowerCase("TR")
           .includes(searchValue.toLocaleLowerCase("TR")) ||
         stock.customer_county
-          .toLocaleLowerCase("TR")
+          ?.toLocaleLowerCase("TR")
           .includes(searchValue.toLocaleLowerCase("TR"))
     );
   }, [stocks, searchValue]);
@@ -112,11 +112,11 @@ const WarehouseStocks = ({ stocks }) => {
               className="m-1"
             >
               {tags[0] === "TL"
-                ? tags[0].toUpperCase()
+                ? tags[0]?.toLocaleUpperCase("TR")
                 : ` ${
-                    tags[0].toUpperCase() === "USD"
+                    tags[0]?.toLocaleUpperCase("TR") === "USD"
                       ? "$"
-                      : tags[0].toUpperCase()
+                      : tags[0]?.toLocaleUpperCase("TR")
                   }1= ${tags[1]} ₺`}
             </Tag>
           </span>

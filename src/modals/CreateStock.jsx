@@ -17,7 +17,7 @@ import {
   useLastProductStockWarehouse,
 } from "@/store/hooks/apps";
 import { useUser } from "@/store/hooks/user";
-import { transformToFloat } from "@/utils/helpers";
+import { formatDigits, transformToFloat } from "@/utils/helpers";
 import { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getCityOptions } from "@/utils/getCityOptions";
@@ -146,7 +146,7 @@ const CreateStock = ({ closeModal, editing = false, selected, page }) => {
         format: "DD/MM/YYYY",
       }).toISOString(),
       userid: user.userid,
-      price: transformToFloat(values.price * values.exchange_rate)
+      price: values.price * values.exchange_rate
     };
     delete data["address"];
 
