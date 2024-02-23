@@ -81,8 +81,8 @@ const SelectProductFromListForm = ({
         form={form}
       >
         {Object.entries(initialValues)?.map(([key, value], index) => (
-          <Form.Item key={index} name={key} label={key}>
-            <Select showSearch onChange={(e)=> console.log("change:", e)} >
+          <Form.Item key={index} name={key} label={key} >
+            <Select showSearch onChange={(e)=> console.log("change:", e)}  >
               {Object.entries(value?.options).map(
                 ([optionkey, optionvalue], index) => (
                   <Option key={index} value={optionvalue?.value}>

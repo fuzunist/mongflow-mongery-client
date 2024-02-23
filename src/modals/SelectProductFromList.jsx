@@ -51,6 +51,7 @@ const SelectProductFromList = ({
             packaging: attrValues?.packaging,
             name: attrName,
             value: attrValues?.values[0].value, // default to the first value
+            isMultiple: attrName==="Paket" ? true : false,
             options: attrValues?.values.map((val) => ({
               key: val.value,
               // value: `${val.value} (${val.extra_price} ${selectedProduct.currency_code})`
@@ -66,6 +67,7 @@ const SelectProductFromList = ({
             label: attrName,
             name: attrName,
             packaging: attrValues.packaging,
+            isMultiple: attrName==="Paket" ? true : false,
             // value: `${singleAttr.value} (${singleAttr.extra_price} ${selectedProduct.currency_code})`
             value: singleAttr.value,
           };
@@ -83,6 +85,7 @@ const SelectProductFromList = ({
       {
         name:key,
         value: value.value,
+        isMultiple: value?.isMultiple
       }
     )))
     

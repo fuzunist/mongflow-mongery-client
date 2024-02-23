@@ -1,6 +1,7 @@
 import Card from "@/components/Card";
 import Row from "@/components/Row";
 import { useSearch } from "@/store/hooks/apps";
+import { groupStocksByWarehouse } from "@/utils/groupWarehouse";
 import { Space, Table, Tag } from "antd";
 import Column from "antd/es/table/Column";
 import dayjs from "dayjs";
@@ -46,6 +47,9 @@ const WarehouseStocks = ({ stocks }) => {
     currency: [stock.currency_code, stock.exchange_rate, stock.price],
   }));
 
+   console.log("dataSource",dataSource)
+  const dataSourcex = groupStocksByWarehouse(filteredStocks)
+  console.log("dataSourcex",dataSourcex)
   const columns = {
     warehouse: [
       {
@@ -58,7 +62,7 @@ const WarehouseStocks = ({ stocks }) => {
     warehouseDetails: [
       {
         title: "Ürün",
-        dataIndex: "product",
+        dataIndex: "product_name",
         key: "product",
         className: "text-sm",
       },
@@ -80,8 +84,8 @@ const WarehouseStocks = ({ stocks }) => {
       },
       {
         title: "Tedarikçi",
-        dataIndex: "customer",
-        key: "customer",
+        dataIndex: "companyname",
+        key: "companyname",
         className: "text-sm",
       },
       {
@@ -99,39 +103,39 @@ const WarehouseStocks = ({ stocks }) => {
         className: "text-sm",
         render: (tag) => <span>{tag} ₺</span>,
       },
-      {
-        title: "Döviz",
-        dataIndex: "currency",
-        key: "currency",
-        className: "text-sm",
+      // {
+      //   title: "Döviz",
+      //   dataIndex: "currency",
+      //   key: "currency",
+      //   className: "text-sm",
 
-        render: (tags) => (
-          <span>
-            <Tag
-              color={tags[0] === "TL" ? "geekblue" : "green"}
-              className="m-1"
-            >
-              {tags[0] === "TL"
-                ? tags[0]?.toLocaleUpperCase("TR")
-                : ` ${
-                    tags[0]?.toLocaleUpperCase("TR") === "USD"
-                      ? "$"
-                      : tags[0]?.toLocaleUpperCase("TR")
-                  }1= ${tags[1]} ₺`}
-            </Tag>
-          </span>
-        ),
-      },
+      //   render: (tags) => (
+      //     <span>
+      //       <Tag
+      //         color={tags[0] === "TL" ? "geekblue" : "green"}
+      //         className="m-1"
+      //       >
+      //         {tags[0] === "TL"
+      //           ? tags[0]?.toLocaleUpperCase("TR")
+      //           : ` ${
+      //               tags[0]?.toLocaleUpperCase("TR") === "USD"
+      //                 ? "$"
+      //                 : tags[0]?.toLocaleUpperCase("TR")
+      //             }1= ${tags[1]} ₺`}
+      //       </Tag>
+      //     </span>
+      //   ),
+      // },
     ],
   };
 
   return (
-    <Row align={"center"} className="mt-8 ">
+    <Row align={"center"} className="mt-8 placeholder: ">
       <Card variant="overflow">
         <Card.Body>
           <Space split={true} direction="vertical" size={"middle"}>
             <div
-              className={`flex w-full border  ${
+              className={`flex w-full border   ${
                 searchValue ? " border-blue-300" : ""
               } `}
             >
@@ -140,30 +144,28 @@ const WarehouseStocks = ({ stocks }) => {
                 locale={{ emptyText: "Veri Bulunamadı" }}
                 showHeader={false}
                 pagination={false}
-                dataSource={dataSource}
+                dataSource={dataSourcex}
                 size={"small"}
                 scroll={{ x: 1200 }}
-                // className="flex w-full"
                 columns={columns.warehouse}
                 expandable={{
                   expandedRowRender: (record) => {
                     return (
-                    //   <div className="flex w-full justify-center items-center py-2  ">
                       <Table
                         showHeader={true}
                         pagination={false}
-                        dataSource={dataSource}
+                        dataSource={record.stocks}
                         locale={{ emptyText: "Veri Bulunamadı" }}
-                        // className="flex w-full justify-center items-center"
-                        // rowClassName={"flex w-full justify-center items-center"}
+                        className="my-5 -mx-6"
+                        rowClassName={""}
                         columns={columns.warehouseDetails}
                       ></Table>
-                    //   </div>
                     );
                   },
                   //   rowExpandable: (record) => record.name !== "Not Expandable",
                   expandRowByClick: true,
-                  // expandedRowClassName: () => "flex w-full justify-center items-center ",
+                  defaultExpandedRowKeys: ['0'],
+                   expandedRowClassName: () => "bg-red-50 ",
                 }}
               ></Table>
             </div>
